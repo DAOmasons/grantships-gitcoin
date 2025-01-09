@@ -1,0 +1,22 @@
+.root {
+  background-color: var(--mantine-color-white);
+  border: 1px solid var(--mantine-color-dark-1);
+  border-radius: var(--mantine-radius-md);
+  padding: var(--mantine-spacing-lg);
+  border-radius: rem('12px');
+  &[data-variant='inner'] {
+    padding: var(--mantine-spacing-sm);
+  }
+
+  &[data-variant='bold'] {
+    border: 1px solid var(--mantine-color-dark-6);
+  }
+
+  &[data-variant='solid'] {
+    border: 1px solid var(--mantine-color-kelp-6);
+    background-color: var(--mantine-color-kelp-6);
+    p {
+      color: var(--mantine-color-white);
+    }
+  }
+}

@@ -108,5 +108,10 @@ export const theme = createTheme({
         root: buttonClasses.root,
       },
     },
+    Card: {
+      classNames: {
+        root: cardClasses.root,
+      },
+    },
   },
 });
