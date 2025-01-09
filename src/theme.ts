@@ -1,6 +1,7 @@
 import { createTheme } from '@mantine/core';
 import typographyClasses from './style/typography.module.css';
 import buttonClasses from './style/button.module.css';
+import cardClasses from './style/card.module.css';
 
 const KELP = [
   '#f2f2f2',
@@ -62,6 +63,16 @@ const SUBTLE_TEXT = [
 
 export const theme = createTheme({
   fontFamily: 'DM Sans, sans-serif',
+  spacing: {
+    root: '24px',
+    xxs: '8px',
+    xs: '12px',
+    sm: '16px',
+    md: '24px',
+    lg: '32px',
+    xl: '40px',
+    xxl: '48px',
+  },
   fontSizes: {
     root: '16px',
     xxs: '10px',

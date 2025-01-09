@@ -15,4 +15,14 @@
     background-color: var(--mantine-color-kelp-7);
     border: 1px solid var(--mantine-color-kelp-7);
   }
+
+  &[data-variant='secondary'] {
+    background-color: var(--mantine-color-white);
+    border: 1px solid var(--mantine-color-kelp-6);
+    color: var(--mantine-color-kelp-6);
+    &:hover {
+      border: 1px solid var(--mantine-color-kelp-7);
+      color: var(--mantine-color-kelp-7);
+    }
+  }
 }
