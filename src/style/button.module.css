@@ -1,0 +1,18 @@
+.root {
+  background-color: var(--mantine-color-kelp-6);
+  border: 1px solid var(--mantine-color-kelp-6);
+  font-weight: 400;
+  min-width: rem(295px);
+  height: rem(48px);
+  font-size: rem(16px);
+  padding: 0 rem(32px);
+  transition:
+    background-color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+  border-radius: rem(4px);
+
+  &:hover {
+    background-color: var(--mantine-color-kelp-7);
+    border: 1px solid var(--mantine-color-kelp-7);
+  }
+}

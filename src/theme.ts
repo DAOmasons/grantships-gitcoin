@@ -1,6 +1,9 @@
 import { createTheme } from '@mantine/core';
+import typographyClasses from './style/typography.module.css';
+import buttonClasses from './style/button.module.css';
 
 const KELP = [
+  '#f2f2f2',
   '#e9f5f4',
   '#d5edec',
   '#9dd1ce',
@@ -11,7 +14,6 @@ const KELP = [
   '#003025',
   '#00291d',
   '#001f13',
-  '#00140c',
 ] as const;
 
 // E2E8F0
@@ -20,7 +22,7 @@ const DARK = [
   '#f2f2f2',
   '#E2E8F0', // common grey
   '#c4c4c4',
-  '#929695', // secondary text color
+  '#656a68', // secondary text color
   '#595959',
   '#111111', // common text color
   '#0f0e0e',
@@ -31,29 +33,69 @@ const DARK = [
 ] as const;
 
 const PURPLE = [
+  '#f2f2f2',
   '#f9f5fc',
   '#f5ebfc',
   '#e4cdf7',
   '#d0b1f2',
   '#a37aeb',
-  '#6e48e0',
+  '#6e48e0', // root color
   '#5c3ac9',
   '#4428a8',
   '#301a87',
   '#1e0e66',
-  '#100642',
+] as const;
+
+const SUBTLE_TEXT = [
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '#656a68',
+  '',
+  '',
+  '',
+  '',
 ] as const;
 
 export const theme = createTheme({
   fontFamily: 'DM Sans, sans-serif',
+  fontSizes: {
+    root: '16px',
+    xxs: '10px',
+    xs: '12px',
+    sm: '14px',
+    md: '16px',
+    lg: '18px',
+    xl: '24px',
+    xxl: '32px',
+    h1: '52px',
+    h2: '44px',
+    h3: '36px',
+    h4: '28px',
+    h5: '20px',
+    h6: '16px',
+  },
   defaultRadius: 'sm',
   colors: {
     kelp: KELP,
     dark: DARK,
     purple: PURPLE,
+    subtle: SUBTLE_TEXT,
   },
 
   components: {
-    Text: {},
+    Text: {
+      classNames: {
+        root: typographyClasses.root,
+      },
+    },
+    Button: {
+      classNames: {
+        root: buttonClasses.root,
+      },
+    },
   },
 });
