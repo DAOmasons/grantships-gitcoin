@@ -13,4 +13,9 @@
   &[data-c='subtle'] {
     color: var(--mantine-color-dark-4);
   }
+
+  &[data-variant='label'] {
+    letter-spacing: -0.8px;
+    font-weight: 600;
+  }
 }

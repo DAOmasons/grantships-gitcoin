@@ -25,4 +25,13 @@
       color: var(--mantine-color-kelp-7);
     }
   }
+
+  &[data-size='sm'] {
+    min-width: auto;
+    height: rem(40px);
+    font-size: rem(14px);
+    font-weight: 500;
+
+    padding: rem(10px) rem(20px);
+  }
 }
