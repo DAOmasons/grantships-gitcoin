@@ -3,7 +3,7 @@ import { PageLayout } from '../layout/Page';
 
 export const Elections = () => {
   return (
-    <PageLayout title="Elections">
+    <PageLayout title="Judge Elections">
       <></>
     </PageLayout>
   );

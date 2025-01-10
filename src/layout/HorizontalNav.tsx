@@ -7,10 +7,6 @@ export const HorizontalNav = () => {
 
   const navItems = [
     {
-      label: 'Home',
-      url: '/',
-    },
-    {
       label: 'Elections',
       url: '/elections',
     },

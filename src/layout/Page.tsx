@@ -1,5 +1,12 @@
-import { Container, Group, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Container,
+  Group,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { ReactNode } from 'react';
+import { IconArrowLeft, IconChevronLeft } from '@tabler/icons-react';
 
 export const PageLayout = ({
   children,
@@ -17,13 +24,24 @@ export const PageLayout = ({
 };
 
 export const PageTitle = ({ title }: { title: string }) => {
+  const { colors } = useMantineTheme();
   return (
-    <Group>
-      <Text>{title}</Text>
+    <Group justify="space-between" h={70} align="center" mb="xl">
+      <ActionIcon>
+        <IconChevronLeft color={colors.dark[4]} size={24} />
+      </ActionIcon>
+      <Text fz={20}>{title}</Text>
+      <>
+        <Text style={{ display: 'hidden' }}></Text>
+      </>
     </Group>
   );
 };
 
 export const InnerContainer = ({ children }: { children: ReactNode }) => {
-  return <Container mt={40}>{children}</Container>;
+  return (
+    <Container mt="md" mb="xxl">
+      {children}
+    </Container>
+  );
 };
