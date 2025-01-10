@@ -6,6 +6,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IconArrowLeft, IconChevronLeft } from '@tabler/icons-react';
 
 export const PageLayout = ({
@@ -25,9 +26,10 @@ export const PageLayout = ({
 
 export const PageTitle = ({ title }: { title: string }) => {
   const { colors } = useMantineTheme();
+  const navigate = useNavigate();
   return (
     <Group justify="space-between" h={70} align="center" mb="xl">
-      <ActionIcon>
+      <ActionIcon onClick={() => navigate(-1)}>
         <IconChevronLeft color={colors.dark[4]} size={24} />
       </ActionIcon>
       <Text fz={20}>{title}</Text>
@@ -40,7 +42,7 @@ export const PageTitle = ({ title }: { title: string }) => {
 
 export const InnerContainer = ({ children }: { children: ReactNode }) => {
   return (
-    <Container mt="md" mb="xxl">
+    <Container mt="md" mb="xxl" maw={880}>
       {children}
     </Container>
   );
