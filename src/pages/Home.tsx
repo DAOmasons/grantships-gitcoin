@@ -2,7 +2,7 @@ import { Box, Button, Card, Group, Stack, Text, Title } from '@mantine/core';
 
 export const Home = () => {
   return (
-    <Stack mt="xxl">
+    <Stack>
       <Box mb="xl">
         <Title mb="xs">Judge Application</Title>
         <Text c="subtle" mb="lg">
