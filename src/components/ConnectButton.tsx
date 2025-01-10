@@ -20,6 +20,7 @@ export const ConnectButton = () => {
   return (
     <Button
       onClick={() => {
+        console.log('openConnectModal', openConnectModal);
         openConnectModal?.();
       }}
       size="sm"

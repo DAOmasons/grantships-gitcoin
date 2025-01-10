@@ -2,6 +2,8 @@ import { createTheme } from '@mantine/core';
 import typographyClasses from './style/typography.module.css';
 import buttonClasses from './style/button.module.css';
 import cardClasses from './style/card.module.css';
+import { lightTheme } from '@rainbow-me/rainbowkit';
+import { Theme as RainbowKitTheme } from '@rainbow-me/rainbowkit';
 
 const KELP = [
   '#f2f2f2',
@@ -121,3 +123,53 @@ export const theme = createTheme({
     },
   },
 });
+
+export const rbkTheme: RainbowKitTheme = {
+  ...lightTheme({}),
+  colors: {
+    ...lightTheme().colors,
+    accentColor: KELP[6],
+    modalText: DARK[6],
+    modalTextSecondary: DARK[3],
+    // modalTextDim: 'red',
+  },
+  radii: {
+    ...lightTheme().radii,
+    modal: '6px',
+    menuButton: '6px',
+    modalMobile: '6px',
+    actionButton: '4px',
+  },
+  fonts: {
+    body: 'DM Sans',
+  },
+};
+
+// export const customRBKTheme = {
+//   ...darkTheme({
+//     accentColor: STEEL[4],
+//     accentColorForeground: STEEL[0],
+//   }),
+//   colors: {
+//     ...darkTheme().colors,
+//     modalBackground: DARK[7],
+//     accentColor: STEEL[5],
+//     closeButton: STEEL[0],
+//     closeButtonBackground: 'transparent',
+//     modalBorder: STEEL[2],
+//     modalText: STEEL[0],
+//     actionButtonSecondaryBackground: DARK[7],
+//     generalBorder: STEEL[5],
+//     modalBackdrop: 'rgba(0, 0, 0, 0.7)',
+//   },
+//   fonts: {
+//     body: 'Sora',
+//   },
+//   radii: {
+//     ...darkTheme().radii,
+//     modal: '4px',
+//     menuButton: '4px',
+//     modalMobile: '4px',
+//     actionButton: '4px',
+//   },
+// } as RainbowKitTheme;

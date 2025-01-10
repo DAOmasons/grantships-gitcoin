@@ -1142,9 +1142,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rainbow-me/rainbowkit@npm:2.1.7":
-  version: 2.1.7
-  resolution: "@rainbow-me/rainbowkit@npm:2.1.7"
+"@rainbow-me/rainbowkit@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@rainbow-me/rainbowkit@npm:2.2.1"
   dependencies:
     "@vanilla-extract/css": "npm:1.15.5"
     "@vanilla-extract/dynamic": "npm:2.1.2"
@@ -1159,7 +1159,7 @@ __metadata:
     react-dom: ">=18"
     viem: 2.x
     wagmi: ^2.9.0
-  checksum: 10c0/065bfd2cdf1647f6303de9492cdd57ebd41d6896dfc78897d484e9c76a1b9321610f6aa5e2e409f532bb34044eb42f36d1bed28f0e892570d506b81dff80471a
+  checksum: 10c0/b255539b9b01af730170dca5fb374f1d61bfd05148b5791ad0a5d292195b9d012b50e95a069471f72c888d05d299b087504bef766775168af9f13a32dfa9369e
   languageName: node
   linkType: hard
 
@@ -5691,7 +5691,7 @@ __metadata:
     "@mantine/dates": "npm:^7.15.3"
     "@mantine/form": "npm:^7.15.3"
     "@mantine/hooks": "npm:^7.15.3"
-    "@rainbow-me/rainbowkit": "npm:2.1.7"
+    "@rainbow-me/rainbowkit": "npm:^2.2.1"
     "@tabler/icons-react": "npm:^3.28.1"
     "@types/react": "npm:^18.3.12"
     "@types/react-dom": "npm:^18.3.1"

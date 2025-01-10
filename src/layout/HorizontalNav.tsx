@@ -42,7 +42,7 @@ export const HorizontalNav = () => {
           </Text>
         </Link>
       ))}
-      <Box ml="auto">
+      <Box ml="auto" mr="xl">
         <ConnectButton />
       </Box>
     </Group>
