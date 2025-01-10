@@ -89,6 +89,7 @@ export const theme = createTheme({
     h5: '20px',
     h6: '16px',
   },
+
   defaultRadius: 'sm',
   colors: {
     kelp: KELP,

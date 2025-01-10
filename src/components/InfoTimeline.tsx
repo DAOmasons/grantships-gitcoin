@@ -17,7 +17,7 @@ export const InfoTimeline = ({ events, step }: InfoTimelineProps) => {
           </Text>
           <Group gap={0} wrap={'nowrap'} mb="xxs">
             <Box
-              bg={step >= index ? colors.purple[6] : colors.dark[1]}
+              bg={step > index ? colors.purple[6] : colors.dark[1]}
               style={{
                 borderRadius: '50%',
               }}
@@ -26,7 +26,7 @@ export const InfoTimeline = ({ events, step }: InfoTimelineProps) => {
             />
             <Box
               w="100%"
-              bg={step >= index ? colors.purple[6] : colors.dark[1]}
+              bg={step > index ? colors.purple[6] : colors.dark[1]}
               h={2}
             />
           </Group>

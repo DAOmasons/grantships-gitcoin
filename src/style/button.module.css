@@ -34,6 +34,14 @@
 
     padding: rem(10px) rem(20px);
   }
+  &[data-size='xs'] {
+    min-width: auto;
+    height: rem(28px);
+    font-size: rem(14px);
+    font-weight: 400;
+
+    padding: rem(4px) rem(12px);
+  }
 }
 
 .action {
