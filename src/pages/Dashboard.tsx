@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Group, Text, Title } from '@mantine/core';
+import { Avatar, Box, Button, Group, Stack, Text, Title } from '@mantine/core';
 import { InfoTimeline } from '../components/InfoTimeline';
 import { PageLayout } from '../layout/Page';
 
@@ -77,12 +77,12 @@ export const Dashboard = () => {
               </Text>
               <Text c={'subtle'}>Last Updated Jan 1, 2025 </Text>
             </Box>
-            <Box ml="auto">
-              <Button size="xs" mb={4}>
-                Vote Completed
+            <Stack ml="auto" gap={4} align="end">
+              <Button size="xs" variant={item.hasUserVoted ? 'secondary' : ''}>
+                {item.hasUserVoted ? 'Vote Completed' : 'Vote'}
               </Button>
               <Text c="subtle">Currently {item.amountVoted} Voted</Text>
-            </Box>
+            </Stack>
           </Group>
         ))}
       </Box>

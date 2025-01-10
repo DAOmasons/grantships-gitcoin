@@ -1,6 +1,7 @@
-import { Button, Group, Text } from '@mantine/core';
+import { Box, Button, Group, Text } from '@mantine/core';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { ConnectButton } from '../components/ConnectButton';
 
 export const HorizontalNav = () => {
   const location = useLocation();
@@ -41,9 +42,9 @@ export const HorizontalNav = () => {
           </Text>
         </Link>
       ))}
-      <Button size="sm" ml="auto" mr={40}>
-        Connect Wallet
-      </Button>
+      <Box ml="auto">
+        <ConnectButton />
+      </Box>
     </Group>
   );
 };
