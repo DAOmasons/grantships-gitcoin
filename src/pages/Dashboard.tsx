@@ -81,7 +81,9 @@ export const Dashboard = () => {
               <Button size="xs" variant={item.hasUserVoted ? 'secondary' : ''}>
                 {item.hasUserVoted ? 'Vote Completed' : 'Vote'}
               </Button>
-              <Text c="subtle">Currently {item.amountVoted} Voted</Text>
+              <Text c="subtle" fz="sm">
+                Currently {item.amountVoted} Voted
+              </Text>
             </Stack>
           </Group>
         ))}
