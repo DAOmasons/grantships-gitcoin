@@ -5,7 +5,7 @@ import { arbitrumSepolia, arbitrum, mainnet } from 'wagmi/chains';
 
 export const isDev = import.meta.env.VITE_ENV === 'dev';
 
-const appNetwork = isDev ? arbitrumSepolia : arbitrum;
+export const appNetwork = isDev ? arbitrumSepolia : arbitrum;
 const rpcUrl = isDev
   ? import.meta.env.VITE_DEV_RPC_URL
   : import.meta.env.VITE_RPC_URL;

@@ -18,9 +18,18 @@ import {
 import { BGImage } from '../assets/BGImage';
 import { SplainerAccordion } from '../components/SplainerAccordion';
 import { CycleCircle } from '../components/CycleCircle';
+import { useWalletClient } from 'wagmi';
+import {
+  createAdminHat,
+  createJudgeHat,
+  createTopHat,
+  mintAdminHat,
+  mintJudgeHat,
+} from '../setupScripts/setupHats';
 
 export const Home = () => {
   const theme = useMantineTheme();
+  const { data: walletClient } = useWalletClient();
   return (
     <Box pos="relative">
       <BGImage />
@@ -49,6 +58,7 @@ export const Home = () => {
           </Box>
         </Group>
       </Container>
+      <Button onClick={mintJudgeHat}>Fire</Button>
       <InnerContainer>
         <Box mb={120}>
           <Title mb="xs" fz="h3" order={2}>
