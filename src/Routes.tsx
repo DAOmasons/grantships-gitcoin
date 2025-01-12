@@ -6,6 +6,7 @@ import { Elections } from './pages/Elections';
 import { Applications } from './pages/Applications';
 import { Reviews } from './pages/Reviews';
 import { Dashboard } from './pages/Dashboard';
+import { RoundApplication } from './pages/RoundApplication';
 
 export const ClientRoutes = () => {
   return (
@@ -15,6 +16,7 @@ export const ClientRoutes = () => {
       <Route path="/applications" element={<Applications />} />
       <Route path="/elections" element={<Elections />} />
       <Route path="/selections" element={<Selections />} />
+      {/* <Route path="" element={<RoundApplication />} /> */}
       <Route path="/" element={<Home />} />
     </Routes>
   );

@@ -1,9 +1,14 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { createPublicClient, http } from 'viem';
 import { createConfig } from 'wagmi';
-import { arbitrum, mainnet } from 'wagmi/chains';
+import { arbitrumSepolia, arbitrum, mainnet } from 'wagmi/chains';
 
-export const appNetwork = arbitrum;
+export const isDev = import.meta.env.VITE_ENV === 'dev';
+
+const appNetwork = isDev ? arbitrumSepolia : arbitrum;
+const rpcUrl = isDev
+  ? import.meta.env.VITE_DEV_RPC_URL
+  : import.meta.env.VITE_RPC_URL;
 
 export const config = getDefaultConfig({
   appName: 'GG-GS',
@@ -11,13 +16,13 @@ export const config = getDefaultConfig({
   chains: [appNetwork],
   ssr: false,
   transports: {
-    [appNetwork.id]: http(import.meta.env.VITE_RPC_URL),
+    [appNetwork.id]: http(rpcUrl),
   },
 });
 
 export const publicClient = createPublicClient({
   chain: appNetwork,
-  transport: http(import.meta.env.VITE_RPC_URL),
+  transport: http(rpcUrl),
 });
 
 export const ensConfig = createConfig({
