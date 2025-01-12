@@ -19,4 +19,14 @@
       color: var(--mantine-color-white);
     }
   }
+
+  &[data-variant='kelp-outline'] {
+    border: 1px solid var(--mantine-color-kelp-6);
+    background-color: var(--mantine-color-white);
+  }
+
+  &[data-variant='purple-outline'] {
+    border: 1px solid var(--mantine-color-purple-6);
+    background-color: var(--mantine-color-white);
+  }
 }

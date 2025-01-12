@@ -36,6 +36,7 @@ export const HorizontalNav = () => {
         <Link key={item.label} to={item.url}>
           <Text
             variant="label"
+            fw={location.pathname === item.url ? 600 : 500}
             c={location.pathname === item.url ? undefined : 'subtle'}
           >
             {item.label}
