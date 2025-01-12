@@ -4,14 +4,12 @@ import {
   Card,
   Container,
   Group,
-  Stack,
   Text,
   Title,
   useMantineTheme,
 } from '@mantine/core';
 import { InnerContainer } from '../layout/Page';
 import {
-  Icon,
   IconAtom,
   IconAward,
   IconGavel,
