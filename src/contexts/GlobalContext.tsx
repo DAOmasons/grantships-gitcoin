@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { createContext, ReactNode } from 'react';
 import { useAccount, useChainId } from 'wagmi';
+import { userQuery } from '../queries/userQuery';
+import { Address } from 'viem';
 
 type UserData = {
   isJudge: boolean;
@@ -8,7 +10,7 @@ type UserData = {
 };
 
 type GlobalContextType = {
-  userData: UserData;
+  userData?: UserData;
   isLoadingUser: boolean;
   userError: Error | null;
 };
@@ -35,12 +37,14 @@ export const GlobalContextProvider = ({
     error: userError,
   } = useQuery({
     queryKey: ['user-state', address],
-    queryFn: async () => {},
+    queryFn: () => userQuery(address as Address),
     enabled: !!address,
   });
 
+  console.log('userData', userData);
+
   return (
-    <GlobalContext.Provider value={{ userData: {}, isLoadingUser, userError }}>
+    <GlobalContext.Provider value={{ userData, isLoadingUser, userError }}>
       {children}
     </GlobalContext.Provider>
   );

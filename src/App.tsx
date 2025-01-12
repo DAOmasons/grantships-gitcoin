@@ -12,6 +12,7 @@ import {
   lightTheme,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
+import { GlobalContextProvider } from './contexts/GlobalContext';
 
 const queryClient = new QueryClient();
 
@@ -21,10 +22,12 @@ export default function App() {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider theme={rbkTheme}>
-            <MantineProvider theme={theme} defaultColorScheme="light">
-              <HorizontalNav />
-              <ClientRoutes />
-            </MantineProvider>
+            <GlobalContextProvider>
+              <MantineProvider theme={theme} defaultColorScheme="light">
+                <HorizontalNav />
+                <ClientRoutes />
+              </MantineProvider>
+            </GlobalContextProvider>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>

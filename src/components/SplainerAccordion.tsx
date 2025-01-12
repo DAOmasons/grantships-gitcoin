@@ -65,6 +65,7 @@ export const SplainerAccordion = ({
         const isActiveRound = activeRound === item.value;
         return (
           <Accordion.Item
+            key={item.value}
             value={item.value}
             style={{
               border: `1px solid ${isSelected ? colors.purple[6] : 'transparent'}`,
@@ -101,7 +102,7 @@ export const SplainerAccordion = ({
             <Accordion.Panel>
               <Stack gap="sm">
                 {item.description.map((point) => (
-                  <Group gap={8}>
+                  <Group gap={8} key={point}>
                     <IconArrowBadgeRight
                       size={20}
                       stroke={1.5}
