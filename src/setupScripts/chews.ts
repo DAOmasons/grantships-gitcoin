@@ -11,7 +11,10 @@ import { arbitrumSepolia } from 'viem/chains';
 import { publicClient } from '../utils/config';
 import { ContestStatus } from '../constants/enum';
 import ChewsFactoryABI from '../abi/ChewsFactory.json';
-import { RUBRIC_COPY } from '../constants/rubric';
+import HalChoicesABI from '../abi/HALChoices.json';
+import { fakeAddress, RUBRIC_COPY } from '../constants/rubric';
+import { dummyApplications } from '../constants/dummyApplications';
+import { generateRandomBytes32 } from '../utils/common';
 
 const MODULE_TAG = {
   RUBRIC_VOTES: 'RubricVotes_v0.1.0',
@@ -96,4 +99,46 @@ export const deployRubricVoting = async () => {
 
   console.log('hash', hash);
   console.log('filterTag', filterTag);
+};
+
+export const createApplication = async (applicantNumber: number) => {
+  const CHOICES_ADDR = '0x7D48F42A81502C08c61F21bE2f0dbA6d217A3120';
+
+  const application = dummyApplications[applicantNumber];
+  const applicantAddress = fakeAddress[applicantNumber];
+
+  if (!application) {
+    console.error('Application not found');
+    return;
+  }
+
+  if (!applicantAddress) {
+    console.error('Applicant address not found');
+    return;
+  }
+
+  const client = createWalletClient({
+    chain: arbitrumSepolia,
+    transport: custom(window.ethereum),
+  });
+
+  const choiceData = encodeAbiParameters(
+    parseAbiParameters('bytes, (uint256, string)'),
+    [applicantAddress, [6969420n, JSON.stringify(application)]]
+  );
+  const choiceId = generateRandomBytes32();
+
+  const [address] = await client.getAddresses();
+
+  const { request } = await publicClient.simulateContract({
+    account: address,
+    address: CHOICES_ADDR,
+    abi: HalChoicesABI,
+    functionName: 'registerChoice',
+    args: [choiceId, choiceData],
+  });
+
+  const hash = await client.writeContract(request);
+
+  console.log('hash', hash);
 };

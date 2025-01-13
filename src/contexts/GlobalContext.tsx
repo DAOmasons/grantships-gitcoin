@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { createContext, ReactNode } from 'react';
-import { useAccount, useChainId } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { userQuery } from '../queries/userQuery';
 import { Address } from 'viem';
 
