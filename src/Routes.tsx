@@ -6,6 +6,7 @@ import { Applications } from './pages/Applications';
 import { Reviews } from './pages/Reviews';
 import { JudgeDashboard } from './pages/JudgeDashboard';
 import { VoteApplication } from './pages/VoteApplication';
+import { ViewApplication } from './pages/ViewApplication';
 
 export const ClientRoutes = () => {
   return (
@@ -16,6 +17,7 @@ export const ClientRoutes = () => {
       <Route path="/elections" element={<Elections />} />
       <Route path="/selections" element={<Selections />} />
       <Route path="/vote-application/:id" element={<VoteApplication />} />
+      <Route path="/view-application/:id" element={<ViewApplication />} />
       <Route path="/" element={<Home />} />
     </Routes>
   );

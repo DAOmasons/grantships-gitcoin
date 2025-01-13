@@ -1,8 +1,8 @@
 import { PageLayout } from '../layout/Page';
 
-export const VoteApplication = () => {
+export const ViewApplication = () => {
   return (
-    <PageLayout title="Application Vote">
+    <PageLayout title="View Application">
       <></>
     </PageLayout>
   );
