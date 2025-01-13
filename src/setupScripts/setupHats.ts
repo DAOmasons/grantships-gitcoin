@@ -3,7 +3,7 @@ import { publicClient } from '../utils/config';
 import { ADDR } from '../constants/addresses';
 import HatsABI from '../abi/Hats.json';
 import { arbitrumSepolia } from 'viem/chains';
-import { DUMMY_ADDRESS, HATS, ZER0_ADDRESS } from '../constants/setup';
+import { DUMMY_ADDRESS, HATS } from '../constants/setup';
 
 export const createTopHat = async () => {
   const client = createWalletClient({

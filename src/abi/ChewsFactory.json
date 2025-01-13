@@ -1,0 +1,385 @@
+[
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_admin", "type": "address" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  { "inputs": [], "name": "FailedDeployment", "type": "error" },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "balance", "type": "uint256" },
+      { "internalType": "uint256", "name": "needed", "type": "uint256" }
+    ],
+    "name": "InsufficientBalance",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      }
+    ],
+    "name": "AdminAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      }
+    ],
+    "name": "AdminRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "votesModule",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "pointsModule",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "choicesModule",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "executionModule",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "contestAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "contestVersion",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "filterTag",
+        "type": "string"
+      }
+    ],
+    "name": "ContestBuilt",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "contestAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "contestVersion",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "filterTag",
+        "type": "string"
+      }
+    ],
+    "name": "ContestCloned",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "contestVersion",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "contestAddress",
+        "type": "address"
+      },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "contestInfo",
+        "type": "tuple"
+      }
+    ],
+    "name": "ContestTemplateCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "contestVersion",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "contestAddress",
+        "type": "address"
+      }
+    ],
+    "name": "ContestTemplateDeleted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      }
+    ],
+    "name": "FactoryInitialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "moduleAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "moduleName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "filterTag",
+        "type": "string"
+      }
+    ],
+    "name": "ModuleCloned",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "moduleName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "moduleAddress",
+        "type": "address"
+      },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "moduleInfo",
+        "type": "tuple"
+      }
+    ],
+    "name": "ModuleTemplateCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "moduleName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "moduleAddress",
+        "type": "address"
+      }
+    ],
+    "name": "ModuleTemplateDeleted",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_account", "type": "address" }
+    ],
+    "name": "addAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "admins",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "internalType": "struct Metadata",
+        "name": "_contestMetadata",
+        "type": "tuple"
+      },
+      { "internalType": "bytes", "name": "_contestInitData", "type": "bytes" },
+      { "internalType": "string", "name": "_contestVersion", "type": "string" },
+      {
+        "internalType": "enum ContestStatus",
+        "name": "_contestStatus",
+        "type": "uint8"
+      },
+      { "internalType": "bool", "name": "_isRetractable", "type": "bool" },
+      { "internalType": "string", "name": "_filterTag", "type": "string" }
+    ],
+    "name": "buildContest",
+    "outputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      {
+        "internalType": "address[4]",
+        "name": "moduleAddresses",
+        "type": "address[4]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "name": "contestTemplates",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "name": "filterTags",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "name": "moduleTemplates",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_account", "type": "address" }
+    ],
+    "name": "removeAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_version", "type": "string" }
+    ],
+    "name": "removeContestTemplate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "_name", "type": "string" }],
+    "name": "removeModuleTemplate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_version", "type": "string" },
+      { "internalType": "address", "name": "_template", "type": "address" },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "internalType": "struct Metadata",
+        "name": "_templateInfo",
+        "type": "tuple"
+      }
+    ],
+    "name": "setContestTemplate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_name", "type": "string" },
+      { "internalType": "address", "name": "_template", "type": "address" },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "internalType": "struct Metadata",
+        "name": "_templateInfo",
+        "type": "tuple"
+      }
+    ],
+    "name": "setModuleTemplate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
