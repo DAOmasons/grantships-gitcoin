@@ -1,0 +1,36 @@
+fragment Application on GGApplication {
+  id
+  registrar
+  application
+  validApplication
+  postedBy
+  lastUpdated
+  totalVoted
+}
+
+query getApplicationRound($id: String!) {
+  GGApplicationRound_by_pk(id: $id) {
+    id
+    createdAt
+    votesParams_id
+    choicesParams_id
+    postedBy
+    rubric
+    validRubric
+    applications {
+      ...Application
+    }
+  }
+}
+
+# type GGApplicationRound {
+#   id: ID!
+#   createdAt: Int!
+#   round: Round!
+#   votesParams: Params_RubricVotes_v0_1_0!
+#   choicesParams: Params_HAL_v0_1_1!
+#   postedBy: String!
+#   rubric: String!
+#   validRubric: Boolean!
+#   applications: [GGApplication!]! @derivedFrom(field: "ggRound")
+# }
