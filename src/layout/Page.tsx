@@ -7,7 +7,7 @@ import {
 } from '@mantine/core';
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconArrowLeft, IconChevronLeft } from '@tabler/icons-react';
+import { IconChevronLeft } from '@tabler/icons-react';
 
 export const PageLayout = ({
   children,

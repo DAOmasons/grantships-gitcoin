@@ -977,6 +977,7 @@ export type Factory_Stream_Cursor_Value_Input = {
 /** columns and relationships of "GGApplication" */
 export type GgApplication = {
   __typename?: 'GGApplication';
+  amountReviewed: Scalars['Int']['output'];
   application: Scalars['String']['output'];
   db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
   /** An object relationship */
@@ -1292,6 +1293,7 @@ export type GgApplication_Aggregate_Order_By = {
 
 /** order by avg() on columns of table "GGApplication" */
 export type GgApplication_Avg_Order_By = {
+  amountReviewed?: InputMaybe<Order_By>;
   lastUpdated?: InputMaybe<Order_By>;
   totalVoted?: InputMaybe<Order_By>;
 };
@@ -1301,6 +1303,7 @@ export type GgApplication_Bool_Exp = {
   _and?: InputMaybe<Array<GgApplication_Bool_Exp>>;
   _not?: InputMaybe<GgApplication_Bool_Exp>;
   _or?: InputMaybe<Array<GgApplication_Bool_Exp>>;
+  amountReviewed?: InputMaybe<Int_Comparison_Exp>;
   application?: InputMaybe<String_Comparison_Exp>;
   db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
   ggRound?: InputMaybe<GgApplicationRound_Bool_Exp>;
@@ -1316,6 +1319,7 @@ export type GgApplication_Bool_Exp = {
 
 /** order by max() on columns of table "GGApplication" */
 export type GgApplication_Max_Order_By = {
+  amountReviewed?: InputMaybe<Order_By>;
   application?: InputMaybe<Order_By>;
   db_write_timestamp?: InputMaybe<Order_By>;
   ggRound_id?: InputMaybe<Order_By>;
@@ -1328,6 +1332,7 @@ export type GgApplication_Max_Order_By = {
 
 /** order by min() on columns of table "GGApplication" */
 export type GgApplication_Min_Order_By = {
+  amountReviewed?: InputMaybe<Order_By>;
   application?: InputMaybe<Order_By>;
   db_write_timestamp?: InputMaybe<Order_By>;
   ggRound_id?: InputMaybe<Order_By>;
@@ -1340,6 +1345,7 @@ export type GgApplication_Min_Order_By = {
 
 /** Ordering options when selecting data from "GGApplication". */
 export type GgApplication_Order_By = {
+  amountReviewed?: InputMaybe<Order_By>;
   application?: InputMaybe<Order_By>;
   db_write_timestamp?: InputMaybe<Order_By>;
   ggRound?: InputMaybe<GgApplicationRound_Order_By>;
@@ -1355,6 +1361,8 @@ export type GgApplication_Order_By = {
 
 /** select columns of table "GGApplication" */
 export enum GgApplication_Select_Column {
+  /** column name */
+  AmountReviewed = 'amountReviewed',
   /** column name */
   Application = 'application',
   /** column name */
@@ -1377,18 +1385,21 @@ export enum GgApplication_Select_Column {
 
 /** order by stddev() on columns of table "GGApplication" */
 export type GgApplication_Stddev_Order_By = {
+  amountReviewed?: InputMaybe<Order_By>;
   lastUpdated?: InputMaybe<Order_By>;
   totalVoted?: InputMaybe<Order_By>;
 };
 
 /** order by stddev_pop() on columns of table "GGApplication" */
 export type GgApplication_Stddev_Pop_Order_By = {
+  amountReviewed?: InputMaybe<Order_By>;
   lastUpdated?: InputMaybe<Order_By>;
   totalVoted?: InputMaybe<Order_By>;
 };
 
 /** order by stddev_samp() on columns of table "GGApplication" */
 export type GgApplication_Stddev_Samp_Order_By = {
+  amountReviewed?: InputMaybe<Order_By>;
   lastUpdated?: InputMaybe<Order_By>;
   totalVoted?: InputMaybe<Order_By>;
 };
@@ -1403,6 +1414,7 @@ export type GgApplication_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type GgApplication_Stream_Cursor_Value_Input = {
+  amountReviewed?: InputMaybe<Scalars['Int']['input']>;
   application?: InputMaybe<Scalars['String']['input']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
   ggRound_id?: InputMaybe<Scalars['String']['input']>;
@@ -1416,24 +1428,28 @@ export type GgApplication_Stream_Cursor_Value_Input = {
 
 /** order by sum() on columns of table "GGApplication" */
 export type GgApplication_Sum_Order_By = {
+  amountReviewed?: InputMaybe<Order_By>;
   lastUpdated?: InputMaybe<Order_By>;
   totalVoted?: InputMaybe<Order_By>;
 };
 
 /** order by var_pop() on columns of table "GGApplication" */
 export type GgApplication_Var_Pop_Order_By = {
+  amountReviewed?: InputMaybe<Order_By>;
   lastUpdated?: InputMaybe<Order_By>;
   totalVoted?: InputMaybe<Order_By>;
 };
 
 /** order by var_samp() on columns of table "GGApplication" */
 export type GgApplication_Var_Samp_Order_By = {
+  amountReviewed?: InputMaybe<Order_By>;
   lastUpdated?: InputMaybe<Order_By>;
   totalVoted?: InputMaybe<Order_By>;
 };
 
 /** order by variance() on columns of table "GGApplication" */
 export type GgApplication_Variance_Order_By = {
+  amountReviewed?: InputMaybe<Order_By>;
   lastUpdated?: InputMaybe<Order_By>;
   totalVoted?: InputMaybe<Order_By>;
 };
@@ -4369,14 +4385,14 @@ export type Timestamptz_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
-export type ApplicationFragment = { __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, postedBy: string, lastUpdated: number, totalVoted: any };
+export type ApplicationFragment = { __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any };
 
 export type GetApplicationRoundQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type GetApplicationRoundQuery = { __typename?: 'query_root', GGApplicationRound_by_pk?: { __typename?: 'GGApplicationRound', id: string, createdAt: number, votesParams_id: string, choicesParams_id: string, postedBy: string, rubric: string, validRubric: boolean, applications: Array<{ __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, postedBy: string, lastUpdated: number, totalVoted: any }> } | null };
+export type GetApplicationRoundQuery = { __typename?: 'query_root', GGApplicationRound_by_pk?: { __typename?: 'GGApplicationRound', id: string, createdAt: number, votesParams_id: string, choicesParams_id: string, postedBy: string, rubric: string, validRubric: boolean, applications: Array<{ __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any }> } | null };
 
 export const ApplicationFragmentDoc = gql`
     fragment Application on GGApplication {
@@ -4384,6 +4400,7 @@ export const ApplicationFragmentDoc = gql`
   registrar
   application
   validApplication
+  amountReviewed
   postedBy
   lastUpdated
   totalVoted

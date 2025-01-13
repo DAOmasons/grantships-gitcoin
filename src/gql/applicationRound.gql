@@ -3,6 +3,7 @@ fragment Application on GGApplication {
   registrar
   application
   validApplication
+  amountReviewed
   postedBy
   lastUpdated
   totalVoted
@@ -22,15 +23,3 @@ query getApplicationRound($id: String!) {
     }
   }
 }
-
-# type GGApplicationRound {
-#   id: ID!
-#   createdAt: Int!
-#   round: Round!
-#   votesParams: Params_RubricVotes_v0_1_0!
-#   choicesParams: Params_HAL_v0_1_1!
-#   postedBy: String!
-#   rubric: String!
-#   validRubric: Boolean!
-#   applications: [GGApplication!]! @derivedFrom(field: "ggRound")
-# }
