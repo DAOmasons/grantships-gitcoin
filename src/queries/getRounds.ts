@@ -4,12 +4,16 @@ import { Rubric } from '../constants/rubric';
 import { ApplicationFragment, GgApplicationRound } from '../generated/graphql';
 import { sdk } from '../utils/indexer';
 
-export type AppRound = GgApplicationRound & {
-  rubric: Rubric;
-  applications: (ApplicationFragment & { appCopy: RoundApplicationContent })[];
+export type ResolvedApplication = ApplicationFragment & {
+  copy: RoundApplicationContent;
 };
 
-export const getRounds = async () => {
+export type AppRound = Omit<GgApplicationRound, 'applications'> & {
+  rubric: Rubric;
+  applications: ResolvedApplication[];
+};
+
+export const getRounds = async (): Promise<AppRound | undefined> => {
   try {
     const res = await sdk.getApplicationRound({ id: ADDR.APP_ROUND });
 
@@ -23,9 +27,7 @@ export const getRounds = async () => {
       rubric: JSON.parse(data.rubric as string) as Rubric,
       applications: data.applications.map((app) => ({
         ...app,
-        appCopy: JSON.parse(
-          app.application as string
-        ) as RoundApplicationContent,
+        copy: JSON.parse(app.application as string),
       })),
     } as AppRound;
   } catch (error) {

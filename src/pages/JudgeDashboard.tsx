@@ -1,52 +1,10 @@
-import { Avatar, Box, Button, Group, Stack, Text, Title } from '@mantine/core';
+import { Box, Button, Group, Stack, Text, Title } from '@mantine/core';
 import { InfoTimeline } from '../components/InfoTimeline';
 import { PageLayout } from '../layout/Page';
 import { useChews } from '../hooks/useChews';
-
-// const items = [
-//   {
-//     name: 'nftguy.eth',
-//     imgurl: 'https://i.pravatar.cc/150?img=1',
-//     lastUpdated: 1736537962,
-//     amountVoted: 3,
-//     hasUserVoted: false,
-//   },
-//   {
-//     name: 'jord.eth',
-//     imgurl: 'https://i.pravatar.cc/150?img=2',
-//     lastUpdated: 1736537962,
-//     amountVoted: 2,
-//     hasUserVoted: false,
-//   },
-//   {
-//     name: 'mask.eth',
-//     imgurl: 'https://i.pravatar.cc/150?img=3',
-//     lastUpdated: 1736537962,
-//     amountVoted: 3,
-//     hasUserVoted: false,
-//   },
-//   {
-//     name: 'mememe.eth',
-//     imgurl: 'https://i.pravatar.cc/150?img=4',
-//     lastUpdated: 1736537962,
-//     amountVoted: 1,
-//     hasUserVoted: true,
-//   },
-//   {
-//     name: 'baebuluh.eth',
-//     imgurl: 'https://i.pravatar.cc/150?img=5',
-//     lastUpdated: 1736537962,
-//     amountVoted: 5,
-//     hasUserVoted: false,
-//   },
-//   {
-//     name: 'serious.eth',
-//     imgurl: 'https://i.pravatar.cc/150?img=6',
-//     lastUpdated: 1736537962,
-//     amountVoted: 0,
-//     hasUserVoted: true,
-//   },
-// ];
+import { AddressAvatar } from '../components/AddressAvatar';
+import { Address } from 'viem';
+import { Link } from 'react-router-dom';
 
 export const JudgeDashboard = () => {
   const { applicationRound, isLoadingAppRound } = useChews();
@@ -71,25 +29,38 @@ export const JudgeDashboard = () => {
         Community leaders volunteering their expertise
       </Text>
       <Box>
-        {/* {items.map((item) => (
-          <Group key={item.name} px={32} py={16} mb={8}>
-            <Avatar src={item.imgurl} size={56} />
-            <Box>
-              <Text fw={600} mb={4}>
-                {item.name}
-              </Text>
-              <Text c={'subtle'}>Last Updated Jan 1, 2025 </Text>
-            </Box>
-            <Stack ml="auto" gap={4} align="end">
-              <Button size="xs" variant={item.hasUserVoted ? 'secondary' : ''}>
-                {item.hasUserVoted ? 'Vote Completed' : 'Vote'}
-              </Button>
-              <Text c="subtle" fz="sm">
-                Currently {item.amountVoted} Voted
-              </Text>
-            </Stack>
-          </Group>
-        ))} */}
+        {!isLoadingAppRound &&
+          applicationRound?.applications.map((app, index) => {
+            const hasUserVoted = false;
+            return (
+              <Group key={`${app.registrar}-${index}`} px={32} py={16} mb={8}>
+                <AddressAvatar address={app.registrar as Address} size={56} />
+                <Box component={Link} to={`/view-application/${app.id}`}>
+                  <Text fw={600} mb={4}>
+                    {app.copy.roundName}
+                  </Text>
+                  <Text c={'subtle'}>Last Updated Jan 1, 2025 </Text>
+                </Box>
+                <Stack ml="auto" gap={4} align="end">
+                  <Button
+                    size="xs"
+                    variant={hasUserVoted ? 'secondary' : undefined}
+                    component={Link}
+                    to={
+                      hasUserVoted
+                        ? `/view-application/${app.id}`
+                        : `/vote-application/${app.id}`
+                    }
+                  >
+                    {hasUserVoted ? 'Vote Completed' : 'Vote'}
+                  </Button>
+                  <Text c="subtle" fz="sm">
+                    Currently {app.amountReviewed} Voted
+                  </Text>
+                </Stack>
+              </Group>
+            );
+          })}
       </Box>
     </PageLayout>
   );

@@ -3,7 +3,7 @@ import { createContext, ReactNode } from 'react';
 import { useAccount } from 'wagmi';
 import { userQuery } from '../queries/userQuery';
 import { Address } from 'viem';
-import { getRounds } from '../queries/getRounds';
+import { AppRound, getRounds } from '../queries/getRounds';
 
 type UserData = {
   isJudge: boolean;
@@ -14,7 +14,7 @@ type GlobalContextType = {
   userData?: UserData;
   isLoadingUser: boolean;
   userError: Error | null;
-  applicationRound?: any;
+  applicationRound?: AppRound;
   isLoadingAppRound: boolean;
   appRoundError: Error | null;
   judgeAmount: number;
@@ -27,7 +27,7 @@ export const GlobalContext = createContext<GlobalContextType>({
   },
   isLoadingUser: false,
   userError: null,
-  applicationRound: null,
+  applicationRound: undefined,
   isLoadingAppRound: false,
   appRoundError: null,
   //
