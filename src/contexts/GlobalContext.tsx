@@ -3,6 +3,7 @@ import { createContext, ReactNode } from 'react';
 import { useAccount } from 'wagmi';
 import { userQuery } from '../queries/userQuery';
 import { Address } from 'viem';
+import { getRounds } from '../queries/getRounds';
 
 type UserData = {
   isJudge: boolean;
@@ -13,6 +14,9 @@ type GlobalContextType = {
   userData?: UserData;
   isLoadingUser: boolean;
   userError: Error | null;
+  applicationRound?: any;
+  isLoadingAppRound: boolean;
+  appRoundError: Error | null;
 };
 
 export const GlobalContext = createContext<GlobalContextType>({
@@ -22,6 +26,9 @@ export const GlobalContext = createContext<GlobalContextType>({
   },
   isLoadingUser: false,
   userError: null,
+  applicationRound: null,
+  isLoadingAppRound: false,
+  appRoundError: null,
 });
 
 export const GlobalContextProvider = ({
@@ -41,10 +48,26 @@ export const GlobalContextProvider = ({
     enabled: !!address,
   });
 
-  console.log('userData', userData);
+  const {
+    data: applicationRound,
+    isLoading: isLoadingAppRound,
+    error: appRoundError,
+  } = useQuery({
+    queryKey: ['round-application'],
+    queryFn: () => getRounds(),
+  });
 
   return (
-    <GlobalContext.Provider value={{ userData, isLoadingUser, userError }}>
+    <GlobalContext.Provider
+      value={{
+        userData,
+        isLoadingUser,
+        userError,
+        applicationRound,
+        isLoadingAppRound,
+        appRoundError,
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );

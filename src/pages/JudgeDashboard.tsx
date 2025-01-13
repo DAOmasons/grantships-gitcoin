@@ -47,7 +47,7 @@ const items = [
   },
 ];
 
-export const Dashboard = () => {
+export const JudgeDashboard = () => {
   return (
     <PageLayout title="Judge Dashboard">
       <Box px="lg" mb="76">
