@@ -11,6 +11,7 @@ import { arbitrumSepolia } from 'viem/chains';
 import { publicClient } from '../utils/config';
 import { ContestStatus } from '../constants/enum';
 import ChewsFactoryABI from '../abi/ChewsFactory.json';
+import { RUBRIC_COPY } from '../constants/rubric';
 
 const MODULE_TAG = {
   RUBRIC_VOTES: 'RubricVotes_v0.1.0',
@@ -62,10 +63,12 @@ export const deployRubricVoting = async () => {
     ]
   );
 
-  const content = '';
-  const protocol = 0n;
+  const content = JSON.stringify(RUBRIC_COPY);
+  const protocol = 6969420n;
+  const TAG_PREFIX = 'TEST_GG_APPLICATION_REVIEW';
+  const nonce = 0;
 
-  const filterTag = 'Test 0';
+  const filterTag = `${TAG_PREFIX}_${nonce}`;
 
   const client = createWalletClient({
     chain: arbitrumSepolia,
@@ -76,7 +79,7 @@ export const deployRubricVoting = async () => {
 
   const { request } = await publicClient.simulateContract({
     account: address,
-    address: ADDR.CHEWS_FACTORY,
+    address: ADDR.CHEWS,
     abi: ChewsFactoryABI,
     functionName: 'buildContest',
     args: [
@@ -92,4 +95,5 @@ export const deployRubricVoting = async () => {
   const hash = await client.writeContract(request);
 
   console.log('hash', hash);
+  console.log('filterTag', filterTag);
 };

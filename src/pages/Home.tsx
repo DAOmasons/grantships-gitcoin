@@ -18,6 +18,7 @@ import {
 import { BGImage } from '../assets/BGImage';
 import { SplainerAccordion } from '../components/SplainerAccordion';
 import { CycleCircle } from '../components/CycleCircle';
+import { deployRubricVoting } from '../setupScripts/chews';
 
 export const Home = () => {
   const theme = useMantineTheme();
@@ -50,6 +51,7 @@ export const Home = () => {
           </Box>
         </Group>
       </Container>
+      <Button onClick={deployRubricVoting}>Test it!</Button>
       <InnerContainer>
         <Box mb={120}>
           <Title mb="xs" fz="h3" order={2}>
