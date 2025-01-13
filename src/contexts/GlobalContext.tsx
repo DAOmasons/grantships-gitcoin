@@ -17,6 +17,7 @@ type GlobalContextType = {
   applicationRound?: any;
   isLoadingAppRound: boolean;
   appRoundError: Error | null;
+  judgeAmount: number;
 };
 
 export const GlobalContext = createContext<GlobalContextType>({
@@ -29,13 +30,11 @@ export const GlobalContext = createContext<GlobalContextType>({
   applicationRound: null,
   isLoadingAppRound: false,
   appRoundError: null,
+  //
+  judgeAmount: 6,
 });
 
-export const GlobalContextProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
   const { address } = useAccount();
 
   const {
@@ -57,6 +56,8 @@ export const GlobalContextProvider = ({
     queryFn: () => getRounds(),
   });
 
+  const NUM_JUDGES = 6;
+
   return (
     <GlobalContext.Provider
       value={{
@@ -66,9 +67,12 @@ export const GlobalContextProvider = ({
         applicationRound,
         isLoadingAppRound,
         appRoundError,
+        judgeAmount: NUM_JUDGES,
       }}
     >
       {children}
     </GlobalContext.Provider>
   );
 };
+
+export default GlobalContextProvider;

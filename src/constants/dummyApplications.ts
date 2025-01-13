@@ -1,4 +1,12 @@
-export const dummyApplications = [
+export type RoundApplicationContent = {
+  roundName: string;
+  responses: {
+    title: string;
+    response: string;
+  }[];
+};
+
+export const dummyApplications: RoundApplicationContent[] = [
   {
     roundName: 'Climate Solutions Round',
     responses: [

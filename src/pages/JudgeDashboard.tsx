@@ -1,53 +1,56 @@
 import { Avatar, Box, Button, Group, Stack, Text, Title } from '@mantine/core';
 import { InfoTimeline } from '../components/InfoTimeline';
 import { PageLayout } from '../layout/Page';
+import { useChews } from '../hooks/useChews';
 
-const items = [
-  {
-    name: 'nftguy.eth',
-    imgurl: 'https://i.pravatar.cc/150?img=1',
-    lastUpdated: 1736537962,
-    amountVoted: 3,
-    hasUserVoted: false,
-  },
-  {
-    name: 'jord.eth',
-    imgurl: 'https://i.pravatar.cc/150?img=2',
-    lastUpdated: 1736537962,
-    amountVoted: 2,
-    hasUserVoted: false,
-  },
-  {
-    name: 'mask.eth',
-    imgurl: 'https://i.pravatar.cc/150?img=3',
-    lastUpdated: 1736537962,
-    amountVoted: 3,
-    hasUserVoted: false,
-  },
-  {
-    name: 'mememe.eth',
-    imgurl: 'https://i.pravatar.cc/150?img=4',
-    lastUpdated: 1736537962,
-    amountVoted: 1,
-    hasUserVoted: true,
-  },
-  {
-    name: 'baebuluh.eth',
-    imgurl: 'https://i.pravatar.cc/150?img=5',
-    lastUpdated: 1736537962,
-    amountVoted: 5,
-    hasUserVoted: false,
-  },
-  {
-    name: 'serious.eth',
-    imgurl: 'https://i.pravatar.cc/150?img=6',
-    lastUpdated: 1736537962,
-    amountVoted: 0,
-    hasUserVoted: true,
-  },
-];
+// const items = [
+//   {
+//     name: 'nftguy.eth',
+//     imgurl: 'https://i.pravatar.cc/150?img=1',
+//     lastUpdated: 1736537962,
+//     amountVoted: 3,
+//     hasUserVoted: false,
+//   },
+//   {
+//     name: 'jord.eth',
+//     imgurl: 'https://i.pravatar.cc/150?img=2',
+//     lastUpdated: 1736537962,
+//     amountVoted: 2,
+//     hasUserVoted: false,
+//   },
+//   {
+//     name: 'mask.eth',
+//     imgurl: 'https://i.pravatar.cc/150?img=3',
+//     lastUpdated: 1736537962,
+//     amountVoted: 3,
+//     hasUserVoted: false,
+//   },
+//   {
+//     name: 'mememe.eth',
+//     imgurl: 'https://i.pravatar.cc/150?img=4',
+//     lastUpdated: 1736537962,
+//     amountVoted: 1,
+//     hasUserVoted: true,
+//   },
+//   {
+//     name: 'baebuluh.eth',
+//     imgurl: 'https://i.pravatar.cc/150?img=5',
+//     lastUpdated: 1736537962,
+//     amountVoted: 5,
+//     hasUserVoted: false,
+//   },
+//   {
+//     name: 'serious.eth',
+//     imgurl: 'https://i.pravatar.cc/150?img=6',
+//     lastUpdated: 1736537962,
+//     amountVoted: 0,
+//     hasUserVoted: true,
+//   },
+// ];
 
 export const JudgeDashboard = () => {
+  const { applicationRound, isLoadingAppRound } = useChews();
+
   return (
     <PageLayout title="Judge Dashboard">
       <Box px="lg" mb="76">
@@ -68,7 +71,7 @@ export const JudgeDashboard = () => {
         Community leaders volunteering their expertise
       </Text>
       <Box>
-        {items.map((item) => (
+        {/* {items.map((item) => (
           <Group key={item.name} px={32} py={16} mb={8}>
             <Avatar src={item.imgurl} size={56} />
             <Box>
@@ -86,7 +89,7 @@ export const JudgeDashboard = () => {
               </Text>
             </Stack>
           </Group>
-        ))}
+        ))} */}
       </Box>
     </PageLayout>
   );

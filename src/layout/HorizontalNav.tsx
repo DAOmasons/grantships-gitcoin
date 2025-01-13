@@ -1,5 +1,5 @@
-import { Box, Button, Group, Text } from '@mantine/core';
-import React, { useMemo } from 'react';
+import { Box, Group, Text } from '@mantine/core';
+import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ConnectButton } from '../components/ConnectButton';
 import { useUserData } from '../hooks/useUserData';

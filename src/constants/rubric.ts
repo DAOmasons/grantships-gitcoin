@@ -1,6 +1,26 @@
 import { Address } from 'viem';
 
-export const RUBRIC_COPY = {
+export type Question = {
+  title: string;
+  options: {
+    optionText: string;
+    optionScore: number;
+  }[];
+};
+
+export type Section = {
+  sectionName: string;
+  sectionTotal: number;
+  sectionDescription: string;
+  questions: Question[];
+};
+
+export type Rubric = {
+  type: 'application_rubric';
+  sections: Section[];
+};
+
+export const RUBRIC_COPY: Rubric = {
   type: 'application_rubric',
   sections: [
     {
