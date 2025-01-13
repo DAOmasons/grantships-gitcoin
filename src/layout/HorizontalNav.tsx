@@ -1,29 +1,41 @@
 import { Box, Button, Group, Text } from '@mantine/core';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ConnectButton } from '../components/ConnectButton';
+import { useUserData } from '../hooks/useUserData';
+
+const publicItems = [
+  {
+    label: 'Elections',
+    url: '/elections',
+  },
+  {
+    label: 'Applications',
+    url: '/applications',
+  },
+  {
+    label: 'Reviews',
+    url: '/reviews',
+  },
+];
 
 export const HorizontalNav = () => {
   const location = useLocation();
+  const { userData } = useUserData();
 
-  const navItems = [
-    {
-      label: 'Elections',
-      url: '/elections',
-    },
-    {
-      label: 'Applications',
-      url: '/applications',
-    },
-    {
-      label: 'Reviews',
-      url: '/reviews',
-    },
-    {
-      label: 'Dashboard',
-      url: '/dashboard',
-    },
-  ];
+  const { isJudge, isAdmin } = userData || {};
+
+  const navItems = useMemo(() => {
+    if (isAdmin) {
+      return [...publicItems, { label: 'Dashboard', url: '/admin-dashboard' }];
+    }
+
+    if (isJudge) {
+      return [...publicItems, { label: 'Dashboard', url: '/judge-dashboard' }];
+    }
+
+    return publicItems;
+  }, [isJudge, isAdmin]);
 
   return (
     <Group ml={40} mt={36} gap="xl">
