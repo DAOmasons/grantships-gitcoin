@@ -1,7 +1,9 @@
-import { createTheme } from '@mantine/core';
+import { createTheme, Stepper } from '@mantine/core';
 import typographyClasses from './style/typography.module.css';
 import buttonClasses from './style/button.module.css';
 import cardClasses from './style/card.module.css';
+import stepperClasses from './style/stepper.module.css';
+import formClasses from './style/form.module.css';
 import { lightTheme } from '@rainbow-me/rainbowkit';
 import { Theme as RainbowKitTheme } from '@rainbow-me/rainbowkit';
 
@@ -119,6 +121,19 @@ export const theme = createTheme({
     ActionIcon: {
       classNames: {
         root: buttonClasses.action,
+      },
+    },
+    Stepper: {
+      classNames: {
+        root: stepperClasses.root,
+        stepIcon: stepperClasses.stepIcon,
+        stepLabel: stepperClasses.stepLabel,
+        separator: stepperClasses.separator,
+      },
+    },
+    Radio: {
+      classNames: {
+        root: formClasses.radio,
       },
     },
   },

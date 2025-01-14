@@ -8,16 +8,17 @@ export type Question = {
   }[];
 };
 
-export type Section = {
+export type RubricSection = {
   sectionName: string;
   sectionTotal: number;
+  sectionLabel: string;
   sectionDescription: string;
   questions: Question[];
 };
 
 export type Rubric = {
   type: 'application_rubric';
-  sections: Section[];
+  sections: RubricSection[];
 };
 
 export const RUBRIC_COPY: Rubric = {
@@ -25,6 +26,7 @@ export const RUBRIC_COPY: Rubric = {
   sections: [
     {
       sectionName: 'Round Operators and Team',
+      sectionLabel: 'Round Operators',
       sectionTotal: 10,
       sectionDescription: 'Select one choice for each vote (0-10 points)',
       questions: [
@@ -78,6 +80,7 @@ export const RUBRIC_COPY: Rubric = {
     },
     {
       sectionName: 'Fundraising',
+      sectionLabel: 'Fundraising',
       sectionTotal: 10,
       sectionDescription: 'Select one choice (0-10 points)',
       questions: [
@@ -110,6 +113,7 @@ export const RUBRIC_COPY: Rubric = {
     },
     {
       sectionName: "Alignment with one of GG23's Intents",
+      sectionLabel: 'Alignment',
       sectionTotal: 10,
       sectionDescription: `Does this round align with Gitcoin DAO's intents? Select one choice (0-10 points) `,
       questions: [
@@ -138,6 +142,7 @@ export const RUBRIC_COPY: Rubric = {
     },
     {
       sectionName: 'Community and Impact',
+      sectionLabel: 'Community and Impact',
       sectionTotal: 10,
       sectionDescription: 'Select one choice for each vote (0-10 points)',
       questions: [
