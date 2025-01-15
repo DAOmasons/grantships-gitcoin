@@ -16,10 +16,9 @@ import {
 } from '@mantine/core';
 import { Question, RUBRIC_COPY, RubricSection } from '../constants/rubric';
 import { IconChevronDown } from '@tabler/icons-react';
-import { useInputState } from '@mantine/hooks';
 
 export const VoteApplication = () => {
-  const [active, setActive] = useState(0);
+  const [step, setStep] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [feedback, setFeedback] = useState<Record<string, string>>({});
 
@@ -33,7 +32,7 @@ export const VoteApplication = () => {
 
   return (
     <PageLayout title="Application Vote">
-      <Stepper active={active}>
+      <Stepper active={step}>
         {RUBRIC_COPY.sections.map((section, index) => {
           return (
             <Stepper.Step
@@ -43,9 +42,13 @@ export const VoteApplication = () => {
             >
               <RubricStep
                 section={section}
+                scores={scores}
                 setScores={handleChangeScore}
                 setFeedback={handleChangeFeedback}
                 feedback={feedback[section.sectionName]}
+                setStep={setStep}
+                index={index}
+                totalSteps={RUBRIC_COPY.sections.length}
               />
             </Stepper.Step>
           );
@@ -57,16 +60,29 @@ export const VoteApplication = () => {
 
 const RubricStep = ({
   section,
+  scores,
   setScores,
   setFeedback,
   feedback,
+  index,
+  setStep,
+  totalSteps,
 }: {
   section: RubricSection;
+  scores: Record<string, number>;
   setScores: (key: string, value: number) => void;
   setFeedback: (key: string, value: string) => void;
   feedback?: string;
+  index: number;
+  setStep: (step: number) => void;
+  totalSteps?: number;
 }) => {
   const theme = useMantineTheme();
+
+  const allQuestionsAnswered = section.questions.every(
+    (question) => scores[question.title]
+  );
+
   return (
     <Box mt={56}>
       <Title order={3} fz="h3" c={theme.colors.kelp[6]} mb="sm">
@@ -82,6 +98,7 @@ const RubricStep = ({
         {section.questions.map((question) => (
           <RubricQuestion
             question={question}
+            scores={scores}
             key={question.title}
             setScores={setScores}
           />
@@ -93,15 +110,24 @@ const RubricStep = ({
           Feedback - {section.sectionName}
         </InputLabel>
         <Textarea
+          key={section.sectionName}
           value={feedback}
           onChange={(e) => setFeedback(section.sectionName, e.target.value)}
         />
       </Box>
       <Group justify="center" gap="xl">
-        <Button variant="secondary" disabled>
+        <Button
+          variant="secondary"
+          disabled={index === 0}
+          onClick={() => (index === 0 ? undefined : setStep(index - 1))}
+        >
           Back
         </Button>
-        <Button variant="primary" disabled>
+        <Button
+          variant="primary"
+          disabled={!feedback || !allQuestionsAnswered}
+          onClick={() => setStep(index + 1)}
+        >
           Next
         </Button>
       </Group>
@@ -112,11 +138,12 @@ const RubricStep = ({
 const RubricQuestion = ({
   question,
   setScores,
+  scores,
 }: {
+  scores: Record<string, number>;
   question: Question;
   setScores: (key: string, value: number) => void;
 }) => {
-  const [value, setValue] = useState<string | null>(null);
   const { colors } = useMantineTheme();
 
   return (
@@ -129,9 +156,8 @@ const RubricQuestion = ({
           <Radio
             key={option.optionText}
             size="md"
-            checked={value === option.optionText}
+            checked={scores[question.title] === option.optionScore}
             onChange={() => {
-              setValue(option.optionText);
               setScores(question.title, option.optionScore);
             }}
             mb={22}
