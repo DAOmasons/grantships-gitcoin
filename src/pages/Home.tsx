@@ -18,6 +18,7 @@ import {
 import { BGImage } from '../assets/BGImage';
 import { SplainerAccordion } from '../components/SplainerAccordion';
 import { CycleCircle } from '../components/CycleCircle';
+import { finalizeChoices } from '../setupScripts/chews';
 
 export const Home = () => {
   const theme = useMantineTheme();
@@ -50,7 +51,7 @@ export const Home = () => {
           </Box>
         </Group>
       </Container>
-      {/* <Button onClick={() => getRounds()}>Test it!</Button> */}
+      <Button onClick={() => finalizeChoices()}>Test it!</Button>
       <InnerContainer>
         <Box mb={120}>
           <Title mb="xs" fz="h3" order={2}>

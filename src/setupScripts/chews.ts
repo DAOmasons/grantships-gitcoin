@@ -142,3 +142,25 @@ export const createApplication = async (applicantNumber: number) => {
 
   console.log('hash', hash);
 };
+
+export const finalizeChoices = async () => {
+  const CHOICES_ADDR = '0x7D48F42A81502C08c61F21bE2f0dbA6d217A3120';
+
+  const client = createWalletClient({
+    chain: arbitrumSepolia,
+    transport: custom(window.ethereum),
+  });
+  const [address] = await client.getAddresses();
+
+  const { request } = await publicClient.simulateContract({
+    account: address,
+    address: CHOICES_ADDR,
+    abi: HalChoicesABI,
+    functionName: 'finalizeChoices',
+    args: [],
+  });
+
+  const hash = await client.writeContract(request);
+
+  console.log('hash', hash);
+};

@@ -1,4 +1,11 @@
-import { Box, Group, Loader, Text, useMantineTheme } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Group,
+  Loader,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { IconCheck, IconExclamationMark, IconX } from '@tabler/icons-react';
 
 export const LoadingState = ({
@@ -73,9 +80,14 @@ export const TimeoutState = ({
 export const SuccessState = ({
   title,
   description,
+  successButton,
 }: {
   title: string;
   description: string;
+  successButton?: {
+    label: string;
+    onClick: () => void;
+  };
 }) => {
   const { colors } = useMantineTheme();
   return (
@@ -86,9 +98,16 @@ export const SuccessState = ({
       <Text ta="center" mb="xxs">
         {title}
       </Text>
-      <Text ta="center" c="subtle">
+      <Text ta="center" c="subtle" mb="md">
         {description}
       </Text>
+      {successButton && (
+        <Group justify="center">
+          <Button onClick={successButton.onClick} h="fit-content" py="xxs">
+            {successButton.label}
+          </Button>
+        </Group>
+      )}
     </Box>
   );
 };
