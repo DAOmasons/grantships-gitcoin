@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 export const JudgeDashboard = () => {
   const { applicationRound, isLoadingAppRound } = useChews();
 
+  console.log('applicationRound', applicationRound);
+
   return (
     <PageLayout title="Judge Dashboard">
       <Box px="lg" mb="76">

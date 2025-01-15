@@ -1,11 +1,23 @@
 import { ADDR } from '../constants/addresses';
 import { RoundApplicationContent } from '../constants/dummyApplications';
 import { Rubric } from '../constants/rubric';
-import { ApplicationFragment, GgApplicationRound } from '../generated/graphql';
+import {
+  ApplicationFragment,
+  GgApplicationRound,
+  GgApplicationVote,
+} from '../generated/graphql';
 import { sdk } from '../utils/indexer';
 
-export type ResolvedApplication = ApplicationFragment & {
+export type ResolvedVote = GgApplicationVote & {
+  review: {
+    scores: Record<string, number>;
+    feedback: Record<string, string>;
+  };
+};
+
+export type ResolvedApplication = Omit<ApplicationFragment, 'votes'> & {
   copy: RoundApplicationContent;
+  votes: ResolvedVote[];
 };
 
 export type AppRound = Omit<GgApplicationRound, 'applications'> & {
@@ -22,14 +34,21 @@ export const getRounds = async (): Promise<AppRound | undefined> => {
     }
 
     const data = res.GGApplicationRound_by_pk;
-    return {
+
+    const resolved = {
       ...data,
       rubric: JSON.parse(data.rubric as string) as Rubric,
       applications: data.applications.map((app) => ({
         ...app,
         copy: JSON.parse(app.application as string),
+        votes: app.votes.map(
+          (vote) =>
+            ({ ...vote, review: JSON.parse(vote.feedback) }) as ResolvedVote
+        ),
       })),
     } as AppRound;
+
+    return resolved;
   } catch (error) {
     throw new Error('Failed to fetch application round');
   }

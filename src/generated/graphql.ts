@@ -1955,6 +1955,7 @@ export type Params_RubricVotes_V0_1_0 = {
   db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
   id: Scalars['String']['output'];
   judgeHatId: Scalars['numeric']['output'];
+  roundAddress: Scalars['String']['output'];
 };
 
 /** Boolean expression to filter rows from the table "Params_RubricVotes_v0_1_0". All fields are combined with a logical 'AND'. */
@@ -1968,6 +1969,7 @@ export type Params_RubricVotes_V0_1_0_Bool_Exp = {
   db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
   judgeHatId?: InputMaybe<Numeric_Comparison_Exp>;
+  roundAddress?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** Ordering options when selecting data from "Params_RubricVotes_v0_1_0". */
@@ -1978,6 +1980,7 @@ export type Params_RubricVotes_V0_1_0_Order_By = {
   db_write_timestamp?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   judgeHatId?: InputMaybe<Order_By>;
+  roundAddress?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "Params_RubricVotes_v0_1_0" */
@@ -1991,7 +1994,9 @@ export enum Params_RubricVotes_V0_1_0_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  JudgeHatId = 'judgeHatId'
+  JudgeHatId = 'judgeHatId',
+  /** column name */
+  RoundAddress = 'roundAddress'
 }
 
 /** Streaming cursor of the table "Params_RubricVotes_v0_1_0" */
@@ -2009,6 +2014,7 @@ export type Params_RubricVotes_V0_1_0_Stream_Cursor_Value_Input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   judgeHatId?: InputMaybe<Scalars['numeric']['input']>;
+  roundAddress?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** columns and relationships of "Params_TimedVotes_v0_2_0" */
@@ -4385,14 +4391,16 @@ export type Timestamptz_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
-export type ApplicationFragment = { __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any };
+export type VoteFragment = { __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string };
+
+export type ApplicationFragment = { __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string }> };
 
 export type GetApplicationRoundQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type GetApplicationRoundQuery = { __typename?: 'query_root', GGApplicationRound_by_pk?: { __typename?: 'GGApplicationRound', id: string, createdAt: number, votesParams_id: string, choicesParams_id: string, postedBy: string, rubric: string, validRubric: boolean, applications: Array<{ __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any }> } | null };
+export type GetApplicationRoundQuery = { __typename?: 'query_root', GGApplicationRound_by_pk?: { __typename?: 'GGApplicationRound', id: string, createdAt: number, votesParams_id: string, choicesParams_id: string, postedBy: string, rubric: string, validRubric: boolean, applications: Array<{ __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string }> }> } | null };
 
 export type GetRecentTransactionQueryVariables = Exact<{
   txHash: Scalars['String']['input'];
@@ -4401,6 +4409,14 @@ export type GetRecentTransactionQueryVariables = Exact<{
 
 export type GetRecentTransactionQuery = { __typename?: 'query_root', TX_by_pk?: { __typename?: 'TX', id: string } | null };
 
+export const VoteFragmentDoc = gql`
+    fragment Vote on GGApplicationVote {
+  id
+  createdAt
+  amount
+  feedback
+}
+    `;
 export const ApplicationFragmentDoc = gql`
     fragment Application on GGApplication {
   id
@@ -4411,8 +4427,11 @@ export const ApplicationFragmentDoc = gql`
   postedBy
   lastUpdated
   totalVoted
+  votes {
+    ...Vote
+  }
 }
-    `;
+    ${VoteFragmentDoc}`;
 export const GetApplicationRoundDocument = gql`
     query getApplicationRound($id: String!) {
   GGApplicationRound_by_pk(id: $id) {
