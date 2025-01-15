@@ -34,6 +34,8 @@ export const VoteApplication = () => {
     );
   }
 
+  const handleVote = () => {};
+
   const handleChangeScore = (key: string, value: number) => {
     setScores({ ...scores, [key]: value });
   };
@@ -58,6 +60,7 @@ export const VoteApplication = () => {
                 setScores={handleChangeScore}
                 setFeedback={handleChangeFeedback}
                 feedback={feedback[section.sectionName]}
+                finalComment={feedback['Closing Comment']}
                 setStep={setStep}
                 index={index}
                 totalSteps={RUBRIC_COPY.sections.length}

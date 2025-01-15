@@ -19,6 +19,7 @@ export const RubricStep = ({
   setScores,
   setFeedback,
   feedback,
+  finalComment,
   index,
   setStep,
   totalSteps,
@@ -30,6 +31,7 @@ export const RubricStep = ({
   setScores: (key: string, value: number) => void;
   setFeedback: (key: string, value: string) => void;
   feedback?: string;
+  finalComment?: string;
   index: number;
   setStep: (step: number) => void;
   totalSteps?: number;
@@ -41,6 +43,8 @@ export const RubricStep = ({
   const allQuestionsAnswered = section.questions.every(
     (question) => scores[question.title]
   );
+
+  const finalStep = totalSteps && index === totalSteps - 1;
 
   return (
     <Box mt={56}>
@@ -66,7 +70,7 @@ export const RubricStep = ({
         ))}
       </Box>
       <Divider mb="xl" />
-      <Box mx="xl" mb={70}>
+      <Box mx="xl" mb={finalStep === true ? 'xl' : 70}>
         <InputLabel fz="lg" fw={600} required mb={24}>
           Feedback - {section.sectionName}
         </InputLabel>
@@ -77,6 +81,19 @@ export const RubricStep = ({
           onChange={(e) => setFeedback(section.sectionName, e.target.value)}
         />
       </Box>
+      {finalStep === true && (
+        <Box mx="xl" mb={70}>
+          <InputLabel fz="lg" fw={600} required mb={24}>
+            Closing Comment
+          </InputLabel>
+          <Textarea
+            key={section.sectionName}
+            value={finalComment}
+            placeholder="Enter feedback here..."
+            onChange={(e) => setFeedback('Closing Comment', e.target.value)}
+          />
+        </Box>
+      )}
       <Group justify="center" gap="xl">
         <Button
           variant="secondary"
@@ -85,13 +102,21 @@ export const RubricStep = ({
         >
           Back
         </Button>
-        <Button
-          variant="primary"
-          disabled={!feedback || !allQuestionsAnswered}
-          onClick={() => setStep(index + 1)}
-        >
-          Next
-        </Button>
+        {finalStep === true ? (
+          <Button
+            disabled={!feedback || !allQuestionsAnswered || !finalComment}
+            onClick={() => setStep(index + 1)}
+          >
+            Submit
+          </Button>
+        ) : (
+          <Button
+            disabled={!feedback || !allQuestionsAnswered}
+            onClick={() => setStep(index + 1)}
+          >
+            Next
+          </Button>
+        )}
       </Group>
     </Box>
   );
