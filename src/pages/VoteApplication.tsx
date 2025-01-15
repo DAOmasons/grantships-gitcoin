@@ -6,12 +6,21 @@ import { useChews } from '../hooks/useChews';
 import { useParams } from 'react-router-dom';
 import { RoundApplicationContent } from '../constants/dummyApplications';
 import { RubricStep } from '../components/rubric/RubricStep';
+import { useTx } from '../contexts/useTx';
+import {
+  Address,
+  encodeAbiParameters,
+  parseAbiParameters,
+  parseEther,
+} from 'viem';
+import ContestAbi from '../abi/Contest.json';
 
 export const VoteApplication = () => {
   const { id } = useParams();
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [feedback, setFeedback] = useState<Record<string, string>>({});
+  const { tx } = useTx();
 
   const { applicationRound, isLoadingAppRound } = useChews();
 
@@ -35,9 +44,39 @@ export const VoteApplication = () => {
   }
 
   const handleVote = () => {
+    const maxScore = 40;
+
+    const totalScore = Object.values(scores).reduce(
+      (acc, score) => acc + score,
+      0
+    );
+
+    const amount =
+      parseEther(((totalScore / maxScore) * 100).toString()) / 100n;
+
     const metadata = JSON.stringify({
       scores,
       feedback,
+    });
+
+    const choiceId = id?.split('-')[1];
+
+    if (!applicationRound?.id) {
+      console.error('applicationRound not found');
+      return;
+    }
+
+    const bytes = encodeAbiParameters(parseAbiParameters('(uint256, string)'), [
+      [6969420n, metadata],
+    ]);
+
+    tx({
+      writeContractParams: {
+        address: applicationRound.id as Address,
+        abi: ContestAbi,
+        functionName: 'vote',
+        args: [choiceId, amount, bytes],
+      },
     });
   };
 

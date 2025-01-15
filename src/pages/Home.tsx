@@ -51,7 +51,7 @@ export const Home = () => {
           </Box>
         </Group>
       </Container>
-      <Button onClick={() => finalizeChoices()}>Test it!</Button>
+      {/* <Button onClick={() => finalizeChoices()}>Test it!</Button> */}
       <InnerContainer>
         <Box mb={120}>
           <Title mb="xs" fz="h3" order={2}>
