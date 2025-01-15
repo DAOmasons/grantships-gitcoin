@@ -1,5 +1,6 @@
 import '@mantine/core/styles.css';
-import { Button, MantineProvider } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
+import { TxProvider } from './contexts/TxContext';
 import { BrowserRouter } from 'react-router-dom';
 import { rbkTheme, theme } from './theme';
 import { ClientRoutes } from './Routes';
@@ -20,8 +21,10 @@ export default function App() {
           <RainbowKitProvider theme={rbkTheme}>
             <GlobalContextProvider>
               <MantineProvider theme={theme} defaultColorScheme="light">
-                <HorizontalNav />
-                <ClientRoutes />
+                <TxProvider>
+                  <HorizontalNav />
+                  <ClientRoutes />
+                </TxProvider>
               </MantineProvider>
             </GlobalContextProvider>
           </RainbowKitProvider>

@@ -25,6 +25,7 @@ export const RubricStep = ({
   totalSteps,
   appCopy,
   registrar,
+  handleVote,
 }: {
   section: RubricSection;
   scores: Record<string, number>;
@@ -37,6 +38,7 @@ export const RubricStep = ({
   totalSteps?: number;
   appCopy: RoundApplicationContent;
   registrar?: string;
+  handleVote: () => void;
 }) => {
   const theme = useMantineTheme();
 
@@ -105,7 +107,7 @@ export const RubricStep = ({
         {finalStep === true ? (
           <Button
             disabled={!feedback || !allQuestionsAnswered || !finalComment}
-            onClick={() => setStep(index + 1)}
+            onClick={handleVote}
           >
             Submit
           </Button>

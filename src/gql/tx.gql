@@ -1,0 +1,5 @@
+query getRecentTransaction($txHash: String!) {
+  TX_by_pk(id: $txHash) {
+    id
+  }
+}

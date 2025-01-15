@@ -61,7 +61,7 @@ export const RubricQuestion = ({
         <Text fz="lg" c={colors.dark[4]}>
           Response from
         </Text>
-        <AddressAvatar address={registrar as Address} fz={24} />
+        <AddressAvatar address={registrar as Address} size={24} />
         <Text fz="lg" c={colors.dark[4]}>
           {appCopy.roundName}
         </Text>

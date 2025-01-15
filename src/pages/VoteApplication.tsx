@@ -34,7 +34,12 @@ export const VoteApplication = () => {
     );
   }
 
-  const handleVote = () => {};
+  const handleVote = () => {
+    const metadata = JSON.stringify({
+      scores,
+      feedback,
+    });
+  };
 
   const handleChangeScore = (key: string, value: number) => {
     setScores({ ...scores, [key]: value });
@@ -66,6 +71,7 @@ export const VoteApplication = () => {
                 totalSteps={RUBRIC_COPY.sections.length}
                 appCopy={appCopy as RoundApplicationContent}
                 registrar={registrar}
+                handleVote={handleVote}
               />
             </Stepper.Step>
           );

@@ -4394,6 +4394,13 @@ export type GetApplicationRoundQueryVariables = Exact<{
 
 export type GetApplicationRoundQuery = { __typename?: 'query_root', GGApplicationRound_by_pk?: { __typename?: 'GGApplicationRound', id: string, createdAt: number, votesParams_id: string, choicesParams_id: string, postedBy: string, rubric: string, validRubric: boolean, applications: Array<{ __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any }> } | null };
 
+export type GetRecentTransactionQueryVariables = Exact<{
+  txHash: Scalars['String']['input'];
+}>;
+
+
+export type GetRecentTransactionQuery = { __typename?: 'query_root', TX_by_pk?: { __typename?: 'TX', id: string } | null };
+
 export const ApplicationFragmentDoc = gql`
     fragment Application on GGApplication {
   id
@@ -4422,6 +4429,13 @@ export const GetApplicationRoundDocument = gql`
   }
 }
     ${ApplicationFragmentDoc}`;
+export const GetRecentTransactionDocument = gql`
+    query getRecentTransaction($txHash: String!) {
+  TX_by_pk(id: $txHash) {
+    id
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -4432,6 +4446,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     getApplicationRound(variables: GetApplicationRoundQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetApplicationRoundQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetApplicationRoundQuery>(GetApplicationRoundDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getApplicationRound', 'query', variables);
+    },
+    getRecentTransaction(variables: GetRecentTransactionQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetRecentTransactionQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetRecentTransactionQuery>(GetRecentTransactionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getRecentTransaction', 'query', variables);
     }
   };
 }
