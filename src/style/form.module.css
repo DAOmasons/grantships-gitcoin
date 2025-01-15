@@ -1,2 +1,13 @@
+.root {
+  padding: var(--mantine-spacing-md);
+  border: 1px solid var(--mantine-color-dark-1);
+  font-size: var(--mantine-font-size-md);
+
+  &:focus {
+    border-color: var(--mantine-color-kelp-6);
+  }
+}
+
 .radio {
+  border: 1px solid var(--mantine-color-dark-2);
 }

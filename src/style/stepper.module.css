@@ -27,6 +27,10 @@
   /* border: 1px solid var(--mantine-color-purple-6); */
 }
 
+.stepBody {
+  margin-inline-start: rem(10px);
+}
+
 .stepLabel {
   max-width: rem(127px);
   font-weight: 400;

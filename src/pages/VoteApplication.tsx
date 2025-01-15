@@ -3,19 +3,34 @@ import { PageLayout } from '../layout/Page';
 import {
   Avatar,
   Box,
+  Button,
+  Divider,
   Group,
   InputLabel,
   Radio,
   Stepper,
   Text,
+  Textarea,
   Title,
   useMantineTheme,
 } from '@mantine/core';
 import { Question, RUBRIC_COPY, RubricSection } from '../constants/rubric';
 import { IconChevronDown } from '@tabler/icons-react';
+import { useInputState } from '@mantine/hooks';
 
 export const VoteApplication = () => {
   const [active, setActive] = useState(0);
+  const [scores, setScores] = useState<Record<string, number>>({});
+  const [feedback, setFeedback] = useState<Record<string, string>>({});
+
+  const handleChangeScore = (key: string, value: number) => {
+    setScores({ ...scores, [key]: value });
+  };
+
+  const handleChangeFeedback = (key: string, value: string) => {
+    setFeedback({ ...feedback, [key]: value });
+  };
+
   return (
     <PageLayout title="Application Vote">
       <Stepper active={active}>
@@ -26,7 +41,12 @@ export const VoteApplication = () => {
               label={section.sectionLabel}
               completedIcon={index + 1}
             >
-              <RubricStep section={section} />
+              <RubricStep
+                section={section}
+                setScores={handleChangeScore}
+                setFeedback={handleChangeFeedback}
+                feedback={feedback[section.sectionName]}
+              />
             </Stepper.Step>
           );
         })}
@@ -35,7 +55,17 @@ export const VoteApplication = () => {
   );
 };
 
-const RubricStep = ({ section }: { section: RubricSection }) => {
+const RubricStep = ({
+  section,
+  setScores,
+  setFeedback,
+  feedback,
+}: {
+  section: RubricSection;
+  setScores: (key: string, value: number) => void;
+  setFeedback: (key: string, value: string) => void;
+  feedback?: string;
+}) => {
   const theme = useMantineTheme();
   return (
     <Box mt={56}>
@@ -50,18 +80,45 @@ const RubricStep = ({ section }: { section: RubricSection }) => {
       </Text>
       <Box mx="lg">
         {section.questions.map((question) => (
-          <RubricQuestion {...question} key={question.title} />
+          <RubricQuestion
+            question={question}
+            key={question.title}
+            setScores={setScores}
+          />
         ))}
       </Box>
+      <Divider mb="xl" />
+      <Box mx="xl" mb={70}>
+        <InputLabel fz="lg" fw={600} required mb={24}>
+          Feedback - {section.sectionName}
+        </InputLabel>
+        <Textarea
+          value={feedback}
+          onChange={(e) => setFeedback(section.sectionName, e.target.value)}
+        />
+      </Box>
+      <Group justify="center" gap="xl">
+        <Button variant="secondary" disabled>
+          Back
+        </Button>
+        <Button variant="primary" disabled>
+          Next
+        </Button>
+      </Group>
     </Box>
   );
 };
 
-const RubricQuestion = (question: Question) => {
+const RubricQuestion = ({
+  question,
+  setScores,
+}: {
+  question: Question;
+  setScores: (key: string, value: number) => void;
+}) => {
   const [value, setValue] = useState<string | null>(null);
   const { colors } = useMantineTheme();
 
-  console.log('value', value);
   return (
     <Box mb="xxl">
       <InputLabel fw={600} fz="lg" mb={24} key={question.title} required>
@@ -73,8 +130,9 @@ const RubricQuestion = (question: Question) => {
             key={option.optionText}
             size="md"
             checked={value === option.optionText}
-            onClick={() => {
+            onChange={() => {
               setValue(option.optionText);
+              setScores(question.title, option.optionScore);
             }}
             mb={22}
             label={`${option.optionText} (${option.optionScore} points)`}

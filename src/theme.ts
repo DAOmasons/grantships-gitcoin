@@ -1,4 +1,4 @@
-import { createTheme, Stepper } from '@mantine/core';
+import { createTheme, Divider, Stepper } from '@mantine/core';
 import typographyClasses from './style/typography.module.css';
 import buttonClasses from './style/button.module.css';
 import cardClasses from './style/card.module.css';
@@ -129,11 +129,30 @@ export const theme = createTheme({
         stepIcon: stepperClasses.stepIcon,
         stepLabel: stepperClasses.stepLabel,
         separator: stepperClasses.separator,
+        stepBody: stepperClasses.stepBody,
+      },
+    },
+    Textarea: {
+      classNames: {
+        input: formClasses.root,
+      },
+      defaultProps: {
+        rows: 1,
+        autosize: true,
       },
     },
     Radio: {
       classNames: {
-        root: formClasses.radio,
+        radio: formClasses.radio,
+        root: formClasses.radioRoot,
+      },
+      defaultProps: {
+        color: KELP[6],
+      },
+    },
+    Divider: {
+      defaultProps: {
+        color: DARK[1],
       },
     },
   },
