@@ -25,7 +25,7 @@ export const VoteApplication = () => {
   const { address } = useAccount();
   const navigate = useNavigate();
 
-  const { applicationRound, isLoadingAppRound } = useChews();
+  const { applicationRound, isLoadingAppRound, refetchAppRound } = useChews();
 
   const currentApplication = applicationRound?.applications.find(
     (app) => app.id === id
@@ -93,6 +93,17 @@ export const VoteApplication = () => {
         functionName: 'vote',
         args: [choiceId, amount, bytes],
       },
+      writeContractOptions: {
+        onPollSuccess() {
+          refetchAppRound?.();
+        },
+      },
+      viewParams: {
+        successButton: {
+          label: 'Go to Review',
+          onClick: () => navigate(`/review/vote-${choiceId}-${address}`),
+        },
+      },
     });
   };
 
@@ -117,6 +128,7 @@ export const VoteApplication = () => {
               <RubricStep
                 section={section}
                 scores={scores}
+                imgUrl={appCopy.imgUrl}
                 setScores={handleChangeScore}
                 setFeedback={handleChangeFeedback}
                 feedback={feedback[section.sectionName]}

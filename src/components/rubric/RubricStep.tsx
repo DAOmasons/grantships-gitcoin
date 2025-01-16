@@ -17,6 +17,7 @@ export const RubricStep = ({
   section,
   scores,
   setScores,
+  imgUrl,
   setFeedback,
   feedback,
   finalComment,
@@ -32,6 +33,7 @@ export const RubricStep = ({
   setScores: (key: string, value: number) => void;
   setFeedback: (key: string, value: string) => void;
   feedback?: string;
+  imgUrl: string;
   finalComment?: string;
   index: number;
   setStep: (step: number) => void;
@@ -63,6 +65,7 @@ export const RubricStep = ({
         {section.questions.map((question) => (
           <RubricQuestion
             question={question}
+            imgUrl={imgUrl}
             scores={scores}
             key={question.title}
             setScores={setScores}

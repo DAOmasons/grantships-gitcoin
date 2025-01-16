@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Card,
   Collapse,
@@ -20,11 +21,13 @@ export const RubricQuestion = ({
   question,
   setScores,
   scores,
+  imgUrl,
   appCopy,
   registrar,
 }: {
   scores: Record<string, number>;
   question: Question;
+  imgUrl: string;
   setScores: (key: string, value: number) => void;
   appCopy: RoundApplicationContent;
   registrar?: string;
@@ -61,7 +64,7 @@ export const RubricQuestion = ({
         <Text fz="lg" c={colors.dark[4]}>
           Response from
         </Text>
-        <AddressAvatar address={registrar as Address} size={24} />
+        <Avatar src={imgUrl} size={24} />
         <Text fz="lg" c={colors.dark[4]}>
           {appCopy.roundName}
         </Text>
