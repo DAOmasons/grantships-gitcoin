@@ -38,15 +38,23 @@ export const getRounds = async (): Promise<AppRound | undefined> => {
     const resolved = {
       ...data,
       rubric: JSON.parse(data.rubric as string) as Rubric,
-      applications: data.applications.map((app) => ({
-        ...app,
-        copy: JSON.parse(app.application as string),
-        votes: app.votes.map(
-          (vote) =>
-            ({ ...vote, review: JSON.parse(vote.feedback) }) as ResolvedVote
+      applications: data.applications
+        .map((app) => ({
+          ...app,
+          copy: JSON.parse(app.application as string),
+          votes: app.votes.map(
+            (vote) =>
+              ({ ...vote, review: JSON.parse(vote.feedback) }) as ResolvedVote
+          ),
+        }))
+        .filter(
+          (app) =>
+            app.id !==
+            'choice-0x850cb4905526aed514f256ebc7ba01790295704f7652d22f87ef91a67507e2a0'
         ),
-      })),
     } as AppRound;
+
+    console.log('resolved', resolved);
 
     return resolved;
   } catch (error) {

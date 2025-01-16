@@ -16,6 +16,7 @@ type GlobalContextType = {
   userError: Error | null;
   applicationRound?: AppRound;
   isLoadingAppRound: boolean;
+  refetchAppRound: () => void;
   appRoundError: Error | null;
   judgeAmount: number;
 };
@@ -29,6 +30,7 @@ export const GlobalContext = createContext<GlobalContextType>({
   userError: null,
   applicationRound: undefined,
   isLoadingAppRound: false,
+  refetchAppRound: () => {},
   appRoundError: null,
   //
   judgeAmount: 6,
@@ -51,6 +53,7 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
     data: applicationRound,
     isLoading: isLoadingAppRound,
     error: appRoundError,
+    refetch: refetchAppRound,
   } = useQuery({
     queryKey: ['round-application'],
     queryFn: () => getRounds(),
@@ -64,6 +67,7 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
         userData,
         isLoadingUser,
         userError,
+        refetchAppRound,
         applicationRound,
         isLoadingAppRound,
         appRoundError,

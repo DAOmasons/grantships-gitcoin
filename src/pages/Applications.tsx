@@ -1,6 +1,6 @@
 import {
+  Avatar,
   Box,
-  Card,
   Group,
   Progress,
   Stack,
@@ -8,19 +8,10 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core';
-import { PageLayout } from '../layout/Page';
-import { AddressAvatar } from '../components/AddressAvatar';
-import { useChews } from '../hooks/useChews';
 import { Address, formatEther } from 'viem';
-import fxClasses from '../style/effects.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import {
-  IconNumber2,
-  IconNumber3,
-  IconNumber4,
-  IconNumber5,
-  IconNumber6,
   IconSquareNumber1,
   IconSquareNumber2,
   IconSquareNumber3,
@@ -29,13 +20,17 @@ import {
   IconSquareNumber6,
 } from '@tabler/icons-react';
 
+import { PageLayout } from '../layout/Page';
+import { AddressAvatar } from '../components/AddressAvatar';
+import { useChews } from '../hooks/useChews';
+import fxClasses from '../style/effects.module.css';
+
 const icons = [
   IconSquareNumber1,
   IconSquareNumber2,
   IconSquareNumber3,
   IconSquareNumber4,
   IconSquareNumber5,
-  IconSquareNumber6,
 ];
 
 export const Applications = () => {
@@ -44,28 +39,30 @@ export const Applications = () => {
 
   const navigate = useNavigate();
 
-  const transformed = useMemo(() => {
-    return applicationRound?.applications
-      .map((app) => {
-        const avgScore =
-          app?.votes.length === 0
-            ? '0'
-            : formatEther(
-                (app.votes.reduce(
-                  (acc, vote) => acc + BigInt(vote.amount),
-                  0n
-                ) /
-                  BigInt(app.votes.length)) *
-                  100n
-              );
+  const transformed = useMemo(
+    () =>
+      applicationRound?.applications
+        .map((app) => {
+          const avgScore =
+            app?.votes.length === 0
+              ? '0'
+              : formatEther(
+                  (app.votes.reduce(
+                    (acc, vote) => acc + BigInt(vote.amount),
+                    0n
+                  ) /
+                    BigInt(app.votes.length)) *
+                    100n
+                );
 
-        return {
-          ...app,
-          avgScore,
-        };
-      })
-      .sort((a, b) => Number(b.avgScore) - Number(a.avgScore));
-  }, [applicationRound]);
+          return {
+            ...app,
+            avgScore,
+          };
+        })
+        .sort((a, b) => Number(b.avgScore) - Number(a.avgScore)),
+    [applicationRound]
+  );
 
   return (
     <PageLayout title="Applications">
@@ -96,13 +93,13 @@ export const Applications = () => {
                       fill={'white'}
                       style={{
                         position: 'absolute',
-                        top: -2,
-                        right: -5,
+                        top: -3,
+                        right: -6,
                         zIndex: 1,
                       }}
                     />
                   )}
-                  <AddressAvatar size={56} address={app.registrar as Address} />
+                  <Avatar size={56} src={app.copy.imgUrl} />
                 </Box>
                 <Box>
                   <Text fw={600} fz="lg" mb={4} maw={240} lineClamp={1}>

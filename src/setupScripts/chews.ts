@@ -12,7 +12,7 @@ import { publicClient } from '../utils/config';
 import { ContestStatus } from '../constants/enum';
 import ChewsFactoryABI from '../abi/ChewsFactory.json';
 import HalChoicesABI from '../abi/HALChoices.json';
-import { fakeAddress, RUBRIC_COPY } from '../constants/rubric';
+import { RUBRIC_COPY } from '../constants/rubric';
 import { dummyApplications } from '../constants/dummyApplications';
 import { generateRandomBytes32 } from '../utils/common';
 
@@ -69,7 +69,7 @@ export const deployRubricVoting = async () => {
   const content = JSON.stringify(RUBRIC_COPY);
   const protocol = 6969420n;
   const TAG_PREFIX = 'TEST_GG_APPLICATION_REVIEW';
-  const nonce = 0;
+  const nonce = 1;
 
   const filterTag = `${TAG_PREFIX}_${nonce}`;
 
@@ -102,18 +102,12 @@ export const deployRubricVoting = async () => {
 };
 
 export const createApplication = async (applicantNumber: number) => {
-  const CHOICES_ADDR = '0x7D48F42A81502C08c61F21bE2f0dbA6d217A3120';
+  const CHOICES_ADDR = '0xF14B4Ae687424604A42e39ffB10E79FD5Bd3a928';
 
   const application = dummyApplications[applicantNumber];
-  const applicantAddress = fakeAddress[applicantNumber];
 
   if (!application) {
     console.error('Application not found');
-    return;
-  }
-
-  if (!applicantAddress) {
-    console.error('Applicant address not found');
     return;
   }
 
@@ -124,7 +118,7 @@ export const createApplication = async (applicantNumber: number) => {
 
   const choiceData = encodeAbiParameters(
     parseAbiParameters('bytes, (uint256, string)'),
-    [applicantAddress, [6969420n, JSON.stringify(application)]]
+    [application.address, [6969420n, JSON.stringify(application)]]
   );
   const choiceId = generateRandomBytes32();
 
@@ -144,7 +138,7 @@ export const createApplication = async (applicantNumber: number) => {
 };
 
 export const finalizeChoices = async () => {
-  const CHOICES_ADDR = '0x7D48F42A81502C08c61F21bE2f0dbA6d217A3120';
+  const CHOICES_ADDR = '0xF14B4Ae687424604A42e39ffB10E79FD5Bd3a928';
 
   const client = createWalletClient({
     chain: arbitrumSepolia,

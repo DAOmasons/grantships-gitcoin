@@ -1,5 +1,9 @@
+import { Address } from 'viem';
+
 export type RoundApplicationContent = {
   roundName: string;
+  address: Address;
+  imgUrl: string;
   responses: {
     title: string;
     response: string;
@@ -9,6 +13,8 @@ export type RoundApplicationContent = {
 export const dummyApplications: RoundApplicationContent[] = [
   {
     roundName: 'Climate Solutions Round',
+    address: '0x7A3d05C70498b43FB8BB426A4165A4bD03842891',
+    imgUrl: 'https://i.imgur.com/uNOWyOY.jpeg',
     responses: [
       {
         title: 'Identified Round Operator',
@@ -44,6 +50,8 @@ export const dummyApplications: RoundApplicationContent[] = [
   },
   {
     roundName: 'Education & Public Goods Round',
+    address: '0xF24c923f7a8F31BAb5d4C3F4772b4D2e1923D882',
+    imgUrl: 'https://i.imgur.com/EWIHSxI.jpeg',
     responses: [
       {
         title: 'Identified Round Operator',
@@ -79,6 +87,8 @@ export const dummyApplications: RoundApplicationContent[] = [
   },
   {
     roundName: 'Web3 Gaming & Interactive Media Round',
+    address: '0x2B5AD5c4795c026514f8317c7a215E218DcCD6c3',
+    imgUrl: 'https://i.imgur.com/jyk2qRp.jpeg',
     responses: [
       {
         title: 'Identified Round Operator',
@@ -114,6 +124,8 @@ export const dummyApplications: RoundApplicationContent[] = [
   },
   {
     roundName: 'DeFi Financial Inclusion Round',
+    address: '0x9E8f7aE8b2c1D5E3c8E4e8D1c2B3A4f5D6e7F8a9',
+    imgUrl: 'https://i.imgur.com/5ET1Xzz.jpeg',
     responses: [
       {
         title: 'Identified Round Operator',
@@ -149,6 +161,8 @@ export const dummyApplications: RoundApplicationContent[] = [
   },
   {
     roundName: 'Developer Tools & Infrastructure Round',
+    address: '0x4D3c2B1A0f9E8d7c6B5a4E3F2D1C0B9A8F7E6D5',
+    imgUrl: 'https://i.imgur.com/suuAgK5.jpeg',
     responses: [
       {
         title: 'Identified Round Operator',
@@ -184,6 +198,8 @@ export const dummyApplications: RoundApplicationContent[] = [
   },
   {
     roundName: 'Digital Identity & Privacy Round',
+    address: '0x8B7c6D5E4F3A2B1C0D9E8F7A6B5C4D3E2F1A0B9',
+    imgUrl: 'https://i.imgur.com/rxtbemD.jpeg',
     responses: [
       {
         title: 'Identified Round Operator',
@@ -219,6 +235,8 @@ export const dummyApplications: RoundApplicationContent[] = [
   },
   {
     roundName: 'Arts & Culture Round',
+    address: '0x1A2B3C4D5E6F7A8B9C0D1E2F3A4B5C6D7E8F9A0',
+    imgUrl: 'https://i.imgur.com/AAbXEtB.jpeg',
     responses: [
       {
         title: 'Identified Round Operator',
@@ -254,6 +272,8 @@ export const dummyApplications: RoundApplicationContent[] = [
   },
   {
     roundName: 'Healthcare & Biotech Round',
+    address: '0xC5D4E3F2A1B0C9D8E7F6A5B4C3D2E1F0A9B8C7',
+    imgUrl: 'https://i.imgur.com/g0vFEDo.jpeg',
     responses: [
       {
         title: 'Identified Round Operator',
@@ -289,6 +309,8 @@ export const dummyApplications: RoundApplicationContent[] = [
   },
   {
     roundName: 'Local Communities Crypto Adoption Round',
+    address: '0x6B5C4D3E2F1A0B9C8D7E6F5A4B3C2D1E0F9A8B',
+    imgUrl: 'https://i.imgur.com/XgwcnwL.jpeg',
     responses: [
       {
         title: 'Identified Round Operator',

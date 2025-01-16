@@ -1,4 +1,4 @@
-import { Box, Button, Group, Stack, Text, Title } from '@mantine/core';
+import { Avatar, Box, Button, Group, Stack, Text, Title } from '@mantine/core';
 import { InfoTimeline } from '../components/InfoTimeline';
 import { PageLayout } from '../layout/Page';
 import { useChews } from '../hooks/useChews';
@@ -39,7 +39,7 @@ export const JudgeDashboard = () => {
 
             return (
               <Group key={`${app.registrar}-${index}`} px={32} py={16} mb={8}>
-                <AddressAvatar address={app.registrar as Address} size={56} />
+                <Avatar src={app.copy.imgUrl} size={56} />
                 <Box component={Link} to={`/view-application/${app.id}`}>
                   <Text fw={600} mb={4}>
                     {app.copy.roundName}
