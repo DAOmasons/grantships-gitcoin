@@ -14,10 +14,12 @@ import { Address, formatEther } from 'viem';
 import { AddressAvatar } from '../components/AddressAvatar';
 import { truncateAddr } from '../utils/common';
 import fxClasses from '../style/effects.module.css';
+import { useNavigate } from 'react-router-dom';
 
 export const Reviews = () => {
   const { applicationRound, isLoadingAppRound } = useChews();
   const { colors } = useMantineTheme();
+  const navigate = useNavigate();
 
   if (!applicationRound || isLoadingAppRound) {
     return null;
@@ -88,6 +90,7 @@ export const Reviews = () => {
                       px={6}
                       mb="xs"
                       className={fxClasses.hoverCard}
+                      onClick={() => navigate(`/review/${vote.id}`)}
                     >
                       <Group gap="xs">
                         <AddressAvatar
