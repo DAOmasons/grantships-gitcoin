@@ -68,7 +68,7 @@ export const Reviews = () => {
                     color={colors.purple[6]}
                     bg={colors.dark[2]}
                   />
-                  <Text c="subtle">Avg. {avgScore} %</Text>
+                  <Text c="subtle">Avg. {Number(avgScore).toFixed()} %</Text>
                 </Stack>
               </Group>
               <Text fw={600} fz="lg" mb="md">
