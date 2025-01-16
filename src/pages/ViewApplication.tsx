@@ -7,7 +7,6 @@ import {
   Group,
   Stack,
   Text,
-  TextInput,
   useMantineTheme,
 } from '@mantine/core';
 import { PageLayout } from '../layout/Page';

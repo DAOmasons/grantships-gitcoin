@@ -61,7 +61,7 @@ export const Review = () => {
   }
 
   return (
-    <PageLayout title="Reviews">
+    <PageLayout title="Review">
       {applicationRound.rubric.sections.map((section) => {
         const judgeReview = review.review.feedback[section.sectionName];
         return (
@@ -69,28 +69,32 @@ export const Review = () => {
             <Title fz={'h3'} order={3} c={colors.kelp[6]} mb="sm">
               {section.sectionName}
             </Title>
-            {section.questions.map((question) => {
-              return (
-                <ReviewQuestion
-                  key={question.title}
-                  question={question}
-                  application={selectedApplication}
-                  review={review}
-                />
-              );
-            })}
+            <Box mx="md">
+              {section.questions.map((question) => {
+                return (
+                  <ReviewQuestion
+                    key={question.title}
+                    question={question}
+                    application={selectedApplication}
+                    review={review}
+                  />
+                );
+              })}
+            </Box>
             <Divider mb="md" />
-            <Text fz="lg" fw={600} mb="md">
-              Judge Feedback - {section.sectionName}
-            </Text>
-            <Card
-              variant="inner"
-              style={{
-                border: `1px solid ${colors.purple[6]}`,
-              }}
-            >
-              <Text>{judgeReview}</Text>
-            </Card>
+            <Box mx="md">
+              <Text fz="lg" fw={600} mb="md">
+                Judge Feedback - {section.sectionName}
+              </Text>
+              <Card
+                variant="inner"
+                style={{
+                  border: `1px solid ${colors.purple[6]}`,
+                }}
+              >
+                <Text>{judgeReview}</Text>
+              </Card>
+            </Box>
           </Box>
         );
       })}
