@@ -54,8 +54,6 @@ export const getRounds = async (): Promise<AppRound | undefined> => {
         ),
     } as AppRound;
 
-    console.log('resolved', resolved);
-
     return resolved;
   } catch (error) {
     throw new Error('Failed to fetch application round');

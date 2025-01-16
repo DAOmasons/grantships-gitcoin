@@ -8,7 +8,7 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core';
-import { Address, formatEther } from 'viem';
+import { formatEther } from 'viem';
 import { useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import {
@@ -17,11 +17,9 @@ import {
   IconSquareNumber3,
   IconSquareNumber4,
   IconSquareNumber5,
-  IconSquareNumber6,
 } from '@tabler/icons-react';
 
 import { PageLayout } from '../layout/Page';
-import { AddressAvatar } from '../components/AddressAvatar';
 import { useChews } from '../hooks/useChews';
 import fxClasses from '../style/effects.module.css';
 
