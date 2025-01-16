@@ -1,9 +1,7 @@
 import { PageLayout } from '../layout/Page';
 
 export const Reviews = () => {
-  return (
-    <PageLayout title="Reviews">
-      <></>
-    </PageLayout>
-  );
+  <PageLayout title="Reviews">
+    <></>
+  </PageLayout>;
 };

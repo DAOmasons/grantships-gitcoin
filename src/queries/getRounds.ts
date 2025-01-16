@@ -20,7 +20,7 @@ export type ResolvedApplication = Omit<ApplicationFragment, 'votes'> & {
   votes: ResolvedVote[];
 };
 
-export type AppRound = Omit<GgApplicationRound, 'applications'> & {
+export type AppRound = Omit<GgApplicationRound, 'applications' | 'rubric'> & {
   rubric: Rubric;
   applications: ResolvedApplication[];
 };
