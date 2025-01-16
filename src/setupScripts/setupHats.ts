@@ -122,13 +122,7 @@ export const mintJudgeHat = async () => {
     abi: HatsABI,
     address: ADDR.HATS,
     functionName: 'batchMintHats',
-    args: [
-      [HATS.JUDGE, HATS.JUDGE],
-      [
-        '0xD800B05c70A2071BC1E5Eac5B3390Da1Eb67bC9D',
-        '0x57ffb33cC9D786da4087d970b0B0053017f26afc',
-      ],
-    ],
+    // args: [[HATS.JUDGE], ['']],
   });
 
   const hash = await client.writeContract(request);

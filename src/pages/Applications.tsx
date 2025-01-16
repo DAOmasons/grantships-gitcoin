@@ -108,7 +108,9 @@ export const Applications = () => {
               </Group>
               <Stack gap={0} align="flex-end">
                 <Group mb={4} gap={8}>
-                  <Text c="subtle">Avg. {app.avgScore} %</Text>
+                  <Text c="subtle">
+                    Avg. {Number(app.avgScore).toFixed()} %
+                  </Text>
                   <Progress
                     w={160}
                     h={8}

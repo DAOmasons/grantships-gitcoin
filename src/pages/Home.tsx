@@ -23,6 +23,7 @@ import {
   deployRubricVoting,
   finalizeChoices,
 } from '../setupScripts/chews';
+import { mintJudgeHat } from '../setupScripts/setupHats';
 
 export const Home = () => {
   const theme = useMantineTheme();
@@ -55,6 +56,7 @@ export const Home = () => {
           </Box>
         </Group>
       </Container>
+      {/* <Button onClick={mintJudgeHat}>Fire</Button> */}
       <InnerContainer>
         <Box mb={120}>
           <Title mb="xs" fz="h3" order={2}>
