@@ -3,6 +3,7 @@ fragment Vote on GGApplicationVote {
   createdAt
   amount
   feedback
+  reviewer
 }
 
 fragment Application on GGApplication {

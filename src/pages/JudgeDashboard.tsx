@@ -5,11 +5,11 @@ import { useChews } from '../hooks/useChews';
 import { AddressAvatar } from '../components/AddressAvatar';
 import { Address } from 'viem';
 import { Link } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 
 export const JudgeDashboard = () => {
   const { applicationRound, isLoadingAppRound } = useChews();
-
-  console.log('applicationRound', applicationRound);
+  const { address } = useAccount();
 
   return (
     <PageLayout title="Judge Dashboard">
@@ -33,7 +33,10 @@ export const JudgeDashboard = () => {
       <Box>
         {!isLoadingAppRound &&
           applicationRound?.applications.map((app, index) => {
-            const hasUserVoted = false;
+            const hasUserVoted = app.votes.some(
+              (vote) => vote.reviewer === address
+            );
+
             return (
               <Group key={`${app.registrar}-${index}`} px={32} py={16} mb={8}>
                 <AddressAvatar address={app.registrar as Address} size={56} />

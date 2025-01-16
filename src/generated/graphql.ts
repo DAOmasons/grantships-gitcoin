@@ -1126,6 +1126,7 @@ export type GgApplicationVote = {
   db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
   feedback: Scalars['String']['output'];
   id: Scalars['String']['output'];
+  reviewer: Scalars['String']['output'];
   validFeedback: Scalars['Boolean']['output'];
 };
 
@@ -1162,6 +1163,7 @@ export type GgApplicationVote_Bool_Exp = {
   db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
   feedback?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
+  reviewer?: InputMaybe<String_Comparison_Exp>;
   validFeedback?: InputMaybe<Boolean_Comparison_Exp>;
 };
 
@@ -1173,6 +1175,7 @@ export type GgApplicationVote_Max_Order_By = {
   db_write_timestamp?: InputMaybe<Order_By>;
   feedback?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  reviewer?: InputMaybe<Order_By>;
 };
 
 /** order by min() on columns of table "GGApplicationVote" */
@@ -1183,6 +1186,7 @@ export type GgApplicationVote_Min_Order_By = {
   db_write_timestamp?: InputMaybe<Order_By>;
   feedback?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  reviewer?: InputMaybe<Order_By>;
 };
 
 /** Ordering options when selecting data from "GGApplicationVote". */
@@ -1194,6 +1198,7 @@ export type GgApplicationVote_Order_By = {
   db_write_timestamp?: InputMaybe<Order_By>;
   feedback?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  reviewer?: InputMaybe<Order_By>;
   validFeedback?: InputMaybe<Order_By>;
 };
 
@@ -1211,6 +1216,8 @@ export enum GgApplicationVote_Select_Column {
   Feedback = 'feedback',
   /** column name */
   Id = 'id',
+  /** column name */
+  Reviewer = 'reviewer',
   /** column name */
   ValidFeedback = 'validFeedback'
 }
@@ -1249,6 +1256,7 @@ export type GgApplicationVote_Stream_Cursor_Value_Input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
   feedback?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
+  reviewer?: InputMaybe<Scalars['String']['input']>;
   validFeedback?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
@@ -4391,16 +4399,16 @@ export type Timestamptz_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
-export type VoteFragment = { __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string };
+export type VoteFragment = { __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string };
 
-export type ApplicationFragment = { __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string }> };
+export type ApplicationFragment = { __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string }> };
 
 export type GetApplicationRoundQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type GetApplicationRoundQuery = { __typename?: 'query_root', GGApplicationRound_by_pk?: { __typename?: 'GGApplicationRound', id: string, createdAt: number, votesParams_id: string, choicesParams_id: string, postedBy: string, rubric: string, validRubric: boolean, applications: Array<{ __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string }> }> } | null };
+export type GetApplicationRoundQuery = { __typename?: 'query_root', GGApplicationRound_by_pk?: { __typename?: 'GGApplicationRound', id: string, createdAt: number, votesParams_id: string, choicesParams_id: string, postedBy: string, rubric: string, validRubric: boolean, applications: Array<{ __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string }> }> } | null };
 
 export type GetRecentTransactionQueryVariables = Exact<{
   txHash: Scalars['String']['input'];
@@ -4415,6 +4423,7 @@ export const VoteFragmentDoc = gql`
   createdAt
   amount
   feedback
+  reviewer
 }
     `;
 export const ApplicationFragmentDoc = gql`

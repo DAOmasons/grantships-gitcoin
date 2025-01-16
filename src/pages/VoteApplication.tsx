@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PageLayout } from '../layout/Page';
 import { Stepper, Text } from '@mantine/core';
 import { RUBRIC_COPY } from '../constants/rubric';
 import { useChews } from '../hooks/useChews';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RoundApplicationContent } from '../constants/dummyApplications';
 import { RubricStep } from '../components/rubric/RubricStep';
 import { useTx } from '../contexts/useTx';
@@ -14,6 +14,7 @@ import {
   parseEther,
 } from 'viem';
 import ContestAbi from '../abi/Contest.json';
+import { useAccount } from 'wagmi';
 
 export const VoteApplication = () => {
   const { id } = useParams();
@@ -21,11 +22,17 @@ export const VoteApplication = () => {
   const [scores, setScores] = useState<Record<string, number>>({});
   const [feedback, setFeedback] = useState<Record<string, string>>({});
   const { tx } = useTx();
+  const { address } = useAccount();
+  const navigate = useNavigate();
 
   const { applicationRound, isLoadingAppRound } = useChews();
 
   const currentApplication = applicationRound?.applications.find(
     (app) => app.id === id
+  );
+
+  const hasUserVoted = currentApplication?.votes.some(
+    (vote) => vote.reviewer === address
   );
 
   const appCopy = currentApplication?.copy;
@@ -42,6 +49,15 @@ export const VoteApplication = () => {
       </PageLayout>
     );
   }
+
+  useEffect(() => {
+    if (hasUserVoted) {
+      const userVote = currentApplication?.votes.find(
+        (vote) => vote.reviewer === address
+      );
+      navigate(`/review/${userVote?.id}`);
+    }
+  }, [hasUserVoted]);
 
   const handleVote = () => {
     const maxScore = 40;

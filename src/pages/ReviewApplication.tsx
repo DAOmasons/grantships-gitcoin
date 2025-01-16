@@ -1,8 +1,9 @@
+import { Title } from '@mantine/core';
 import { PageLayout } from '../layout/Page';
 
-export const ReviewApplication = () => {
+export const Review = () => {
   return (
-    <PageLayout title="Review Application">
+    <PageLayout title="Application Review">
       <></>
     </PageLayout>
   );
