@@ -12,14 +12,16 @@ import {
 } from '@mantine/core';
 import { PageLayout } from '../layout/Page';
 import { useChews } from '../hooks/useChews';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IconBrandTelegram, IconBrandX, IconMail } from '@tabler/icons-react';
 import { AddressAvatar } from '../components/AddressAvatar';
 import { truncateAddr } from '../utils/common';
+import { Address } from 'viem';
 
 export const ViewApplication = () => {
   const { id } = useParams();
   const theme = useMantineTheme();
+  const navigate = useNavigate();
 
   const { applicationRound } = useChews();
 
@@ -142,20 +144,26 @@ export const ViewApplication = () => {
         </Text>
       )}
       {selectedApplication?.votes?.map((vote) => {
+        const totalScore = Object.values(vote.review.scores).reduce(
+          (acc, score) => acc + score,
+          0
+        );
         return (
-          <Box mb="lg">
+          <Box mb="lg" key={vote.id}>
             <Group mb={18} justify="space-between">
               <Group gap="sm">
-                <AddressAvatar
-                  address={'0xd800b05c70a2071bc1e5eac5b3390da1eb67bc9d'}
-                />
+                <AddressAvatar address={vote.reviewer as Address} />
                 <Text fz="lg" fw={600}>
-                  {truncateAddr('0xd800b05c70a2071bc1e5eac5b3390da1eb67bc9d')}
+                  {truncateAddr(vote.reviewer)}
                 </Text>
               </Group>
               <Group gap="sm">
-                <Text c="subtle">Score 34/40</Text>
-                <Button variant="secondary" size="xs" onClick={() => {}}>
+                <Text c="subtle">Score {totalScore}/40</Text>
+                <Button
+                  variant="secondary"
+                  size="xs"
+                  onClick={() => navigate(`/review/${vote.id}`)}
+                >
                   Read Review
                 </Button>
               </Group>
@@ -166,18 +174,7 @@ export const ViewApplication = () => {
                 border: `1px solid ${theme.colors.dark[4]}`,
               }}
             >
-              <Text>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
-              </Text>
+              <Text>{vote.review.feedback['Closing Comment']}</Text>
             </Card>
           </Box>
         );

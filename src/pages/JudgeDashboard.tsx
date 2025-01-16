@@ -2,8 +2,6 @@ import { Avatar, Box, Button, Group, Stack, Text, Title } from '@mantine/core';
 import { InfoTimeline } from '../components/InfoTimeline';
 import { PageLayout } from '../layout/Page';
 import { useChews } from '../hooks/useChews';
-import { AddressAvatar } from '../components/AddressAvatar';
-import { Address } from 'viem';
 import { Link } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 

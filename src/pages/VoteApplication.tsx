@@ -36,6 +36,16 @@ export const VoteApplication = () => {
   );
 
   const appCopy = currentApplication?.copy;
+
+  useEffect(() => {
+    if (hasUserVoted) {
+      const userVote = currentApplication?.votes.find(
+        (vote) => vote.reviewer === address
+      );
+      navigate(`/review/${userVote?.id}`);
+    }
+  }, [hasUserVoted]);
+
   const registrar = currentApplication?.registrar;
 
   if (isLoadingAppRound) {
@@ -49,15 +59,6 @@ export const VoteApplication = () => {
       </PageLayout>
     );
   }
-
-  useEffect(() => {
-    if (hasUserVoted) {
-      const userVote = currentApplication?.votes.find(
-        (vote) => vote.reviewer === address
-      );
-      navigate(`/review/${userVote?.id}`);
-    }
-  }, [hasUserVoted]);
 
   const handleVote = () => {
     const maxScore = 40;
@@ -96,12 +97,6 @@ export const VoteApplication = () => {
       writeContractOptions: {
         onPollSuccess() {
           refetchAppRound?.();
-        },
-      },
-      viewParams: {
-        successButton: {
-          label: 'Go to Review',
-          onClick: () => navigate(`/review/vote-${choiceId}-${address}`),
         },
       },
     });

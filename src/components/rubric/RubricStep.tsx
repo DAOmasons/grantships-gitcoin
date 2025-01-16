@@ -45,7 +45,7 @@ export const RubricStep = ({
   const theme = useMantineTheme();
 
   const allQuestionsAnswered = section.questions.every(
-    (question) => scores[question.title]
+    (question) => scores[question.title] != null
   );
 
   const finalStep = totalSteps && index === totalSteps - 1;
