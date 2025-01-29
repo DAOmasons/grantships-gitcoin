@@ -18,12 +18,6 @@ import {
 import { BGImage } from '../assets/BGImage';
 import { SplainerAccordion } from '../components/SplainerAccordion';
 import { CycleCircle } from '../components/CycleCircle';
-import {
-  createApplication,
-  deployRubricVoting,
-  finalizeChoices,
-} from '../setupScripts/chews';
-import { mintJudgeHat } from '../setupScripts/setupHats';
 
 export const Home = () => {
   const theme = useMantineTheme();

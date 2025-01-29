@@ -101,6 +101,7 @@ export const theme = createTheme({
     purple: PURPLE,
     subtle: SUBTLE_TEXT,
   },
+  backgroundColor: 'red',
 
   components: {
     Text: {

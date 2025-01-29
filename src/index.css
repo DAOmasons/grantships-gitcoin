@@ -17,3 +17,7 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+:root[data-mantine-color-scheme='dark'] {
+  --mantine-color-body: #0d0d0d;
+}

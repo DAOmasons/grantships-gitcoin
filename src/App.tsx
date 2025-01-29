@@ -1,4 +1,6 @@
 import '@mantine/core/styles.css';
+import './index.css';
+
 import { MantineProvider } from '@mantine/core';
 import { TxProvider } from './contexts/TxContext';
 import { BrowserRouter } from 'react-router-dom';
@@ -20,7 +22,7 @@ export default function App() {
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider theme={rbkTheme}>
             <GlobalContextProvider>
-              <MantineProvider theme={theme} defaultColorScheme="light">
+              <MantineProvider theme={theme} defaultColorScheme="dark">
                 <TxProvider>
                   <HorizontalNav />
                   <ClientRoutes />
