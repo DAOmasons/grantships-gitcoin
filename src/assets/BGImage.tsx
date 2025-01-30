@@ -3,7 +3,6 @@ import { Box } from '@mantine/core';
 export const BGImage = () => {
   return (
     <Box
-      // maw="100vw"
       pos="absolute"
       top="0"
       bottom="0"

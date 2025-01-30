@@ -18,6 +18,7 @@ import {
 import { BGImage } from '../assets/BGImage';
 import { SplainerAccordion } from '../components/SplainerAccordion';
 import { CycleCircle } from '../components/CycleCircle';
+import { GSMotif } from '../assets/GSMotif';
 
 export const Home = () => {
   const theme = useMantineTheme();
@@ -27,14 +28,16 @@ export const Home = () => {
       <BGImage />
       <Container maw={1280} mb={120}>
         <Group align="center" h={700} mx="xl">
-          <Box maw={450}>
+          <Box maw={450} pos="relative">
+            <GSMotif />
             <Title order={1} fz="h1" mb="sm" c="highlight">
-              Fund <span style={{ color: theme.colors.purple[6] }}>More</span>{' '}
-              of What Matters
+              <span style={{ color: theme.colors.purple[6] }}>Accelerate</span>
+              <br />
+              What Matters
             </Title>
             <Text c="subtle">
-              Gitcoin{'<>'}Grantships is an open, decentralized selection{' '}
-              mechanism for funding what matters to the Gitcoin DAO
+              Grantships is an open, decentralized selection mechanism for
+              funding what matters to the Gitcoin DAO
             </Text>
           </Box>
           <Box ml="auto">
