@@ -9,12 +9,12 @@ export const Elections = () => {
       <Title order={3} fz="h3" mb="xxl">
         Judge Elections
       </Title>
-      <Card bg={colors.dark[1]}>
+      <Card bg={colors.dark[6]}>
         <Flex h={100} justify="center" align="center" direction="column">
           <Text fw={600} fz="lg" mb="sm">
             Under Construction
           </Text>
-          <Text>
+          <Text c="subtle">
             We still need to figure out of which platform we would like to use
             for voting
           </Text>
