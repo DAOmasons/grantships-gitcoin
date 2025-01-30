@@ -3,7 +3,7 @@ import { Box } from '@mantine/core';
 export const BGImage = () => {
   return (
     <Box
-      maw="100vw"
+      // maw="100vw"
       pos="absolute"
       top="0"
       bottom="0"
@@ -12,6 +12,7 @@ export const BGImage = () => {
       style={{ zIndex: -1 }}
     >
       <svg
+        style={{ maxWidth: '100%' }}
         width="1920"
         height="700"
         viewBox="0 0 1920 700"
