@@ -19,9 +19,11 @@ import { BGImage } from '../assets/BGImage';
 import { SplainerAccordion } from '../components/SplainerAccordion';
 import { CycleCircle } from '../components/CycleCircle';
 import { GSMotif } from '../assets/GSMotif';
+import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
   const theme = useMantineTheme();
+  const navigate = useNavigate();
 
   return (
     <Box>
@@ -36,8 +38,8 @@ export const Home = () => {
               What Matters
             </Title>
             <Text c="subtle">
-              Grantships is an open, decentralized selection mechanism for
-              funding what matters to the Gitcoin DAO
+              Grantships is an open, decentralized selection mechanism that
+              helps Gitcoin fu
             </Text>
           </Box>
           <Box ml="auto">
@@ -53,8 +55,20 @@ export const Home = () => {
           </Box>
         </Group>
       </Container>
-      {/* <Button onClick={mintJudgeHat}>Fire</Button> */}
       <InnerContainer>
+        <Card variant="kelp-outline" mb={120}>
+          <Group justify="space-between">
+            <Box>
+              <Text fz={28} mb="12">
+                Want to Run a Round?
+              </Text>
+              <Text>Applications can be submitted any time</Text>
+            </Box>
+            <Button onClick={() => navigate('submit-application')}>
+              Submit Application
+            </Button>
+          </Group>
+        </Card>
         <Box mb={120}>
           <Title mb="xs" fz="h3" order={2}>
             Round Selection
@@ -74,17 +88,6 @@ export const Home = () => {
             </Group>
           </Card>
         </Box>
-        <Card variant="kelp-outline" mb={120}>
-          <Group justify="space-between">
-            <Box>
-              <Text fz={28} mb="12">
-                Want to Run a Round?
-              </Text>
-              <Text>Applications can be submitted any time</Text>
-            </Box>
-            <Button>Submit Application</Button>
-          </Group>
-        </Card>
         <Box mb={120}>
           <Title mb="xs" fz="h3" order={2}>
             Our Grant Selection Process

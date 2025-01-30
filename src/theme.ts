@@ -1,11 +1,11 @@
-import { createTheme } from '@mantine/core';
+import { createTheme, TextInput } from '@mantine/core';
 import typographyClasses from './style/typography.module.css';
 import buttonClasses from './style/button.module.css';
 import cardClasses from './style/card.module.css';
 import stepperClasses from './style/stepper.module.css';
 import formClasses from './style/form.module.css';
 import accordionClasses from './style/accordion.module.css';
-import { darkTheme, lightTheme } from '@rainbow-me/rainbowkit';
+import { darkTheme } from '@rainbow-me/rainbowkit';
 import { Theme as RainbowKitTheme } from '@rainbow-me/rainbowkit';
 
 const KELP = [
@@ -100,6 +100,9 @@ export const theme = createTheme({
       classNames: {
         root: typographyClasses.root,
       },
+      defaultProps: {
+        c: DARK[1],
+      },
     },
     Button: {
       classNames: {
@@ -125,9 +128,18 @@ export const theme = createTheme({
         stepBody: stepperClasses.stepBody,
       },
     },
+    TextInput: {
+      classNames: {
+        input: formClasses.root,
+        label: formClasses.label,
+        section: formClasses.inputSection,
+        wrapper: formClasses.input,
+      },
+    },
     Textarea: {
       classNames: {
         input: formClasses.root,
+        label: formClasses.label,
       },
       defaultProps: {
         rows: 1,
@@ -150,10 +162,14 @@ export const theme = createTheme({
         root: accordionClasses.root,
       },
     },
-
     Divider: {
       defaultProps: {
         color: DARK[5],
+      },
+    },
+    Modal: {
+      classNames: {
+        content: cardClasses.modalContent,
       },
     },
   },

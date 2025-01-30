@@ -12,7 +12,7 @@
   "dependencies": {
     "@mantine/core": "7.15.3",
     "@mantine/dates": "^7.15.3",
-    "@mantine/form": "^7.15.3",
+    "@mantine/form": "^7.16.2",
     "@mantine/hooks": "^7.15.3",
     "@rainbow-me/rainbowkit": "^2.2.1",
     "@tabler/icons-react": "^3.28.1",

@@ -3,7 +3,7 @@ import { Box, useMantineTheme } from '@mantine/core';
 export const GSMotif = () => {
   const theme = useMantineTheme();
   return (
-    <Box pos="absolute" style={{ zIndex: -1, right: -60, top: -60 }}>
+    <Box pos="absolute" style={{ zIndex: -1, right: -50, top: -50 }}>
       <svg
         width="190"
         height="209"
