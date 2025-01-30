@@ -23,12 +23,12 @@ export const Home = () => {
   const theme = useMantineTheme();
 
   return (
-    <Box pos="relative">
+    <Box>
       <BGImage />
       <Container maw={1280} mb={120}>
         <Group align="center" h={700} mx="xl">
           <Box maw={450}>
-            <Title order={1} fz="h1" mb="sm">
+            <Title order={1} fz="h1" mb="sm" c="highlight">
               Fund <span style={{ color: theme.colors.purple[6] }}>More</span>{' '}
               of What Matters
             </Title>

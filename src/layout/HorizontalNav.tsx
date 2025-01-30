@@ -40,7 +40,7 @@ export const HorizontalNav = () => {
   return (
     <Group ml={40} mt={36} gap="xl">
       <Link to="/">
-        <Text fz={28} variant="label" mr={10}>
+        <Text fz={28} variant="label" c="highlight" mr={10}>
           GrantShips
         </Text>
       </Link>

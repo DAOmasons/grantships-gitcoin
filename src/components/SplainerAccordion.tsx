@@ -108,7 +108,7 @@ export const SplainerAccordion = ({
                       stroke={1.5}
                       color={colors.dark[4]}
                     />
-                    <Text>{point}</Text>
+                    <Text c="subtle">{point}</Text>
                   </Group>
                 ))}
               </Stack>
