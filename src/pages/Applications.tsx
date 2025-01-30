@@ -87,12 +87,13 @@ export const Applications = () => {
                 <Box pos="relative">
                   {Icon && (
                     <Icon
-                      size={24}
+                      size={30}
                       fill={'white'}
+                      color={colors.dark[6]}
                       style={{
                         position: 'absolute',
-                        top: -3,
-                        right: -6,
+                        top: -4,
+                        right: -8,
                         zIndex: 1,
                       }}
                     />
@@ -116,7 +117,7 @@ export const Applications = () => {
                     h={8}
                     value={Number(app.avgScore)}
                     color={colors.purple[6]}
-                    bg={colors.dark[2]}
+                    bg={colors.dark[6]}
                   />
                 </Group>
                 <Text c="subtle">Currently {app.amountReviewed} Voted</Text>

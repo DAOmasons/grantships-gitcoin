@@ -4,6 +4,7 @@ import buttonClasses from './style/button.module.css';
 import cardClasses from './style/card.module.css';
 import stepperClasses from './style/stepper.module.css';
 import formClasses from './style/form.module.css';
+import accordionClasses from './style/accordion.module.css';
 import { lightTheme } from '@rainbow-me/rainbowkit';
 import { Theme as RainbowKitTheme } from '@rainbow-me/rainbowkit';
 
@@ -143,13 +144,14 @@ export const theme = createTheme({
       },
     },
     Accordion: {
-      classNames: {},
-      defaultProps: {},
+      classNames: {
+        control: accordionClasses.control,
+      },
     },
 
     Divider: {
       defaultProps: {
-        // color: DARK[1],
+        color: DARK[6],
       },
     },
   },
