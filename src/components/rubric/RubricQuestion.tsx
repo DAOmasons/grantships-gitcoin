@@ -43,41 +43,51 @@ export const RubricQuestion = ({
 
   return (
     <Box mb="xxl">
-      <InputLabel fw={600} fz="lg" mb={24} key={question.title} required>
+      <InputLabel
+        fw={600}
+        fz="lg"
+        mb={24}
+        key={question.title}
+        c={colors.dark[2]}
+        required
+      >
         {question.title}
       </InputLabel>
       {question.options.map((option) => {
+        const isChecked = scores[question.title] === option.optionScore;
+
         return (
           <Radio
             key={option.optionText}
             size="md"
-            checked={scores[question.title] === option.optionScore}
+            checked={isChecked}
             onChange={() => {
               setScores(question.title, option.optionScore);
             }}
             mb={22}
+            c={isChecked ? colors.dark[1] : colors.dark[4]}
             label={`${option.optionText} (${option.optionScore} points)`}
           />
         );
       })}
       <Group gap={8} mt={24}>
-        <Text fz="lg" c={colors.dark[4]}>
+        <Text fz="lg" c={'subtle'}>
           Response from
         </Text>
         <Avatar src={imgUrl} size={24} />
-        <Text fz="lg" c={colors.dark[4]}>
+        <Text fz="lg" c={'subtle'}>
           {appCopy.roundName}
         </Text>
         <Group gap={4} style={{ cursor: 'pointer' }} onClick={() => toggle()}>
-          <Text c={colors.dark[4]} fz="lg" td="underline" fw={500}>
+          <Text c={'subtle'} fz="lg" td="underline" fw={500}>
             Expand
           </Text>
           {opened ? <IconChevronUp /> : <IconChevronDown />}
         </Group>
       </Group>
       <Collapse in={opened}>
-        <Card variant="inner" mt={'md'}>
-          <Text c={colors.dark[4]}>{applicantResponse?.response}</Text>
+        <Card variant="inner" mt={'md'} bg={colors.dark[6]}>
+          <Text c={colors.dark[2]}>{applicantResponse?.response}</Text>
         </Card>
       </Collapse>
     </Box>

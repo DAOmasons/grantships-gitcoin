@@ -9,19 +9,19 @@
   color: var(--mantine-color-dark-4);
   font-weight: 400;
   font-size: rem(16px);
-  background-color: var(--mantine-color-dark-1);
-  border: 1px solid var(--mantine-color-dark-1);
+  color: var(--mantine-color-dark-4);
+  background-color: var(--mantine-color-dark-6);
+  border: 1px solid var(--mantine-color-dark-6);
 
   &[data-progress='true'] {
-    background-color: var(--mantine-color-white);
-    border: 1px solid var(--mantine-color-purple-6);
+    background-color: var(--mantine-color-kelp-10);
+    border: 1px solid var(--mantine-color-kelp-6);
     /* color: var(--mantine-color-white); */
   }
 
   &[data-completed='true'] {
-    background-color: var(--mantine-color-purple-6);
-    border: 1px solid var(--mantine-color-purple-6);
-    color: var(--mantine-color-white);
+    background-color: var(--mantine-color-kelp-6);
+    border: 1px solid var(--mantine-color-kelp-6);
   }
 
   /* border: 1px solid var(--mantine-color-purple-6); */
@@ -37,12 +37,12 @@
 }
 
 .separator {
-  background-color: var(--mantine-color-dark-2);
+  background-color: var(--mantine-color-dark-4);
   margin-inline: rem(10px);
   height: rem(1px);
 
   &[data-active='true'] {
-    background-color: var(--mantine-color-purple-6);
+    background-color: var(--mantine-color-kelp-6);
 
     /* border: px solid var(--mantine-color-purple-6); */
   }

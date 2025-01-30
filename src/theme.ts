@@ -137,6 +137,7 @@ export const theme = createTheme({
     Radio: {
       classNames: {
         radio: formClasses.radio,
+        icon: formClasses.radioIcon,
         root: formClasses.radioRoot,
       },
       defaultProps: {
@@ -151,7 +152,7 @@ export const theme = createTheme({
 
     Divider: {
       defaultProps: {
-        color: DARK[6],
+        color: DARK[5],
       },
     },
   },

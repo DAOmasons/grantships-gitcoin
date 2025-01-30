@@ -9,7 +9,7 @@ import {
 } from '@mantine/core';
 import { useChews } from '../hooks/useChews';
 import { PageLayout } from '../layout/Page';
-import { Question, RubricSection } from '../constants/rubric';
+import { Question } from '../constants/rubric';
 import { useParams } from 'react-router-dom';
 import { ResolvedApplication, ResolvedVote } from '../queries/getRounds';
 

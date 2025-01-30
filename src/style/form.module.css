@@ -1,7 +1,8 @@
 .root {
   padding: var(--mantine-spacing-md);
-  border: 1px solid var(--mantine-color-dark-1);
+  border: 1px solid var(--mantine-color-dark-6);
   font-size: var(--mantine-font-size-md);
+  background-color: var(--mantine-color-dark-7);
 
   &:focus {
     border-color: var(--mantine-color-kelp-6);
@@ -9,5 +10,10 @@
 }
 
 .radio {
-  border: 1px solid var(--mantine-color-dark-2);
+  border: 2px solid var(--mantine-color-dark-5);
+  background-color: var(--mantine-color-dark-6);
+}
+
+.radioIcon {
+  color: var(--mantine-color-dark-6);
 }

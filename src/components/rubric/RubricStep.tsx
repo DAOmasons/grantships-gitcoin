@@ -51,8 +51,8 @@ export const RubricStep = ({
   const finalStep = totalSteps && index === totalSteps - 1;
 
   return (
-    <Box mt={56}>
-      <Title order={3} fz="h3" c={theme.colors.kelp[6]} mb="sm">
+    <Box mt={'xl'}>
+      <Title order={3} fz="h3" c={'highlight'} mb="sm">
         {section.sectionName}
       </Title>
       <Text mb="lg">

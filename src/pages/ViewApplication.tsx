@@ -136,7 +136,7 @@ export const ViewApplication = () => {
           <Box w="50%"></Box>
         </Group>
       </Stack>
-      <Divider color={theme.colors.dark[1]} mb="lg" />
+      <Divider mb="lg" />
       {selectedApplication?.votes && selectedApplication.votes.length > 0 && (
         <Text fw={600} fz="lg" mb="md">
           Closing comment from the judges

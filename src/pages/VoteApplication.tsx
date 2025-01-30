@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { PageLayout } from '../layout/Page';
-import { Stepper, Text } from '@mantine/core';
+import { Stepper, Text, useMantineTheme } from '@mantine/core';
 import { RUBRIC_COPY } from '../constants/rubric';
 import { useChews } from '../hooks/useChews';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -15,9 +15,11 @@ import {
 } from 'viem';
 import ContestAbi from '../abi/Contest.json';
 import { useAccount } from 'wagmi';
+import { IconCheck } from '@tabler/icons-react';
 
 export const VoteApplication = () => {
   const { id } = useParams();
+  const { colors } = useMantineTheme();
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [feedback, setFeedback] = useState<Record<string, string>>({});
@@ -118,7 +120,7 @@ export const VoteApplication = () => {
             <Stepper.Step
               key={index}
               label={section.sectionLabel}
-              completedIcon={index + 1}
+              completedIcon={<IconCheck color={colors.dark[6]} />}
             >
               <RubricStep
                 section={section}
