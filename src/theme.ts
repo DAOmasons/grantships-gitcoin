@@ -1,11 +1,11 @@
-import { Accordion, createTheme, Divider, Stepper } from '@mantine/core';
+import { createTheme } from '@mantine/core';
 import typographyClasses from './style/typography.module.css';
 import buttonClasses from './style/button.module.css';
 import cardClasses from './style/card.module.css';
 import stepperClasses from './style/stepper.module.css';
 import formClasses from './style/form.module.css';
 import accordionClasses from './style/accordion.module.css';
-import { lightTheme } from '@rainbow-me/rainbowkit';
+import { darkTheme, lightTheme } from '@rainbow-me/rainbowkit';
 import { Theme as RainbowKitTheme } from '@rainbow-me/rainbowkit';
 
 const KELP = [
@@ -147,6 +147,7 @@ export const theme = createTheme({
     Accordion: {
       classNames: {
         control: accordionClasses.control,
+        root: accordionClasses.root,
       },
     },
 
@@ -159,16 +160,18 @@ export const theme = createTheme({
 });
 
 export const rbkTheme: RainbowKitTheme = {
-  ...lightTheme({}),
+  ...darkTheme({}),
   colors: {
-    ...lightTheme().colors,
+    ...darkTheme().colors,
     accentColor: KELP[6],
-    // modalText: DARK[6],
-    // modalTextSecondary: DARK[3],
-    // modalTextDim: 'red',
+    modalBackground: DARK[6],
+    modalText: DARK[1],
+    modalTextSecondary: DARK[4],
+    modalBorder: DARK[6],
+    modalTextDim: DARK[4],
   },
   radii: {
-    ...lightTheme().radii,
+    ...darkTheme().radii,
     modal: '6px',
     menuButton: '6px',
     modalMobile: '6px',

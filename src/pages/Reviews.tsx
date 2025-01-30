@@ -66,7 +66,7 @@ export const Reviews = () => {
                     h={8}
                     value={Number(avgScore)}
                     color={colors.purple[6]}
-                    bg={colors.dark[2]}
+                    bg={colors.dark[6]}
                   />
                   <Text c="subtle">Avg. {Number(avgScore).toFixed()} %</Text>
                 </Stack>
@@ -105,7 +105,8 @@ export const Reviews = () => {
                           value={(totalScore / 40) * 100}
                           w={160}
                           h={8}
-                          color={colors.dark[2]}
+                          color={colors.dark[4]}
+                          bg={colors.dark[6]}
                           //   opacity={0.6}
                         />
                         <Text c="subtle">Total {totalScore}/40</Text>

@@ -89,9 +89,9 @@ export const Home = () => {
           <Text c="subtle">
             The GrantShips evolutionary mechanism in a nutshell
           </Text>
-          <Card>
+          <Box p="lg">
             <SplainerAccordion activeRound="2" />
-          </Card>
+          </Box>
         </Box>
       </InnerContainer>
     </Box>
