@@ -86,13 +86,10 @@ export const Home = () => {
           <Title mb="xs" fz="h3" order={2}>
             Our Grant Selection Process
           </Title>
-          <Text c="subtle" mb="lg">
+          <Text c="subtle">
             The GrantShips evolutionary mechanism in a nutshell
           </Text>
           <Card>
-            <Text mb="sm" fw={600}>
-              Voting Phases
-            </Text>
             <SplainerAccordion activeRound="2" />
           </Card>
         </Box>
