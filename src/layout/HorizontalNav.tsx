@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ConnectButton } from '../components/ConnectButton';
 import { useUserData } from '../hooks/useUserData';
+import { SmallLogo } from '../assets/SmallLogo';
 
 const publicItems = [
   {
@@ -40,9 +41,9 @@ export const HorizontalNav = () => {
   return (
     <Group ml={40} mt={36} gap="xl">
       <Link to="/">
-        <Text fz={28} variant="label" c="highlight" mr={10}>
-          GrantShips
-        </Text>
+        <Box pos="relative">
+          <SmallLogo />
+        </Box>
       </Link>
       {navItems.map((item) => (
         <Link key={item.label} to={item.url}>
