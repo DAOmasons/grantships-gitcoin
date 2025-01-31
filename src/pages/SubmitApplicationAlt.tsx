@@ -1,11 +1,12 @@
 import {
   Avatar,
   Box,
-  Divider,
+  Button,
   Group,
   Stack,
   Stepper,
   Text,
+  Textarea,
   TextInput,
   Title,
   useMantineTheme,
@@ -23,9 +24,12 @@ import {
   IconPhoto,
 } from '@tabler/icons-react';
 import { useForm } from '@mantine/form';
+import { useChews } from '../hooks/useChews';
+import { QUESTION_DESCRIPTIONS } from '../constants/rubric';
 
 export const SubmitApplicationAlt = () => {
   const [step, setStep] = useState(0);
+  const { applicationRound } = useChews();
   const form = useForm({
     initialValues: {
       roundName: '',
@@ -41,6 +45,8 @@ export const SubmitApplicationAlt = () => {
   });
   const { colors } = useMantineTheme();
 
+  const appCopy = applicationRound?.rubric;
+
   return (
     <PageLayout title="Submit Application">
       <Stepper
@@ -48,22 +54,41 @@ export const SubmitApplicationAlt = () => {
         completedIcon={<IconCheck color={colors.dark[6]} />}
       >
         <Stepper.Step>
-          <StepLayout sectionName="Applicant Details">
+          <StepLayout
+            sectionName="Applicant Details"
+            step={step}
+            setStep={setStep}
+          >
             <ApplicantDetails />
           </StepLayout>
         </Stepper.Step>
-        <Stepper.Step>
-          <StepLayout sectionName="Round Operators and Team"></StepLayout>
-        </Stepper.Step>
-        <Stepper.Step>
-          <StepLayout sectionName="Fundraising"></StepLayout>
-        </Stepper.Step>
-        <Stepper.Step>
-          <StepLayout sectionName="Alignment with one of the GG23's Intents"></StepLayout>
-        </Stepper.Step>
-        <Stepper.Step>
-          <StepLayout sectionName="Community and Impact"></StepLayout>
-        </Stepper.Step>
+        {appCopy?.sections.map((section, index) => (
+          <Stepper.Step key={section.sectionName}>
+            <StepLayout
+              sectionName={section.sectionName}
+              step={step}
+              setStep={setStep}
+            >
+              {section.questions.map((question) => (
+                <Box key={question.title}>
+                  <Text fw={600} mb={8}>
+                    {question.title}
+                  </Text>
+                  <Text c="subtle" mb="sm">
+                    {QUESTION_DESCRIPTIONS[question.title]}
+                  </Text>
+                  <Textarea
+                    required
+                    placeholder={'Answer here'}
+                    rows={3}
+                    autosize={false}
+                    mb="lg"
+                  />
+                </Box>
+              ))}
+            </StepLayout>
+          </Stepper.Step>
+        ))}
       </Stepper>
     </PageLayout>
   );
@@ -72,16 +97,49 @@ export const SubmitApplicationAlt = () => {
 const StepLayout = ({
   sectionName,
   children,
+  step,
+  disabled,
+  setStep,
+  onSubmit,
 }: {
+  step: number;
   sectionName: string;
   children: ReactNode;
+  disabled?: boolean;
+  setStep: (step: number) => void;
+  onSubmit?: () => void;
 }) => {
+  const totalSteps = 5;
+
   return (
     <Box mt="xl">
       <Title order={3} fz="h3" mb="sm">
         {sectionName}
       </Title>
+      {step !== 0 && (
+        <Text mb={'lg'}>Please provide an answer for each question</Text>
+      )}
       {children}
+      <Box mt={70}>
+        <Group justify="center" gap="xl">
+          <Button
+            variant="secondary"
+            disabled={step === 0}
+            onClick={step === 0 ? undefined : () => setStep(step - 1)}
+          >
+            Back
+          </Button>
+          {step === totalSteps - 1 ? (
+            <Button disabled={disabled} onClick={onSubmit}>
+              Submit
+            </Button>
+          ) : (
+            <Button disabled={disabled} onClick={() => setStep(step + 1)}>
+              Next
+            </Button>
+          )}
+        </Group>
+      </Box>
     </Box>
   );
 };

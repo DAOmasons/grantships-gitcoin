@@ -1,9 +1,5 @@
-import { Box } from '@mantine/core';
-import React from 'react';
-
 export const SmallLogo = () => {
   return (
-    // <Box pos="absolute" top="0" right="0" style={{ zIndex: -1 }}>
     <svg
       width="166"
       height="38"
@@ -28,12 +24,11 @@ export const SmallLogo = () => {
           y2="32"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#EFE9E9" />
-          <stop offset="0.6" stop-color="#4F4F4F" />
-          <stop offset="1" stop-color="#0D0D0D" />
+          <stop stopColor="#EFE9E9" />
+          <stop offset="0.6" stopColor="#4F4F4F" />
+          <stop offset="1" stopColor="#0D0D0D" />
         </linearGradient>
       </defs>
     </svg>
-    // </Box>
   );
 };

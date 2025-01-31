@@ -41,15 +41,15 @@ export const HorizontalNav = () => {
   return (
     <Group ml={40} mt={36} gap="xl">
       <Link to="/">
-        <Box pos="relative">
-          <SmallLogo />
-        </Box>
+        <Text fz={28} variant="label" mr={10}>
+          GrantShips
+        </Text>
       </Link>
       {navItems.map((item) => (
         <Link key={item.label} to={item.url}>
           <Text
             variant="label"
-            fw={location.pathname === item.url ? 600 : 500}
+            fw={location.pathname === item.url ? 600 : 600}
             c={location.pathname === item.url ? undefined : 'subtle'}
           >
             {item.label}

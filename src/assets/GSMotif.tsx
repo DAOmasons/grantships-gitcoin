@@ -24,8 +24,8 @@ export const GSMotif = () => {
             y2="54.9902"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color={theme.colors.dark[7]} stop-opacity="0.9" />
-            <stop offset="0.991906" stop-color={theme.colors.dark[5]} />
+            <stop stopColor={theme.colors.dark[7]} stopOpacity="0.9" />
+            <stop offset="0.991906" stopColor={theme.colors.dark[5]} />
           </linearGradient>
         </defs>
       </svg>

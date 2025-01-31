@@ -192,3 +192,18 @@ export const RUBRIC_COPY: Rubric = {
     },
   ],
 };
+
+export const QUESTION_DESCRIPTIONS = {
+  'Identified Round Operator':
+    'Tell us about yourself. What experience do you have running grants programs or community initiatives? Do you have any experience working with Gitcoin Grants?',
+  'Team Members':
+    'Tell us about your team. Who are the key members and what experience do they have running grants programs or community initiatives? Do you have any experience working with Gitcoin Grants?',
+  'Matching Pool Impact':
+    'If you have ran a Gitcoin QF round before, how much did you raise in donations in proportion to matching funds received? Please provide links to those rounds. If you have not ran a Gitcoin QF round before, how much do you plan to raise in matching funds?',
+  'Mission Alignment':
+    'Take a moment to read the stated intents of Gitcoin at https://gitcoin.co/gg23. Describe how your program align with these intents?',
+  'Community Size and Engagement':
+    'Estimate the size of your community and describe how you engage with them. Please provide a number of active and engaged members. How many do you think will participate in this round? How do you plan to grow your community?',
+  'Impact Assessment Plan':
+    'What is your framework for assessing the impact of project funding? What metrics will you use to measure success? How will you report on the impact of the projects you fund?',
+};
