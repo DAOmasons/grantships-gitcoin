@@ -1,4 +1,4 @@
-import { createTheme, TextInput } from '@mantine/core';
+import { createTheme } from '@mantine/core';
 import typographyClasses from './style/typography.module.css';
 import buttonClasses from './style/button.module.css';
 import cardClasses from './style/card.module.css';

@@ -1,9 +1,7 @@
 import { PageLayout } from '../layout/Page';
 import {
   Avatar,
-  Box,
   Group,
-  Modal,
   Stack,
   Textarea,
   TextInput,
@@ -16,13 +14,9 @@ import {
   IconBrandGithub,
   IconBrandTelegram,
   IconBrandX,
-  IconCameraPlus,
   IconLink,
   IconMail,
   IconPhoto,
-  IconPictureInPicture,
-  IconUser,
-  IconUserBitcoin,
 } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 

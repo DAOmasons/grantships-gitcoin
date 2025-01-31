@@ -115,7 +115,7 @@ export const VoteApplication = () => {
   return (
     <PageLayout title="Application Vote">
       <Stepper active={step}>
-        {RUBRIC_COPY.sections.map((section, index) => {
+        {applicationRound?.rubric?.sections.map((section, index) => {
           return (
             <Stepper.Step
               key={index}

@@ -16,15 +16,12 @@
   &[data-progress='true'] {
     background-color: var(--mantine-color-kelp-10);
     border: 1px solid var(--mantine-color-kelp-6);
-    /* color: var(--mantine-color-white); */
   }
 
   &[data-completed='true'] {
     background-color: var(--mantine-color-kelp-6);
     border: 1px solid var(--mantine-color-kelp-6);
   }
-
-  /* border: 1px solid var(--mantine-color-purple-6); */
 }
 
 .stepBody {
@@ -43,9 +40,5 @@
 
   &[data-active='true'] {
     background-color: var(--mantine-color-kelp-6);
-
-    /* border: px solid var(--mantine-color-purple-6); */
   }
-
-  /* background-color: var(--mantine-color-purple-6); */
 }
