@@ -55,7 +55,7 @@ export const SubmitApplicationAlt = () => {
     initialValues: {
       roundName: '',
       imgUrl: '',
-      responses: {},
+      responses: {} as Record<string, string>,
       email: '',
       x: '',
       discord: '',
@@ -163,6 +163,11 @@ export const SubmitApplicationAlt = () => {
               sectionName={section.sectionName}
               step={step}
               setStep={setStep}
+              disabled={
+                !section.questions.every(
+                  (question) => form.values.responses[question.title]
+                )
+              }
             >
               {section.questions.map((question) => (
                 <Box key={question.title}>
@@ -189,6 +194,7 @@ export const SubmitApplicationAlt = () => {
                     color={colors.kelp[6]}
                     iconColor={colors.dark[6]}
                     checked={form.values.autoEnroll}
+                    {...form.getInputProps('autoEnroll')}
                   />
                   <Card variant="solid">
                     <Group wrap="nowrap" gap={'xs'}>
