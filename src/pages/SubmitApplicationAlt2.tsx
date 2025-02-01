@@ -486,10 +486,63 @@ export const SubmitApplicationAlt2 = () => {
         </Stepper.Step>
         <Stepper.Step>
           <StepLayout
-            title="Round Info"
+            title="You're almost there!"
+            description="Final notes and automatic enrollment"
             step={5}
             setStep={setStep}
-          ></StepLayout>
+          >
+            <Stack gap="lg" mb={100}>
+              <Box>
+                <InputLabel fz="md" fw={600} mb={12} required>
+                  Potential Conflicts of Interest
+                </InputLabel>
+                <Text c="subtle" mb="xs">
+                  Disclose any potential conflicts of interest. This would
+                  include if any round operations team members are part of any
+                  projects participating to receive/get a grant
+                </Text>
+                <Textarea
+                  required
+                  placeholder="Please share COI information"
+                  rows={3}
+                  autosize={false}
+                  //
+                />
+              </Box>
+              <Box>
+                <InputLabel fz="md" fw={600} mb={12}>
+                  Additional Considerations
+                </InputLabel>
+                <Text c="subtle" mb="xs">
+                  Community members should consider [any additional relevant
+                  information].
+                </Text>
+                <Textarea
+                  required
+                  placeholder="Please share COI information"
+                  rows={3}
+                  autosize={false}
+                  //
+                />
+              </Box>
+              <Box>
+                <InputLabel fz="md" fw={600} mb={12} required>
+                  More Information
+                </InputLabel>
+                <Text c="subtle" mb="xs">
+                  If you do not receive matching funds from Gitcoin, will you
+                  still participate in the round?
+                </Text>
+                <Textarea
+                  required
+                  placeholder="Please share COI information"
+                  rows={3}
+                  autosize={false}
+                  //
+                />
+              </Box>
+            </Stack>
+          </StepLayout>
         </Stepper.Step>
       </Stepper>
     </PageLayout>
