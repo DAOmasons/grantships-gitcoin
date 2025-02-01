@@ -27,10 +27,16 @@ import {
   IconMail,
   IconPhoto,
 } from '@tabler/icons-react';
-import { useForm, UseFormReturnType, zodResolver } from '@mantine/form';
+import { useForm, zodResolver } from '@mantine/form';
 import { useChews } from '../hooks/useChews';
 import { QUESTION_DESCRIPTIONS } from '../constants/rubric';
 import { z } from 'zod';
+import { useTx } from '../contexts/useTx';
+import SayethAbi from '../abi/Sayeth.json';
+import { ADDR } from '../constants/addresses';
+import { generateRandomBytes32 } from '../utils/common';
+import { ZER0_ADDRESS } from '../constants/setup';
+import { encodeAbiParameters, parseAbiParameters } from 'viem';
 
 const formSchema = z.object({
   roundName: z.string().min(1, 'Round name is required'),
@@ -44,13 +50,10 @@ const formSchema = z.object({
   autoEnroll: z.boolean(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
-
-type Form = UseFormReturnType<FormValues, (values: FormValues) => FormValues>;
-
 export const SubmitApplicationAlt = () => {
   const [step, setStep] = useState(0);
   const { applicationRound } = useChews();
+  const { tx } = useTx();
   const form = useForm({
     initialValues: {
       roundName: '',
@@ -75,6 +78,31 @@ export const SubmitApplicationAlt = () => {
     form.values.imgUrl &&
     form.values.email &&
     form.values.x;
+
+  const handlePost = () => {
+    const id = generateRandomBytes32();
+
+    const valid = formSchema.safeParse(form.values);
+
+    if (!valid.success) {
+      // todo - show error message
+      console.log('Invalid form values');
+      return;
+    }
+
+    const json = JSON.stringify({ ...form.values, id });
+
+    const bytes = encodeAbiParameters(parseAbiParameters('string'), [json]);
+
+    tx({
+      writeContractParams: {
+        abi: SayethAbi,
+        address: ADDR.SAYETH,
+        functionName: 'sayeth',
+        args: [ZER0_ADDRESS, bytes, false],
+      },
+    });
+  };
 
   return (
     <PageLayout title="Submit Application">
@@ -163,6 +191,9 @@ export const SubmitApplicationAlt = () => {
               sectionName={section.sectionName}
               step={step}
               setStep={setStep}
+              onSubmit={
+                index === appCopy.sections.length - 1 ? handlePost : undefined
+              }
               disabled={
                 !section.questions.every(
                   (question) => form.values.responses[question.title]

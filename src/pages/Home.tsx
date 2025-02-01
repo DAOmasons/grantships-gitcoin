@@ -27,7 +27,16 @@ export const Home = () => {
 
   return (
     <Box>
-      <BGImage />
+      <Box
+        pos="absolute"
+        top="86px"
+        bottom="0"
+        left="0"
+        right="0"
+        style={{ zIndex: -1 }}
+      >
+        <BGImage />
+      </Box>
       <Container maw={1280} mb={120}>
         <Group align="center" h={700} mx="xl">
           <Box maw={450} pos="relative">
@@ -39,7 +48,7 @@ export const Home = () => {
             </Title>
             <Text c="subtle">
               Grantships is an open, decentralized selection mechanism that
-              helps Gitcoin fu
+              helps Gitcoin fund more of what matters.
             </Text>
           </Box>
           <Box ml="auto">
