@@ -3,17 +3,20 @@ import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ConnectButton } from '../components/ConnectButton';
 import { useUserData } from '../hooks/useUserData';
-import { SmallLogo } from '../assets/SmallLogo';
 
 const publicItems = [
   {
-    label: 'Elections',
-    url: '/elections',
+    label: 'Ships',
+    url: '/ships',
   },
   {
     label: 'Applications',
     url: '/applications',
   },
+  // {
+  //   label: 'Elections',
+  //   url: '/elections',
+  // },
   {
     label: 'Reviews',
     url: '/reviews',

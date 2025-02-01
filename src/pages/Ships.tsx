@@ -31,7 +31,7 @@ const icons = [
   IconSquareNumber5,
 ];
 
-export const Applications = () => {
+export const Ships = () => {
   const { colors } = useMantineTheme();
   const { applicationRound } = useChews();
 
@@ -65,7 +65,7 @@ export const Applications = () => {
   return (
     <PageLayout title="Applications">
       <Title fz="h3" order={3} mb="sm">
-        Applications
+        Ship Leaderboard
       </Title>
       <Text c={colors.dark[4]} mb="xl">
         Review application status and comments from the Judges

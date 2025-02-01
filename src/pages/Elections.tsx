@@ -9,7 +9,7 @@ export const Elections = () => {
       <Title order={3} fz="h3" mb="xxl">
         Judge Elections
       </Title>
-      <Card bg={colors.dark[6]}>
+      <Card variant="solid">
         <Flex h={100} justify="center" align="center" direction="column">
           <Text fw={600} fz="lg" mb="sm">
             Under Construction
