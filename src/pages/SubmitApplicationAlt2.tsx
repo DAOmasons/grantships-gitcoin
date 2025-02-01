@@ -6,6 +6,7 @@ import {
   Group,
   InputLabel,
   List,
+  ListItem,
   Stack,
   Stepper,
   Text,
@@ -15,7 +16,7 @@ import {
 } from '@mantine/core';
 import { IconCheck, IconLink, IconPhoto } from '@tabler/icons-react';
 import { StepLayout } from '../layout/StepLayout';
-import { ExternalLink } from '../components/typography';
+import { Bold, ExternalLink } from '../components/typography';
 
 export const SubmitApplicationAlt2 = () => {
   const { colors } = useMantineTheme();
@@ -300,7 +301,7 @@ export const SubmitApplicationAlt2 = () => {
                   </List>
                 </Box>
                 <Textarea
-                  placeholder="https://doc.com/your-marketing-plan"
+                  placeholder="We are using [funding mechanism] because [reason why it is the best option for your round]"
                   rows={3}
                   autosize={false}
                 />
@@ -315,10 +316,77 @@ export const SubmitApplicationAlt2 = () => {
             setStep={setStep}
             description="Demonstrating alignment and measuring impact"
           >
-            <InputLabel fz="md" fw={600} mb={12} required>
-              Clearly articulate how the proposed round aligns with one of
-              Gitcoin’s GG23 intents.
-            </InputLabel>
+            <Stack gap="lg" mb={100}>
+              <Box>
+                <InputLabel fz="md" fw={600} mb={12} required>
+                  Articulate how the round aligns with one of Gitcoin’s GG23
+                  intents.
+                </InputLabel>
+
+                <List c="subtle" mb="xs">
+                  <List.Item>
+                    <Bold>Allo GMV</Bold> (A round needs to reach 20%
+                    crowdfunding proportional to their matching pool. For
+                    example, if Gitcoin provides $20k in matching but the amount
+                    crowdfunded in a round is less than $4k).{' '}
+                    <Bold>If not:</Bold>
+                  </List.Item>
+
+                  <List.Item>
+                    Supporting builders building on top of Allo
+                  </List.Item>
+                  <List.Item>
+                    Scaling and growing the Ethereum ecosystem
+                  </List.Item>
+                </List>
+                <Box mx="md">
+                  <Text c="subtle" fw={600} fz="sm">
+                    Example
+                  </Text>
+                  <List fz="sm" fs="italic" mb="sm" c="subtle">
+                    <ListItem>
+                      "This round aligns with [insert intent] by [insert
+                      explanation]""
+                    </ListItem>
+                  </List>
+                </Box>
+                <Textarea
+                  placeholder="This round aligns with [insert intent] by [insert explanation]"
+                  rows={3}
+                  autosize={false}
+                />
+              </Box>
+              <Box>
+                <InputLabel fz="md" fw={600} mb={12} required>
+                  Impact Assessment Plan
+                </InputLabel>
+
+                <Text c="subtle" mb="xs">
+                  Describe how you intend to assess grantee impact through
+                  methods such as Hypercerts, GAP, Deresy, etc., and provide
+                  details of the plan, including how you will measure and
+                  evaluate the success and impact of the grantees over
+                  successive rounds.
+                </Text>
+                <Box mx="md">
+                  <Text c="subtle" fw={600} fz="sm">
+                    Example
+                  </Text>
+                  <List fz="sm" fs="italic" mb="sm" c="subtle">
+                    <ListItem>
+                      We intend to assess grantee impact through [methods such
+                      as Hypercerts, GAP, Deresy, etc.]. Our detailed plan
+                      includes [details of the plan].
+                    </ListItem>
+                  </List>
+                </Box>
+                <Textarea
+                  placeholder="We intend to assess grantee impact through [methods such as Hypercerts, GAP, Deresy, etc.]. Our detailed plan includes [details of the plan]."
+                  rows={3}
+                  autosize={false}
+                />
+              </Box>
+            </Stack>
           </StepLayout>
         </Stepper.Step>
         <Stepper.Step>

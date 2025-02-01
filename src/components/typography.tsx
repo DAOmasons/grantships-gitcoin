@@ -26,7 +26,13 @@ export const Bold = ({
   children,
   ...props
 }: { children: ReactNode } & TextProps) => (
-  <Text component="span" fw={900} fz="inherit" {...props}>
+  <Text component="span" fw={900} fz="inherit" c="inherit" {...props}>
+    {children}
+  </Text>
+);
+
+export const Italic = ({ children }: { children: ReactNode }) => (
+  <Text component="span" fw={'inherit'} fz="inherit" fs="italic" c="inherit">
     {children}
   </Text>
 );
