@@ -37,6 +37,7 @@ import { ADDR } from '../constants/addresses';
 import { generateRandomBytes32 } from '../utils/common';
 import { ZER0_ADDRESS } from '../constants/setup';
 import { encodeAbiParameters, parseAbiParameters } from 'viem';
+import { StepLayout } from '../layout/StepLayout';
 
 const formSchema = z.object({
   roundName: z.string().min(1, 'Round name is required'),
@@ -112,7 +113,7 @@ export const SubmitApplicationAlt = () => {
       >
         <Stepper.Step>
           <StepLayout
-            sectionName="Applicant Details"
+            title="Applicant Details"
             step={step}
             setStep={setStep}
             disabled={!appDetailsAnswered}
@@ -188,7 +189,7 @@ export const SubmitApplicationAlt = () => {
         {appCopy?.sections.map((section, index) => (
           <Stepper.Step key={section.sectionName}>
             <StepLayout
-              sectionName={section.sectionName}
+              title={section.sectionName}
               step={step}
               setStep={setStep}
               onSubmit={
@@ -254,55 +255,5 @@ export const SubmitApplicationAlt = () => {
         ))}
       </Stepper>
     </PageLayout>
-  );
-};
-
-const StepLayout = ({
-  sectionName,
-  children,
-  step,
-  disabled,
-  setStep,
-  onSubmit,
-}: {
-  step: number;
-  sectionName: string;
-  children: ReactNode;
-  disabled?: boolean;
-  setStep: (step: number) => void;
-  onSubmit?: () => void;
-}) => {
-  const totalSteps = 5;
-
-  return (
-    <Box mt="xl">
-      <Title order={3} fz="h3" mb="sm">
-        {sectionName}
-      </Title>
-      {step !== 0 && (
-        <Text mb={'lg'}>Please provide an answer for each question</Text>
-      )}
-      <Box mx="32">{children}</Box>
-      <Box mt={70}>
-        <Group justify="center" gap="xl">
-          <Button
-            variant="secondary"
-            disabled={step === 0}
-            onClick={step === 0 ? undefined : () => setStep(step - 1)}
-          >
-            Back
-          </Button>
-          {step === totalSteps - 1 ? (
-            <Button disabled={disabled} onClick={onSubmit}>
-              Submit
-            </Button>
-          ) : (
-            <Button disabled={disabled} onClick={() => setStep(step + 1)}>
-              Next
-            </Button>
-          )}
-        </Group>
-      </Box>
-    </Box>
   );
 };

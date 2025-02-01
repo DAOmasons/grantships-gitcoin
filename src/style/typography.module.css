@@ -20,3 +20,13 @@
     font-weight: 500;
   }
 }
+
+.textLink {
+  font-size: inherit;
+  text-decoration: underline;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--mantine-color-dark-1);
+  }
+}

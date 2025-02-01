@@ -9,6 +9,7 @@ import { VoteApplication } from './pages/VoteApplication';
 import { ViewApplication } from './pages/ViewApplication';
 import { Review } from './pages/ReviewApplication';
 import { SubmitApplicationAlt } from './pages/SubmitApplicationAlt';
+import { SubmitApplicationAlt2 } from './pages/SubmitApplicationAlt2';
 
 export const ClientRoutes = () => {
   return (
@@ -18,7 +19,7 @@ export const ClientRoutes = () => {
       <Route path="/ships" element={<Ships />} />
       <Route path="/elections" element={<Elections />} />
       <Route path="/selections" element={<Selections />} />
-      <Route path="/submit-application" element={<SubmitApplicationAlt />} />
+      <Route path="/submit-application" element={<SubmitApplicationAlt2 />} />
       <Route path="/vote-application/:id" element={<VoteApplication />} />
       <Route path="/view-application/:id" element={<ViewApplication />} />
       <Route path="/review/:id" element={<Review />} />
