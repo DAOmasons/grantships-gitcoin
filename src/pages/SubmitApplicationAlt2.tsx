@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { PageLayout } from '../layout/Page';
 import {
   Avatar,
@@ -17,10 +17,29 @@ import {
 import { IconCheck, IconLink, IconPhoto } from '@tabler/icons-react';
 import { StepLayout } from '../layout/StepLayout';
 import { Bold, BoldItalic, ExternalLink } from '../components/typography';
+import { useForm, zodResolver } from '@mantine/form';
+import { z } from 'zod';
+import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
+import { useTx } from '../contexts/useTx';
+import { ADDR } from '../constants/addresses';
+import SayethAbi from '../abi/Sayeth.json';
 
 export const SubmitApplicationAlt2 = () => {
   const { colors } = useMantineTheme();
   const [step, setStep] = useState(0);
+
+  const { form, formSchema } = useApplicationForm();
+  const { tx } = useTx();
+
+  const submitTx = () => {
+    tx({
+      writeContractParams: {
+        abi: SayethAbi,
+        address: ADDR.SAYETH,
+        functionName: 'sayeth',
+      },
+    });
+  };
   return (
     <PageLayout title="Submit Application">
       <Stepper
@@ -37,10 +56,9 @@ export const SubmitApplicationAlt2 = () => {
             <Stack gap="lg" mb={100}>
               <Group w="100%" justify="center">
                 <Avatar
-                  //   src={form.values.imgUrl || ''}
+                  src={form.values.imgUrl || ''}
                   bg={colors.dark[2]}
                   size={171}
-                  //   mb="s"
                 >
                   <IconPhoto size={72} color={colors.dark[5]} />
                 </Avatar>
@@ -49,7 +67,7 @@ export const SubmitApplicationAlt2 = () => {
                 label="Name"
                 required
                 placeholder="Grant Program Name"
-                // {...form.getInputProps('roundName')}
+                {...form.getInputProps('name')}
               />
               <Group wrap="nowrap" gap="sm" align="start">
                 <TextInput
@@ -58,7 +76,7 @@ export const SubmitApplicationAlt2 = () => {
                   required
                   leftSection={<IconLink color={colors.dark[4]} />}
                   placeholder="https://example.com/profile.jpg"
-                  //   {...form.getInputProps('imgUrl')}
+                  {...form.getInputProps('imgUrl')}
                 />
                 <TextInput
                   w="50%"
@@ -66,7 +84,7 @@ export const SubmitApplicationAlt2 = () => {
                   required
                   leftSection={<IconLink color={colors.dark[4]} />}
                   placeholder="https://platform.com/profile"
-                  //   {...form.getInputProps('imgUrl')}
+                  {...form.getInputProps('socialLink')}
                 />
               </Group>
               <Textarea
@@ -75,8 +93,7 @@ export const SubmitApplicationAlt2 = () => {
                 placeholder={'Provide a brief description of your round.'}
                 rows={3}
                 autosize={false}
-
-                //
+                {...form.getInputProps('description')}
               />
               <Box>
                 <InputLabel fz="md" fw={600} mb={12} required>
@@ -96,7 +113,7 @@ export const SubmitApplicationAlt2 = () => {
                 <TextInput
                   required
                   placeholder="Type of Projects to Fund"
-                  //
+                  {...form.getInputProps('typeOfProjects')}
                 />
               </Box>
               <Box>
@@ -121,10 +138,11 @@ export const SubmitApplicationAlt2 = () => {
                 </Box>
                 <Textarea
                   required
-                  placeholder="Type of Projects to Fund"
+                  placeholder="This round has been run [number of times] during Gitcoin
+                      Grants rounds..."
                   rows={3}
                   autosize={false}
-                  //
+                  {...form.getInputProps('roundHistory')}
                 />
               </Box>
             </Stack>
@@ -162,7 +180,7 @@ export const SubmitApplicationAlt2 = () => {
                   placeholder="Please share your experience"
                   rows={3}
                   autosize={false}
-                  //
+                  {...form.getInputProps('Identified Round Operator')}
                 />
               </Box>
               <Box>
@@ -194,6 +212,7 @@ export const SubmitApplicationAlt2 = () => {
                   placeholder="Please share team member experience"
                   rows={3}
                   autosize={false}
+                  {...form.getInputProps('Team Members')}
                 />
               </Box>
               <Box>
@@ -211,7 +230,7 @@ export const SubmitApplicationAlt2 = () => {
                   placeholder="Please share advisor information"
                   rows={3}
                   autosize={false}
-                  //
+                  {...form.getInputProps('advisors')}
                 />
               </Box>
             </Stack>
@@ -239,6 +258,7 @@ export const SubmitApplicationAlt2 = () => {
                       Gitcoin’s core rules
                     </ExternalLink>
                   </Text>
+
                   <Text c="subtle" mb="xs">
                     For example: to be in the Climate Solutions Round, your
                     project must primarily focus on climate action.{' '}
@@ -262,7 +282,7 @@ export const SubmitApplicationAlt2 = () => {
                   placeholder="Please share eligibility criteria"
                   rows={3}
                   autosize={false}
-                  //
+                  {...form.getInputProps('eligibilityCriteria')}
                 />
               </Box>
               <Box>
@@ -283,6 +303,7 @@ export const SubmitApplicationAlt2 = () => {
                 <TextInput
                   leftSection={<IconLink color={colors.dark[4]} />}
                   placeholder="https://doc.com/your-marketing-plan"
+                  {...form.getInputProps('marketingPlanURL')}
                 />
               </Box>
               <Box>
@@ -304,6 +325,7 @@ export const SubmitApplicationAlt2 = () => {
                   placeholder="We are using [funding mechanism] because [reason why it is the best option for your round]"
                   rows={3}
                   autosize={false}
+                  {...form.getInputProps('fundingMechanism')}
                 />
               </Box>
             </Stack>
@@ -322,7 +344,6 @@ export const SubmitApplicationAlt2 = () => {
                   Articulate how the round aligns with one of Gitcoin’s GG23
                   intents.
                 </InputLabel>
-
                 <List c="subtle" mb="xs">
                   <List.Item>
                     <Bold>Allo GMV</Bold> (A round needs to reach 20%
@@ -354,13 +375,13 @@ export const SubmitApplicationAlt2 = () => {
                   placeholder="This round aligns with [insert intent] by [insert explanation]"
                   rows={3}
                   autosize={false}
+                  {...form.getInputProps('Mission Alignment')}
                 />
               </Box>
               <Box>
                 <InputLabel fz="md" fw={600} mb={12} required>
                   Impact Assessment Plan
                 </InputLabel>
-
                 <Text c="subtle" mb="xs">
                   Describe how you intend to assess grantee impact through
                   methods such as Hypercerts, GAP, Deresy, etc., and provide
@@ -384,6 +405,7 @@ export const SubmitApplicationAlt2 = () => {
                   placeholder="We intend to assess grantee impact through [methods such as Hypercerts, GAP, Deresy, etc.]. Our detailed plan includes [details of the plan]."
                   rows={3}
                   autosize={false}
+                  {...form.getInputProps('Impact Assessment Plan')}
                 />
               </Box>
             </Stack>
@@ -425,6 +447,7 @@ export const SubmitApplicationAlt2 = () => {
                   placeholder="Our community consists of approximately [number] members. Tangible metrics indicating the strength of our community..."
                   rows={3}
                   autosize={false}
+                  {...form.getInputProps('Community Size and Engagement')}
                 />
               </Box>
               <Box>
@@ -442,7 +465,10 @@ export const SubmitApplicationAlt2 = () => {
                     </ListItem>
                   </List>
                 </Box>
-                <TextInput placeholder="We believe that [number] grantees will be eligible to apply for this round." />
+                <TextInput
+                  placeholder="We believe that [number] grantees will be eligible to apply for this round."
+                  {...form.getInputProps('granteeEstimate')}
+                />
               </Box>
               <Box>
                 <InputLabel fz="md" fw={600} mb={12} required>
@@ -479,6 +505,7 @@ export const SubmitApplicationAlt2 = () => {
                   placeholder="The matching pool is anticipated to be [amount], fundraised through..."
                   rows={3}
                   autosize={false}
+                  {...form.getInputProps('Matching Pool Impact')}
                 />
               </Box>
             </Stack>
@@ -506,7 +533,7 @@ export const SubmitApplicationAlt2 = () => {
                   placeholder="Please share COI information"
                   rows={3}
                   autosize={false}
-                  //
+                  {...form.getInputProps('COI')}
                 />
               </Box>
               <Box>
@@ -519,10 +546,10 @@ export const SubmitApplicationAlt2 = () => {
                 </Text>
                 <Textarea
                   required
-                  placeholder="Please share COI information"
+                  placeholder="Please share additional information"
                   rows={3}
                   autosize={false}
-                  //
+                  {...form.getInputProps('considerations')}
                 />
               </Box>
               <Box>
@@ -535,10 +562,10 @@ export const SubmitApplicationAlt2 = () => {
                 </Text>
                 <Textarea
                   required
-                  placeholder="Please share COI information"
+                  placeholder="I would still...."
                   rows={3}
                   autosize={false}
-                  //
+                  {...form.getInputProps('moreInfo')}
                 />
               </Box>
             </Stack>

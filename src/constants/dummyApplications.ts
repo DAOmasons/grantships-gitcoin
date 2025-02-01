@@ -16,11 +16,13 @@ export const dummyApplications: RoundApplicationContent[] = [
     address: '0x7A3d05C70498b43FB8BB426A4165A4bD03842891',
     imgUrl: 'https://i.imgur.com/uNOWyOY.jpeg',
     responses: [
+      // yes
       {
         title: 'Identified Round Operator',
         response:
           "I've been a climate tech researcher and community builder for 5 years, previously coordinating ReFi DAO's grant program which distributed $150k to 12 regenerative finance projects. As the founder of Climate Builders collective, I managed our community treasury of 120 ETH and established frameworks for evaluating carbon credit projects. I also serve as an advisor to three environmental DAOs, helping them structure their governance and grant distribution mechanisms.",
       },
+      // yes
       {
         title: 'Team Members',
         response:
@@ -31,11 +33,13 @@ export const dummyApplications: RoundApplicationContent[] = [
         response:
           "We've raised 45 ETH (~$112,500) specifically for climate tech projects, with a focus on measurement and verification tools. Given our target to fund 8-12 early-stage climate projects with grants between $10k-$20k each, this pool size aligns with our goals. We have partnerships with three major ReFi protocols who have committed to quarterly contributions to our matching pool, and we're implementing a carbon credit revenue sharing model where 2% of verified credits flow back to future rounds.",
       },
+      // yes
       {
         title: 'Mission Alignment',
         response:
           "Our round aligns with GG22's focus on funding climate solutions and regenerative projects. We specifically target projects developing open-source tools for carbon credit verification, biodiversity monitoring, and environmental data collection. Our selection criteria emphasizes projects that contribute to public environmental goods and maintain transparent impact metrics, directly supporting Gitcoin's mission of funding sustainable solutions.",
       },
+      // yes
       {
         title: 'Community Size and Engagement',
         response:
