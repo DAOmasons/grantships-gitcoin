@@ -36,3 +36,9 @@ export const Italic = ({ children }: { children: ReactNode }) => (
     {children}
   </Text>
 );
+
+export const BoldItalic = ({ children }: { children: ReactNode }) => (
+  <Text component="span" fw={900} fz="inherit" fs="italic" c="inherit">
+    {children}
+  </Text>
+);

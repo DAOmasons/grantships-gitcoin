@@ -16,7 +16,7 @@ import {
 } from '@mantine/core';
 import { IconCheck, IconLink, IconPhoto } from '@tabler/icons-react';
 import { StepLayout } from '../layout/StepLayout';
-import { Bold, ExternalLink } from '../components/typography';
+import { Bold, BoldItalic, ExternalLink } from '../components/typography';
 
 export const SubmitApplicationAlt2 = () => {
   const { colors } = useMantineTheme();
@@ -391,10 +391,98 @@ export const SubmitApplicationAlt2 = () => {
         </Stepper.Step>
         <Stepper.Step>
           <StepLayout
-            title="Round Info"
+            title="Community Engagement"
             step={4}
             setStep={setStep}
-          ></StepLayout>
+            description="Community size, grantees, and matching pool"
+          >
+            <Stack gap="lg" mb={100}>
+              <Box>
+                <InputLabel fz="md" fw={600} mb={12} required>
+                  Community Size and Engagement
+                </InputLabel>
+                <Text c="subtle" mb="xs">
+                  Estimate the size of the community approximately, provide
+                  tangible metrics indicating the strength of the community
+                  (e.g., donations, past round participation). Describe the type
+                  of projects intended to be funded, estimate the number of
+                  eligible grantees, and detail the plan for assessing grantee
+                  impact over successive rounds.
+                </Text>
+                <Box mx="md">
+                  <Text c="subtle" fw={600} fz="sm">
+                    Example
+                  </Text>
+                  <List fz="sm" fs="italic" mb="sm" c="subtle">
+                    <ListItem>
+                      Our community consists of approximately [number] members.
+                      Tangible metrics indicating the strength of our community
+                      include [donations/past round participation].
+                    </ListItem>
+                  </List>
+                </Box>
+                <Textarea
+                  placeholder="Our community consists of approximately [number] members. Tangible metrics indicating the strength of our community..."
+                  rows={3}
+                  autosize={false}
+                />
+              </Box>
+              <Box>
+                <InputLabel fz="md" fw={600} mb={8} required>
+                  Estimated Number of Eligible Grantees
+                </InputLabel>
+                <Box mx="md" mb="sm">
+                  <Text c="subtle" fw={600} fz="sm">
+                    Example
+                  </Text>
+                  <List fz="sm" fs="italic" c="subtle">
+                    <ListItem>
+                      We believe that [number] grantees will be eligible to
+                      apply for this round.
+                    </ListItem>
+                  </List>
+                </Box>
+                <TextInput placeholder="We believe that [number] grantees will be eligible to apply for this round." />
+              </Box>
+              <Box>
+                <InputLabel fz="md" fw={600} mb={12} required>
+                  Anticipated Size of the Matching Pool
+                </InputLabel>
+                <Text c="subtle" mb="xs">
+                  Clearly state the anticipated size of the matching pool,
+                  including the funding address.{' '}
+                  <BoldItalic>
+                    Please state clearly the funds that you plan on bringing
+                    into the round, and do not take the potential match from
+                    Gitcoin into account.{' '}
+                  </BoldItalic>
+                  This is to avoid any confusion for reviewers. And outline a
+                  clear plan for future fundraising, if not already in place.
+                </Text>
+                <Box mx="md">
+                  <Text c="subtle" fw={600} fz="sm">
+                    Example
+                  </Text>
+                  <List fz="sm" fs="italic" mb="sm" c="subtle">
+                    <ListItem>
+                      The matching pool is anticipated to be [amount],
+                      fundraised through [partners/connections/combination].
+                    </ListItem>
+                    <ListItem>Funding address: [Address].</ListItem>
+                    <ListItem>
+                      We have a clear plan in place for future fundraising,
+                      including [details of the plan].
+                    </ListItem>
+                  </List>
+                </Box>
+                <Textarea
+                  placeholder="The matching pool is anticipated to be [amount], fundraised through..."
+                  rows={3}
+                  autosize={false}
+                />
+              </Box>
+            </Stack>
+          </StepLayout>
         </Stepper.Step>
         <Stepper.Step>
           <StepLayout
