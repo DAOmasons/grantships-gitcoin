@@ -3,6 +3,8 @@ import { PageLayout } from '../layout/Page';
 import {
   Avatar,
   Box,
+  Card,
+  Checkbox,
   Group,
   InputLabel,
   List,
@@ -14,7 +16,12 @@ import {
   TextInput,
   useMantineTheme,
 } from '@mantine/core';
-import { IconCheck, IconLink, IconPhoto } from '@tabler/icons-react';
+import {
+  IconCheck,
+  IconExclamationCircle,
+  IconLink,
+  IconPhoto,
+} from '@tabler/icons-react';
 import { StepLayout } from '../layout/StepLayout';
 import { Bold, BoldItalic, ExternalLink } from '../components/typography';
 import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
@@ -29,7 +36,17 @@ export const SubmitApplicationAlt2 = () => {
   const { colors } = useMantineTheme();
   const [step, setStep] = useState(0);
 
-  const { form, formSchema } = useApplicationForm();
+  const {
+    form,
+    formSchema,
+    step1Complete,
+    step2Complete,
+    step3Complete,
+    step4Complete,
+    step5Complete,
+    step6Complete,
+    hasErrors,
+  } = useApplicationForm();
   const { tx } = useTx();
 
   const submitTx = () => {
@@ -59,13 +76,11 @@ export const SubmitApplicationAlt2 = () => {
         args: [ZER0_ADDRESS, bytes, false],
       },
       writeContractOptions: {
-        onPollSuccess() {
-          // refetch data
-          // todo - show success message
-        },
+        onPollSuccess() {},
       },
     });
   };
+
   return (
     <PageLayout title="Submit Application">
       <Stepper
@@ -78,6 +93,7 @@ export const SubmitApplicationAlt2 = () => {
             step={0}
             setStep={setStep}
             description="Base information about the round."
+            disabled={!step1Complete || hasErrors}
           >
             <Stack gap="lg" mb={100}>
               <Group w="100%" justify="center">
@@ -178,6 +194,7 @@ export const SubmitApplicationAlt2 = () => {
             title="Round Operator and Team"
             step={1}
             setStep={setStep}
+            disabled={!step2Complete || hasErrors}
             description="Information about the team running this round."
           >
             <Stack gap="lg" mb={100}>
@@ -266,6 +283,7 @@ export const SubmitApplicationAlt2 = () => {
             title="Round Strategy"
             step={2}
             setStep={setStep}
+            disabled={!step3Complete || hasErrors}
             description="Your strategy for determining eligibility, marketing."
           >
             <Stack gap="lg" mb={100}>
@@ -361,6 +379,7 @@ export const SubmitApplicationAlt2 = () => {
             title="Impact and Intents"
             step={3}
             setStep={setStep}
+            disabled={!step4Complete || hasErrors}
             description="Demonstrating alignment and measuring impact"
           >
             <Stack gap="lg" mb={100}>
@@ -441,6 +460,7 @@ export const SubmitApplicationAlt2 = () => {
             title="Community Engagement"
             step={4}
             setStep={setStep}
+            disabled={!step5Complete || hasErrors}
             description="Community size, grantees, and matching pool"
           >
             <Stack gap="lg" mb={100}>
@@ -542,6 +562,7 @@ export const SubmitApplicationAlt2 = () => {
             description="Final notes and automatic enrollment"
             step={5}
             setStep={setStep}
+            disabled={!step6Complete || hasErrors}
             onSubmit={submitTx}
           >
             <Stack gap="lg" mb={100}>
@@ -595,6 +616,37 @@ export const SubmitApplicationAlt2 = () => {
                 />
               </Box>
             </Stack>
+            {step === 5 && (
+              <Stack>
+                <Checkbox
+                  label="Automatically enroll me for GG23"
+                  color={colors.kelp[6]}
+                  iconColor={colors.dark[6]}
+                  checked={form.values.autoEnroll}
+                  {...form.getInputProps('autoEnroll')}
+                />
+                <Card variant="solid">
+                  <Group wrap="nowrap" gap={'xs'}>
+                    <Box
+                      component="span"
+                      style={{ transform: 'translateY(-20px)' }}
+                    >
+                      <IconExclamationCircle
+                        size={28}
+                        stroke={1.5}
+                        color={colors.kelp[6]}
+                      />
+                    </Box>
+                    <Text fz="sm">
+                      The wallet you are signing this transaction with will be
+                      the primary address for your profile. Please ensure that
+                      you are connected to a wallet that you plan to use and
+                      access during the duration of the program.
+                    </Text>
+                  </Group>
+                </Card>
+              </Stack>
+            )}
           </StepLayout>
         </Stepper.Step>
       </Stepper>

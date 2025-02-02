@@ -43,5 +43,47 @@ export const useApplicationForm = () => {
     validate: zodResolver(submitApplicationSchema),
   });
 
-  return { form, formSchema: submitApplicationSchema };
+  const hasErrors = Object.keys(form.errors).length > 0;
+
+  const step1Complete =
+    !!form.values.name &&
+    !!form.values.imgUrl &&
+    !!form.values.socialLink &&
+    !!form.values.description &&
+    !!form.values.typeOfProjects &&
+    !!form.values.roundHistory;
+
+  const step2Complete =
+    !!form.values['Identified Round Operator'] &&
+    !!form.values['Team Members'] &&
+    !!form.values.advisors;
+
+  const step3Complete =
+    !!form.values.eligibilityCriteria &&
+    !!form.values.marketingPlanURL &&
+    !!form.values.fundingMechanism;
+
+  const step4Complete =
+    !!form.values['Mission Alignment'] &&
+    !!form.values['Impact Assessment Plan'];
+
+  const step5Complete =
+    !!form.values['Community Size and Engagement'] &&
+    !!form.values.granteeEstimate &&
+    !!form.values['Matching Pool Impact'];
+
+  const step6Complete =
+    !!form.values.COI && !!form.values.considerations && !!form.values.moreInfo;
+
+  return {
+    form,
+    formSchema: submitApplicationSchema,
+    step1Complete,
+    step2Complete,
+    step3Complete,
+    step4Complete,
+    step5Complete,
+    step6Complete,
+    hasErrors,
+  };
 };

@@ -9,7 +9,6 @@ export const StepLayout = ({
   disabled,
   setStep,
   onSubmit,
-  requiredFeilds,
 }: {
   step: number;
   description?: string;
@@ -18,11 +17,8 @@ export const StepLayout = ({
   disabled?: boolean;
   setStep: (step: number) => void;
   onSubmit?: () => void;
-  requiredFeilds?: [string | undefined];
 }) => {
   const totalSteps = 6;
-
-  //   const hasAllRequiredFields = requiredFeilds?.every((field) => !!field);
 
   return (
     <Box mt="xl">
@@ -35,7 +31,7 @@ export const StepLayout = ({
         <Group justify="center" gap="xl">
           <Button
             variant="secondary"
-            // disabled={step === 0}
+            disabled={step === 0}
             onClick={step === 0 ? undefined : () => setStep(step - 1)}
           >
             Back
