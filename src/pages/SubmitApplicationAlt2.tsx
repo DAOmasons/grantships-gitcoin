@@ -17,12 +17,13 @@ import {
 import { IconCheck, IconLink, IconPhoto } from '@tabler/icons-react';
 import { StepLayout } from '../layout/StepLayout';
 import { Bold, BoldItalic, ExternalLink } from '../components/typography';
-import { useForm, zodResolver } from '@mantine/form';
-import { z } from 'zod';
 import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
 import { useTx } from '../contexts/useTx';
 import { ADDR } from '../constants/addresses';
 import SayethAbi from '../abi/Sayeth.json';
+import { generateRandomBytes32 } from '../utils/common';
+import { encodeAbiParameters, parseAbiParameters } from 'viem';
+import { ZER0_ADDRESS } from '../constants/setup';
 
 export const SubmitApplicationAlt2 = () => {
   const { colors } = useMantineTheme();
@@ -32,11 +33,36 @@ export const SubmitApplicationAlt2 = () => {
   const { tx } = useTx();
 
   const submitTx = () => {
+    const id = generateRandomBytes32();
+
+    const valid = formSchema.safeParse(form.values);
+
+    if (!valid.success) {
+      // todo - show error message
+      throw new Error('Invalid form values');
+    }
+
+    const json = JSON.stringify({ ...form.values, id });
+
+    const tag = `GITCOIN_TEST_APPLICATION_SUBMIT_${id}`;
+
+    const bytes = encodeAbiParameters(
+      parseAbiParameters('string, (uint256, string)'),
+      [tag, [6969420n, json]]
+    );
+
     tx({
       writeContractParams: {
         abi: SayethAbi,
         address: ADDR.SAYETH,
         functionName: 'sayeth',
+        args: [ZER0_ADDRESS, bytes, false],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          // refetch data
+          // todo - show success message
+        },
       },
     });
   };
@@ -138,8 +164,7 @@ export const SubmitApplicationAlt2 = () => {
                 </Box>
                 <Textarea
                   required
-                  placeholder="This round has been run [number of times] during Gitcoin
-                      Grants rounds..."
+                  placeholder="This round has been run [number of times] during Gitcoin Grants rounds..."
                   rows={3}
                   autosize={false}
                   {...form.getInputProps('roundHistory')}
@@ -517,6 +542,7 @@ export const SubmitApplicationAlt2 = () => {
             description="Final notes and automatic enrollment"
             step={5}
             setStep={setStep}
+            onSubmit={submitTx}
           >
             <Stack gap="lg" mb={100}>
               <Box>

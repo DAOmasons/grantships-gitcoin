@@ -85,6 +85,7 @@ export const Reviews = () => {
                   );
                   return (
                     <Group
+                      key={vote.id}
                       justify="space-between"
                       py={8}
                       px={6}

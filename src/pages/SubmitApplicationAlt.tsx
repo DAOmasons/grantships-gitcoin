@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Card,
   Checkbox,
   Group,
@@ -11,11 +10,10 @@ import {
   Text,
   Textarea,
   TextInput,
-  Title,
   useMantineTheme,
 } from '@mantine/core';
 import { PageLayout } from '../layout/Page';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import {
   IconBrandDiscord,
   IconBrandGithub,
