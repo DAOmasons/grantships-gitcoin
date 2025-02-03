@@ -1,0 +1,3 @@
+export const TAG = {
+  APPLICATION_POST: 'GG_APPLICATION_SUBMIT_TEST',
+};

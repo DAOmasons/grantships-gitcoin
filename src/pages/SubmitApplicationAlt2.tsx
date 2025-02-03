@@ -31,6 +31,7 @@ import SayethAbi from '../abi/Sayeth.json';
 import { generateRandomBytes32 } from '../utils/common';
 import { encodeAbiParameters, parseAbiParameters } from 'viem';
 import { ZER0_ADDRESS } from '../constants/setup';
+import { TAG } from '../constants/tags';
 
 export const SubmitApplicationAlt2 = () => {
   const { colors } = useMantineTheme();
@@ -61,7 +62,7 @@ export const SubmitApplicationAlt2 = () => {
 
     const json = JSON.stringify({ ...form.values, id });
 
-    const tag = `GITCOIN_TEST_APPLICATION_SUBMIT_${id}`;
+    const tag = `${TAG.APPLICATION_POST}:${id}`;
 
     const bytes = encodeAbiParameters(
       parseAbiParameters('string, (uint256, string)'),

@@ -1,5 +1,6 @@
 import { Box, Button, Group, Text, Title } from '@mantine/core';
 import { ReactNode } from 'react';
+import { TxButton } from '../components/TxButton';
 
 export const StepLayout = ({
   title,
@@ -37,9 +38,9 @@ export const StepLayout = ({
             Back
           </Button>
           {step === totalSteps - 1 ? (
-            <Button disabled={disabled} onClick={onSubmit}>
+            <TxButton disabled={disabled} onClick={onSubmit}>
               Submit
-            </Button>
+            </TxButton>
           ) : (
             <Button disabled={disabled} onClick={() => setStep(step + 1)}>
               Next

@@ -1,5 +1,6 @@
 import '@mantine/core/styles.css';
 import './index.css';
+import '@mantine/notifications/styles.css';
 
 import { MantineProvider } from '@mantine/core';
 import { TxProvider } from './contexts/TxContext';
