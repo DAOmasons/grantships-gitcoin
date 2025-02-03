@@ -11,20 +11,22 @@ export const getAppDrafts = async () => {
       throw new Error('No drafts found');
     }
 
-    return drafts.map((draft) => {
-      const validated = submitApplicationSchema.safeParse(
-        JSON.parse(draft.json)
-      );
+    return drafts
+      .map((draft) => {
+        const validated = submitApplicationSchema.safeParse(
+          JSON.parse(draft.json)
+        );
 
-      if (!validated.success) {
-        return undefined;
-      }
+        if (!validated.success) {
+          return undefined;
+        }
 
-      return {
-        ...draft,
-        parsedJSON: validated.data,
-      };
-    });
+        return {
+          ...draft,
+          parsedJSON: validated.data,
+        };
+      })
+      .filter((draft) => draft !== undefined);
   } catch (error) {
     console.error(error);
 
