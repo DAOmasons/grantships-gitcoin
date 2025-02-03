@@ -1,0 +1,14 @@
+fragment Draft on AppDraft {
+  id
+  tag
+  userAddress
+  lastUpdated
+  contentProtocol
+  json
+}
+
+query applicationDrafts {
+  AppDraft {
+    ...Draft
+  }
+}

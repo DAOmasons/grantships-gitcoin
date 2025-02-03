@@ -10,6 +10,7 @@ import { ViewApplication } from './pages/ViewApplication';
 import { Review } from './pages/ReviewApplication';
 import { SubmitApplicationAlt } from './pages/SubmitApplicationAlt';
 import { SubmitApplicationAlt2 } from './pages/SubmitApplicationAlt2';
+import { Applications } from './pages/Applications';
 
 export const ClientRoutes = () => {
   return (
@@ -17,6 +18,7 @@ export const ClientRoutes = () => {
       <Route path="/reviews" element={<Reviews />} />
       <Route path="/judge-dashboard" element={<JudgeDashboard />} />
       <Route path="/ships" element={<Ships />} />
+      <Route path="/applications" element={<Applications />} />
       <Route path="/elections" element={<Elections />} />
       <Route path="/selections" element={<Selections />} />
       <Route path="/submit-application" element={<SubmitApplicationAlt2 />} />
