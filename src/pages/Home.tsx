@@ -18,29 +18,37 @@ import {
 import { BGImage } from '../assets/BGImage';
 import { SplainerAccordion } from '../components/SplainerAccordion';
 import { CycleCircle } from '../components/CycleCircle';
-import {
-  createApplication,
-  deployRubricVoting,
-  finalizeChoices,
-} from '../setupScripts/chews';
-import { mintJudgeHat } from '../setupScripts/setupHats';
+import { GSMotif } from '../assets/GSMotif';
+import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
   const theme = useMantineTheme();
+  const navigate = useNavigate();
 
   return (
-    <Box pos="relative">
-      <BGImage />
+    <Box>
+      <Box
+        pos="absolute"
+        top="86px"
+        bottom="0"
+        left="0"
+        right="0"
+        style={{ zIndex: -1 }}
+      >
+        <BGImage />
+      </Box>
       <Container maw={1280} mb={120}>
         <Group align="center" h={700} mx="xl">
-          <Box maw={450}>
-            <Title order={1} fz="h1" mb="sm">
-              Fund <span style={{ color: theme.colors.purple[6] }}>More</span>{' '}
-              of What Matters
+          <Box maw={450} pos="relative">
+            <GSMotif />
+            <Title order={1} fz="h1" mb="sm" c="highlight">
+              <span style={{ color: theme.colors.purple[6] }}>Accelerate</span>
+              <br />
+              What Matters
             </Title>
             <Text c="subtle">
-              Gitcoin{'<>'}Grantships is an open, decentralized selection{' '}
-              mechanism for funding what matters to the Gitcoin DAO
+              Grantships is an open, decentralized selection mechanism that
+              helps Gitcoin fund more of what matters.
             </Text>
           </Box>
           <Box ml="auto">
@@ -56,8 +64,20 @@ export const Home = () => {
           </Box>
         </Group>
       </Container>
-      {/* <Button onClick={mintJudgeHat}>Fire</Button> */}
       <InnerContainer>
+        <Card variant="kelp-outline" mb={120}>
+          <Group justify="space-between">
+            <Box>
+              <Text fz={28} mb="12">
+                Want to Run a Round?
+              </Text>
+              <Text>Applications can be submitted any time</Text>
+            </Box>
+            <Button onClick={() => navigate('submit-application')}>
+              Submit Application
+            </Button>
+          </Group>
+        </Card>
         <Box mb={120}>
           <Title mb="xs" fz="h3" order={2}>
             Round Selection
@@ -77,30 +97,16 @@ export const Home = () => {
             </Group>
           </Card>
         </Box>
-        <Card variant="kelp-outline" mb={120}>
-          <Group justify="space-between">
-            <Box>
-              <Text fz={28} mb="12">
-                Want to Run a Round?
-              </Text>
-              <Text>Applications can be submitted any time</Text>
-            </Box>
-            <Button>Submit Application</Button>
-          </Group>
-        </Card>
         <Box mb={120}>
           <Title mb="xs" fz="h3" order={2}>
             Our Grant Selection Process
           </Title>
-          <Text c="subtle" mb="lg">
+          <Text c="subtle">
             The GrantShips evolutionary mechanism in a nutshell
           </Text>
-          <Card>
-            <Text mb="sm" fw={600}>
-              Voting Phases
-            </Text>
+          <Box p="lg">
             <SplainerAccordion activeRound="2" />
-          </Card>
+          </Box>
         </Box>
       </InnerContainer>
     </Box>

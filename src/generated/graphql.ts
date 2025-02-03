@@ -22,6 +22,80 @@ export type Scalars = {
   timestamptz: { input: any; output: any; }
 };
 
+/** columns and relationships of "AppDraft" */
+export type AppDraft = {
+  __typename?: 'AppDraft';
+  contentProtocol: Scalars['numeric']['output'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
+  id: Scalars['String']['output'];
+  json: Scalars['String']['output'];
+  lastUpdated: Scalars['Int']['output'];
+  tag: Scalars['String']['output'];
+  userAddress: Scalars['String']['output'];
+};
+
+/** Boolean expression to filter rows from the table "AppDraft". All fields are combined with a logical 'AND'. */
+export type AppDraft_Bool_Exp = {
+  _and?: InputMaybe<Array<AppDraft_Bool_Exp>>;
+  _not?: InputMaybe<AppDraft_Bool_Exp>;
+  _or?: InputMaybe<Array<AppDraft_Bool_Exp>>;
+  contentProtocol?: InputMaybe<Numeric_Comparison_Exp>;
+  db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
+  id?: InputMaybe<String_Comparison_Exp>;
+  json?: InputMaybe<String_Comparison_Exp>;
+  lastUpdated?: InputMaybe<Int_Comparison_Exp>;
+  tag?: InputMaybe<String_Comparison_Exp>;
+  userAddress?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** Ordering options when selecting data from "AppDraft". */
+export type AppDraft_Order_By = {
+  contentProtocol?: InputMaybe<Order_By>;
+  db_write_timestamp?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  json?: InputMaybe<Order_By>;
+  lastUpdated?: InputMaybe<Order_By>;
+  tag?: InputMaybe<Order_By>;
+  userAddress?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "AppDraft" */
+export enum AppDraft_Select_Column {
+  /** column name */
+  ContentProtocol = 'contentProtocol',
+  /** column name */
+  DbWriteTimestamp = 'db_write_timestamp',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Json = 'json',
+  /** column name */
+  LastUpdated = 'lastUpdated',
+  /** column name */
+  Tag = 'tag',
+  /** column name */
+  UserAddress = 'userAddress'
+}
+
+/** Streaming cursor of the table "AppDraft" */
+export type AppDraft_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: AppDraft_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type AppDraft_Stream_Cursor_Value_Input = {
+  contentProtocol?: InputMaybe<Scalars['numeric']['input']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  json?: InputMaybe<Scalars['String']['input']>;
+  lastUpdated?: InputMaybe<Scalars['Int']['input']>;
+  tag?: InputMaybe<Scalars['String']['input']>;
+  userAddress?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** columns and relationships of "AskHausContest" */
 export type AskHausContest = {
   __typename?: 'AskHausContest';
@@ -2971,6 +3045,10 @@ export type Persisted_State_Stream_Cursor_Value_Input = {
 
 export type Query_Root = {
   __typename?: 'query_root';
+  /** fetch data from the table: "AppDraft" */
+  AppDraft: Array<AppDraft>;
+  /** fetch data from the table: "AppDraft" using primary key columns */
+  AppDraft_by_pk?: Maybe<AppDraft>;
   /** fetch data from the table: "AskHausContest" */
   AskHausContest: Array<AskHausContest>;
   /** fetch data from the table: "AskHausContest" using primary key columns */
@@ -3083,6 +3161,20 @@ export type Query_Root = {
   raw_events: Array<Raw_Events>;
   /** fetch data from the table: "raw_events" using primary key columns */
   raw_events_by_pk?: Maybe<Raw_Events>;
+};
+
+
+export type Query_RootAppDraftArgs = {
+  distinct_on?: InputMaybe<Array<AppDraft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<AppDraft_Order_By>>;
+  where?: InputMaybe<AppDraft_Bool_Exp>;
+};
+
+
+export type Query_RootAppDraft_By_PkArgs = {
+  id: Scalars['String']['input'];
 };
 
 
@@ -3614,6 +3706,12 @@ export type Raw_Events_Stream_Cursor_Value_Input = {
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
+  /** fetch data from the table: "AppDraft" */
+  AppDraft: Array<AppDraft>;
+  /** fetch data from the table: "AppDraft" using primary key columns */
+  AppDraft_by_pk?: Maybe<AppDraft>;
+  /** fetch data from the table in a streaming manner: "AppDraft" */
+  AppDraft_stream: Array<AppDraft>;
   /** fetch data from the table: "AskHausContest" */
   AskHausContest: Array<AskHausContest>;
   /** fetch data from the table: "AskHausContest" using primary key columns */
@@ -3782,6 +3880,27 @@ export type Subscription_Root = {
   raw_events_by_pk?: Maybe<Raw_Events>;
   /** fetch data from the table in a streaming manner: "raw_events" */
   raw_events_stream: Array<Raw_Events>;
+};
+
+
+export type Subscription_RootAppDraftArgs = {
+  distinct_on?: InputMaybe<Array<AppDraft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<AppDraft_Order_By>>;
+  where?: InputMaybe<AppDraft_Bool_Exp>;
+};
+
+
+export type Subscription_RootAppDraft_By_PkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootAppDraft_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<AppDraft_Stream_Cursor_Input>>;
+  where?: InputMaybe<AppDraft_Bool_Exp>;
 };
 
 
@@ -4399,6 +4518,27 @@ export type Timestamptz_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
+export type DraftFragment = { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string };
+
+export type ApplicationDraftsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ApplicationDraftsQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string }> };
+
+export type ApplicationDraftQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type ApplicationDraftQuery = { __typename?: 'query_root', AppDraft_by_pk?: { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string } | null };
+
+export type ApplicationDraftsByUserQueryVariables = Exact<{
+  userAddress: Scalars['String']['input'];
+}>;
+
+
+export type ApplicationDraftsByUserQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string }> };
+
 export type VoteFragment = { __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string };
 
 export type ApplicationFragment = { __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string }> };
@@ -4417,6 +4557,16 @@ export type GetRecentTransactionQueryVariables = Exact<{
 
 export type GetRecentTransactionQuery = { __typename?: 'query_root', TX_by_pk?: { __typename?: 'TX', id: string } | null };
 
+export const DraftFragmentDoc = gql`
+    fragment Draft on AppDraft {
+  id
+  tag
+  userAddress
+  lastUpdated
+  contentProtocol
+  json
+}
+    `;
 export const VoteFragmentDoc = gql`
     fragment Vote on GGApplicationVote {
   id
@@ -4441,6 +4591,27 @@ export const ApplicationFragmentDoc = gql`
   }
 }
     ${VoteFragmentDoc}`;
+export const ApplicationDraftsDocument = gql`
+    query applicationDrafts {
+  AppDraft {
+    ...Draft
+  }
+}
+    ${DraftFragmentDoc}`;
+export const ApplicationDraftDocument = gql`
+    query applicationDraft($id: String!) {
+  AppDraft_by_pk(id: $id) {
+    ...Draft
+  }
+}
+    ${DraftFragmentDoc}`;
+export const ApplicationDraftsByUserDocument = gql`
+    query applicationDraftsByUser($userAddress: String!) {
+  AppDraft(where: {userAddress: {_eq: $userAddress}}) {
+    ...Draft
+  }
+}
+    ${DraftFragmentDoc}`;
 export const GetApplicationRoundDocument = gql`
     query getApplicationRound($id: String!) {
   GGApplicationRound_by_pk(id: $id) {
@@ -4472,6 +4643,15 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    applicationDrafts(variables?: ApplicationDraftsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ApplicationDraftsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ApplicationDraftsQuery>(ApplicationDraftsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'applicationDrafts', 'query', variables);
+    },
+    applicationDraft(variables: ApplicationDraftQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ApplicationDraftQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ApplicationDraftQuery>(ApplicationDraftDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'applicationDraft', 'query', variables);
+    },
+    applicationDraftsByUser(variables: ApplicationDraftsByUserQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ApplicationDraftsByUserQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ApplicationDraftsByUserQuery>(ApplicationDraftsByUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'applicationDraftsByUser', 'query', variables);
+    },
     getApplicationRound(variables: GetApplicationRoundQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetApplicationRoundQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetApplicationRoundQuery>(GetApplicationRoundDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getApplicationRound', 'query', variables);
     },

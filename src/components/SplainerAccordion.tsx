@@ -83,7 +83,7 @@ export const SplainerAccordion = ({
                 mx="sm"
                 p={2}
               >
-                <Text fz="xs" c="white">
+                <Text fz="xs" c={colors.dark[6]} fw={700}>
                   Active Now!
                 </Text>
               </Group>
@@ -108,7 +108,7 @@ export const SplainerAccordion = ({
                       stroke={1.5}
                       color={colors.dark[4]}
                     />
-                    <Text>{point}</Text>
+                    <Text c="subtle">{point}</Text>
                   </Group>
                 ))}
               </Stack>

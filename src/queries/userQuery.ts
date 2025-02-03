@@ -3,6 +3,16 @@ import { publicClient } from '../utils/config';
 import { ADDR } from '../constants/addresses';
 import HatsAbi from '../abi/Hats.json';
 import { HATS } from '../constants/setup';
+import { getAppDraftsByUser } from './getAppDrafts';
+
+const userApplications = async (address: Address) => {
+  const appDrafts = await getAppDraftsByUser(address);
+
+  return {
+    hasApplications: appDrafts.length > 0,
+    userDrafts: appDrafts,
+  };
+};
 
 const hatsRoleQuery = async (address: Address) => {
   try {
@@ -35,8 +45,9 @@ const hatsRoleQuery = async (address: Address) => {
 export const userQuery = async (userAddress: Address) => {
   try {
     const { isAdmin, isJudge } = await hatsRoleQuery(userAddress);
+    const { hasApplications, userDrafts } = await userApplications(userAddress);
 
-    return { isAdmin, isJudge };
+    return { isAdmin, isJudge, hasApplications };
   } catch (error) {
     throw new Error(`Failed to query user roles. Error ${error}`);
   }

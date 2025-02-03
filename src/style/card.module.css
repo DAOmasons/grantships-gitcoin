@@ -1,6 +1,6 @@
 .root {
-  background-color: var(--mantine-color-white);
-  border: 1px solid var(--mantine-color-dark-1);
+  background-color: var(--mantine-color-dark-7);
+  border: 1px solid var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-md);
   padding: var(--mantine-spacing-lg);
   border-radius: rem('12px');
@@ -9,24 +9,23 @@
   }
 
   &[data-variant='bold'] {
-    border: 1px solid var(--mantine-color-dark-6);
+    border: 1px solid var(--mantine-color-dark-5);
   }
 
   &[data-variant='solid'] {
-    border: 1px solid var(--mantine-color-kelp-6);
-    background-color: var(--mantine-color-kelp-6);
+    border: 1px solid transparent;
+    background-color: var(--mantine-color-kelp-10);
     p {
-      color: var(--mantine-color-white);
+      color: var(--mantine-color-dark-2);
     }
   }
 
   &[data-variant='kelp-outline'] {
     border: 1px solid var(--mantine-color-kelp-6);
-    background-color: var(--mantine-color-white);
   }
 
   &[data-variant='purple-outline'] {
     border: 1px solid var(--mantine-color-purple-6);
-    background-color: var(--mantine-color-white);
+    /* background-color: var(--mantine-color-white); */
   }
 }

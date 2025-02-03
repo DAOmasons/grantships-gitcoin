@@ -1,0 +1,26 @@
+fragment Draft on AppDraft {
+  id
+  tag
+  userAddress
+  lastUpdated
+  contentProtocol
+  json
+}
+
+query applicationDrafts {
+  AppDraft {
+    ...Draft
+  }
+}
+
+query applicationDraft($id: String!) {
+  AppDraft_by_pk(id: $id) {
+    ...Draft
+  }
+}
+
+query applicationDraftsByUser($userAddress: String!) {
+  AppDraft(where: { userAddress: { _eq: $userAddress } }) {
+    ...Draft
+  }
+}

@@ -1,0 +1,121 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "origin",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "content",
+        "type": "bytes"
+      }
+    ],
+    "name": "Say",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "origin",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "content",
+        "type": "bytes"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "Scribe",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_index", "type": "uint256" }
+    ],
+    "name": "getRecord",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "sender", "type": "address" },
+          { "internalType": "address", "name": "origin", "type": "address" },
+          { "internalType": "bytes", "name": "content", "type": "bytes" },
+          { "internalType": "address", "name": "referrer", "type": "address" }
+        ],
+        "internalType": "struct Record",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getRecordLength",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "records",
+    "outputs": [
+      { "internalType": "address", "name": "sender", "type": "address" },
+      { "internalType": "address", "name": "origin", "type": "address" },
+      { "internalType": "bytes", "name": "content", "type": "bytes" },
+      { "internalType": "address", "name": "referrer", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_referrer", "type": "address" },
+      { "internalType": "bytes", "name": "_content", "type": "bytes" },
+      { "internalType": "bool", "name": "_store", "type": "bool" }
+    ],
+    "name": "sayeth",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

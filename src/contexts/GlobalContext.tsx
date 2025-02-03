@@ -8,6 +8,7 @@ import { AppRound, getRounds } from '../queries/getRounds';
 type UserData = {
   isJudge: boolean;
   isAdmin: boolean;
+  hasApplications?: boolean;
 };
 
 type GlobalContextType = {
@@ -25,6 +26,7 @@ export const GlobalContext = createContext<GlobalContextType>({
   userData: {
     isJudge: false,
     isAdmin: false,
+    hasApplications: false,
   },
   isLoadingUser: false,
   userError: null,

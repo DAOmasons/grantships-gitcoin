@@ -9,7 +9,7 @@ import {
 } from '@mantine/core';
 import { useChews } from '../hooks/useChews';
 import { PageLayout } from '../layout/Page';
-import { Question, RubricSection } from '../constants/rubric';
+import { Question } from '../constants/rubric';
 import { useParams } from 'react-router-dom';
 import { ResolvedApplication, ResolvedVote } from '../queries/getRounds';
 
@@ -66,7 +66,7 @@ export const Review = () => {
         const judgeReview = review.review.feedback[section.sectionName];
         return (
           <Box key={section.sectionLabel} mb={120}>
-            <Title fz={'h3'} order={3} c={colors.kelp[6]} mb="sm">
+            <Title fz={'h3'} order={3} c={'highlight'} mb="sm">
               {section.sectionName}
             </Title>
             <Box mx="md">
@@ -89,7 +89,7 @@ export const Review = () => {
               <Card
                 variant="inner"
                 style={{
-                  border: `1px solid ${colors.purple[6]}`,
+                  border: `1px solid ${colors.dark[2]}`,
                 }}
               >
                 <Text>{judgeReview}</Text>

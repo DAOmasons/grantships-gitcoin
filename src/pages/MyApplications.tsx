@@ -1,6 +1,6 @@
 import { PageLayout } from '../layout/Page';
 import { useQuery } from '@tanstack/react-query';
-import { getAppDrafts } from '../queries/getAppDrafts';
+import { getAppDrafts, getAppDraftsByUser } from '../queries/getAppDrafts';
 import {
   Avatar,
   Box,
@@ -10,13 +10,14 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import fxClasses from '../style/effects.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IconChevronRight } from '@tabler/icons-react';
 
-export const Applications = () => {
+export const MyApplications = () => {
+  const { address } = useParams();
   const { data: drafts } = useQuery({
-    queryKey: ['applications'],
-    queryFn: getAppDrafts,
+    queryKey: ['my-applications', address],
+    queryFn: () => getAppDraftsByUser(address as string),
   });
 
   const { colors } = useMantineTheme();
@@ -26,10 +27,10 @@ export const Applications = () => {
   return (
     <PageLayout title="Round Applications">
       <Title fz="h3" order={3} mb="sm">
-        GG23 Applications
+        My Applications
       </Title>
       <Text c={'subtle'} mb="xl">
-        Applications submitted by prospective ship operators for the GG23.
+        Your applications submitted to become a Grant Ship operator for GG23.
       </Text>
       <Box>
         {drafts?.map((draft) => {

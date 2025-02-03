@@ -3,16 +3,21 @@ import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ConnectButton } from '../components/ConnectButton';
 import { useUserData } from '../hooks/useUserData';
+import { useAccount } from 'wagmi';
 
 const publicItems = [
   {
-    label: 'Elections',
-    url: '/elections',
+    label: 'Ships',
+    url: '/ships',
   },
   {
     label: 'Applications',
     url: '/applications',
   },
+  // {
+  //   label: 'Elections',
+  //   url: '/elections',
+  // },
   {
     label: 'Reviews',
     url: '/reviews',
@@ -22,20 +27,31 @@ const publicItems = [
 export const HorizontalNav = () => {
   const location = useLocation();
   const { userData } = useUserData();
+  const { address } = useAccount();
 
-  const { isJudge, isAdmin } = userData || {};
-
+  const { isJudge, isAdmin, hasApplications } = userData || {};
+  console.log('isJudge', isJudge);
+  console.log('isAdmin', isAdmin);
+  console.log('hasApplications', hasApplications);
   const navItems = useMemo(() => {
+    let items = [...publicItems];
     if (isAdmin) {
-      return [...publicItems, { label: 'Dashboard', url: '/admin-dashboard' }];
+      items.push({ label: 'Dashboard', url: '/admin-dashboard' });
     }
 
     if (isJudge) {
-      return [...publicItems, { label: 'Dashboard', url: '/judge-dashboard' }];
+      items.push({ label: 'Dashboard', url: '/judge-dashboard ' });
     }
 
-    return publicItems;
-  }, [isJudge, isAdmin]);
+    if (hasApplications) {
+      items.push({
+        label: 'My Application',
+        url: `/my-applications/${address}`,
+      });
+    }
+
+    return items;
+  }, [isJudge, isAdmin, hasApplications]);
 
   return (
     <Group ml={40} mt={36} gap="xl">
@@ -48,7 +64,7 @@ export const HorizontalNav = () => {
         <Link key={item.label} to={item.url}>
           <Text
             variant="label"
-            fw={location.pathname === item.url ? 600 : 500}
+            fw={location.pathname === item.url ? 600 : 600}
             c={location.pathname === item.url ? undefined : 'subtle'}
           >
             {item.label}

@@ -7,7 +7,6 @@ import {
   Text,
   Textarea,
   Title,
-  useMantineTheme,
 } from '@mantine/core';
 import { RoundApplicationContent } from '../../constants/dummyApplications';
 import { RubricSection } from '../../constants/rubric';
@@ -42,8 +41,6 @@ export const RubricStep = ({
   registrar?: string;
   handleVote: () => void;
 }) => {
-  const theme = useMantineTheme();
-
   const allQuestionsAnswered = section.questions.every(
     (question) => scores[question.title] != null
   );
@@ -51,8 +48,8 @@ export const RubricStep = ({
   const finalStep = totalSteps && index === totalSteps - 1;
 
   return (
-    <Box mt={56}>
-      <Title order={3} fz="h3" c={theme.colors.kelp[6]} mb="sm">
+    <Box mt={'xl'}>
+      <Title order={3} fz="h3" mb="sm">
         {section.sectionName}
       </Title>
       <Text mb="lg">

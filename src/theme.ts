@@ -1,40 +1,39 @@
-import { createTheme, Divider, Stepper } from '@mantine/core';
+import { createTheme } from '@mantine/core';
 import typographyClasses from './style/typography.module.css';
 import buttonClasses from './style/button.module.css';
 import cardClasses from './style/card.module.css';
 import stepperClasses from './style/stepper.module.css';
 import formClasses from './style/form.module.css';
-import { lightTheme } from '@rainbow-me/rainbowkit';
+import accordionClasses from './style/accordion.module.css';
+import { darkTheme } from '@rainbow-me/rainbowkit';
 import { Theme as RainbowKitTheme } from '@rainbow-me/rainbowkit';
 
 const KELP = [
-  '#f2f2f2',
-  '#e9f5f4',
-  '#d5edec',
-  '#9dd1ce',
-  '#6bb3ad',
-  '#257a72',
-  '#00433b', // root color
-  '#003b31',
-  '#003025',
-  '#00291d',
-  '#001f13',
+  '#ffffff',
+  '#f0fcfb',
+  '#e1faf7',
+  '#b4f0e9',
+  '#8ae6d9',
+  '#3fd4bd',
+  '#00c3a0',
+  '#00ad88',
+  '#009168',
+  '#00754c',
+  '#0C1F1C',
 ] as const;
-
-// E2E8F0
 
 const DARK = [
   '#f2f2f2',
-  '#E2E8F0', // common grey
-  '#c4c4c4',
-  '#656a68', // secondary text color
-  '#595959',
-  '#111111', // common text color
-  '#0f0e0e',
-  '#0d0a0a',
-  '#0a0606',
-  '#080303',
-  '#050101',
+  '#EFE9E9', // highlight text color
+  '#CED4DA', // primary text color
+  '#ADB5BD', // subtle text color
+  '#828282', // inactive text color
+  '#3B3B3B', // highlight/active/panel color
+  '#1F1F1F', // accent panel color// dark text color
+  '#0D0D0D', // bg color
+  '#000000',
+  '#000000',
+  '#000000',
 ] as const;
 
 const PURPLE = [
@@ -44,27 +43,15 @@ const PURPLE = [
   '#e4cdf7',
   '#d0b1f2',
   '#a37aeb',
-  '#6e48e0', // root color
+  '#9E62FF', // root color
   '#5c3ac9',
   '#4428a8',
   '#301a87',
   '#1e0e66',
 ] as const;
 
-const SUBTLE_TEXT = [
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '#656a68',
-  '',
-  '',
-  '',
-  '',
-] as const;
-
+const SUBTLE_TEXT = ['', '', '', '', '#ADB5BD', '', '', '', '', ''] as const;
+const HIGHLIGHT_TEXT = ['', '', '', '', '#EFE9E9', '', '', '', '', ''] as const;
 export const theme = createTheme({
   fontFamily: 'DM Sans, sans-serif',
   spacing: {
@@ -100,12 +87,21 @@ export const theme = createTheme({
     dark: DARK,
     purple: PURPLE,
     subtle: SUBTLE_TEXT,
+    highlight: HIGHLIGHT_TEXT,
   },
 
   components: {
     Text: {
       classNames: {
         root: typographyClasses.root,
+      },
+    },
+    Title: {
+      classNames: {
+        root: typographyClasses.root,
+      },
+      defaultProps: {
+        c: DARK[1],
       },
     },
     Button: {
@@ -132,9 +128,18 @@ export const theme = createTheme({
         stepBody: stepperClasses.stepBody,
       },
     },
+    TextInput: {
+      classNames: {
+        input: formClasses.root,
+        label: formClasses.label,
+        section: formClasses.inputSection,
+        wrapper: formClasses.input,
+      },
+    },
     Textarea: {
       classNames: {
         input: formClasses.root,
+        label: formClasses.label,
       },
       defaultProps: {
         rows: 1,
@@ -144,31 +149,45 @@ export const theme = createTheme({
     Radio: {
       classNames: {
         radio: formClasses.radio,
+        icon: formClasses.radioIcon,
         root: formClasses.radioRoot,
       },
       defaultProps: {
         color: KELP[6],
       },
     },
+    Accordion: {
+      classNames: {
+        control: accordionClasses.control,
+        root: accordionClasses.root,
+      },
+    },
     Divider: {
       defaultProps: {
-        color: DARK[1],
+        color: DARK[5],
+      },
+    },
+    Modal: {
+      classNames: {
+        content: cardClasses.modalContent,
       },
     },
   },
 });
 
 export const rbkTheme: RainbowKitTheme = {
-  ...lightTheme({}),
+  ...darkTheme({}),
   colors: {
-    ...lightTheme().colors,
+    ...darkTheme().colors,
     accentColor: KELP[6],
-    modalText: DARK[6],
-    modalTextSecondary: DARK[3],
-    // modalTextDim: 'red',
+    modalBackground: DARK[6],
+    modalText: DARK[1],
+    modalTextSecondary: DARK[4],
+    modalBorder: DARK[6],
+    modalTextDim: DARK[4],
   },
   radii: {
-    ...lightTheme().radii,
+    ...darkTheme().radii,
     modal: '6px',
     menuButton: '6px',
     modalMobile: '6px',
