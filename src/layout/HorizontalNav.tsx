@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ConnectButton } from '../components/ConnectButton';
 import { useUserData } from '../hooks/useUserData';
+import { useAccount } from 'wagmi';
 
 const publicItems = [
   {
@@ -26,16 +27,25 @@ const publicItems = [
 export const HorizontalNav = () => {
   const location = useLocation();
   const { userData } = useUserData();
+  const { address } = useAccount();
 
-  const { isJudge, isAdmin } = userData || {};
+  const { isJudge, isAdmin, hasApplications } = userData || {};
 
   const navItems = useMemo(() => {
+    let navItems = [...publicItems];
     if (isAdmin) {
-      return [...publicItems, { label: 'Dashboard', url: '/admin-dashboard' }];
+      navItems.push({ label: 'Dashboard', url: '/admin-dashboard' });
     }
 
     if (isJudge) {
-      return [...publicItems, { label: 'Dashboard', url: '/judge-dashboard' }];
+      navItems.push({ label: 'Dashboard', url: '/judge-dashboard ' });
+    }
+
+    if (hasApplications) {
+      navItems.push({
+        label: 'My Application',
+        url: `/my-applications/${address}`,
+      });
     }
 
     return publicItems;

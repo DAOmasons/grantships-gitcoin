@@ -32,10 +32,14 @@ import { generateRandomBytes32 } from '../utils/common';
 import { encodeAbiParameters, parseAbiParameters } from 'viem';
 import { ZER0_ADDRESS } from '../constants/setup';
 import { TAG } from '../constants/tags';
+import { useNavigate } from 'react-router-dom';
+import { useUserData } from '../hooks/useUserData';
 
 export const SubmitApplicationAlt2 = () => {
   const { colors } = useMantineTheme();
   const [step, setStep] = useState(0);
+  const navigate = useNavigate();
+  // const {} = useUserData()
 
   const {
     form,
@@ -77,7 +81,9 @@ export const SubmitApplicationAlt2 = () => {
         args: [ZER0_ADDRESS, bytes, false],
       },
       writeContractOptions: {
-        onPollSuccess() {},
+        onPollSuccess() {
+          navigate(`/view-draft/${id}`);
+        },
       },
     });
   };
