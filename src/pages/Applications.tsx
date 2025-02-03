@@ -1,7 +1,14 @@
 import { PageLayout } from '../layout/Page';
 import { useQuery } from '@tanstack/react-query';
 import { getAppDrafts } from '../queries/getAppDrafts';
-import { Avatar, Box, Group, Text, Title } from '@mantine/core';
+import {
+  Avatar,
+  Box,
+  Group,
+  Text,
+  Title,
+  useMantineTheme,
+} from '@mantine/core';
 import fxClasses from '../style/effects.module.css';
 import { useNavigate } from 'react-router-dom';
 import { IconChevronRight } from '@tabler/icons-react';
@@ -12,6 +19,8 @@ export const Applications = () => {
     queryFn: getAppDrafts,
   });
 
+  const { colors } = useMantineTheme();
+
   const navigate = useNavigate();
 
   return (
@@ -19,10 +28,8 @@ export const Applications = () => {
       <Title fz="h3" order={3} mb="sm">
         GG23 Applications
       </Title>
-      <Text>
-        <Text c={'subtle'} mb="xl">
-          Applications submitted by prospective ship operators for the GG23.
-        </Text>
+      <Text c={'subtle'} mb="xl">
+        Applications submitted by prospective ship operators for the GG23.
       </Text>
       <Box>
         {drafts?.map((draft) => {
@@ -37,7 +44,11 @@ export const Applications = () => {
               onClick={() => navigate(`/view-draft/${draft.id}`)}
             >
               <Group>
-                <Avatar size={56} src={draft.parsedJSON.imgUrl} />
+                <Avatar
+                  size={56}
+                  bg={colors.dark[2]}
+                  src={draft.parsedJSON.imgUrl}
+                />
                 <Box>
                   <Text fw={600} fz="lg" mb={4} maw={240} lineClamp={1}>
                     {draft.parsedJSON.name}
@@ -47,7 +58,7 @@ export const Applications = () => {
               </Group>
               <Group>
                 <Box>
-                  <Text>Status</Text>
+                  <Text mb={10}>Status</Text>
                   <Text c="subtle">In Review</Text>
                 </Box>
                 <IconChevronRight size={24} />

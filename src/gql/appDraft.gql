@@ -12,3 +12,9 @@ query applicationDrafts {
     ...Draft
   }
 }
+
+query applicationDraft($id: String!) {
+  AppDraft_by_pk(id: $id) {
+    ...Draft
+  }
+}

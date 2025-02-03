@@ -4525,6 +4525,13 @@ export type ApplicationDraftsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ApplicationDraftsQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string }> };
 
+export type ApplicationDraftQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type ApplicationDraftQuery = { __typename?: 'query_root', AppDraft_by_pk?: { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string } | null };
+
 export type VoteFragment = { __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string };
 
 export type ApplicationFragment = { __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string }> };
@@ -4584,6 +4591,13 @@ export const ApplicationDraftsDocument = gql`
   }
 }
     ${DraftFragmentDoc}`;
+export const ApplicationDraftDocument = gql`
+    query applicationDraft($id: String!) {
+  AppDraft_by_pk(id: $id) {
+    ...Draft
+  }
+}
+    ${DraftFragmentDoc}`;
 export const GetApplicationRoundDocument = gql`
     query getApplicationRound($id: String!) {
   GGApplicationRound_by_pk(id: $id) {
@@ -4617,6 +4631,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     applicationDrafts(variables?: ApplicationDraftsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ApplicationDraftsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<ApplicationDraftsQuery>(ApplicationDraftsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'applicationDrafts', 'query', variables);
+    },
+    applicationDraft(variables: ApplicationDraftQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ApplicationDraftQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ApplicationDraftQuery>(ApplicationDraftDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'applicationDraft', 'query', variables);
     },
     getApplicationRound(variables: GetApplicationRoundQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetApplicationRoundQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetApplicationRoundQuery>(GetApplicationRoundDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getApplicationRound', 'query', variables);

@@ -11,6 +11,7 @@ import { Review } from './pages/ReviewApplication';
 import { SubmitApplicationAlt } from './pages/SubmitApplicationAlt';
 import { SubmitApplicationAlt2 } from './pages/SubmitApplicationAlt2';
 import { Applications } from './pages/Applications';
+import { ViewDraft } from './pages/ViewDraft';
 
 export const ClientRoutes = () => {
   return (
@@ -24,6 +25,7 @@ export const ClientRoutes = () => {
       <Route path="/submit-application" element={<SubmitApplicationAlt2 />} />
       <Route path="/vote-application/:id" element={<VoteApplication />} />
       <Route path="/view-application/:id" element={<ViewApplication />} />
+      <Route path="/view-draft/:id" element={<ViewDraft />} />
       <Route path="/review/:id" element={<Review />} />
       <Route path="/" element={<Home />} />
     </Routes>
