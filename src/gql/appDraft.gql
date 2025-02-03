@@ -18,3 +18,9 @@ query applicationDraft($id: String!) {
     ...Draft
   }
 }
+
+query applicationDraftsByUser($userAddress: String!) {
+  AppDraft(where: { userAddress: { _eq: $userAddress } }) {
+    ...Draft
+  }
+}

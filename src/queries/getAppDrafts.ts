@@ -60,3 +60,36 @@ export const getAppDraft = async (id: string) => {
     throw new Error('Failed to fetch draft');
   }
 };
+
+export const getAppDraftsByUser = async (userAddress: string) => {
+  try {
+    const res = await sdk.applicationDraftsByUser({ userAddress });
+
+    const drafts = res.AppDraft;
+
+    if (!drafts) {
+      throw new Error('No drafts found');
+    }
+
+    return drafts
+      .map((draft) => {
+        const validated = submitApplicationSchema.safeParse(
+          JSON.parse(draft.json)
+        );
+
+        if (!validated.success) {
+          return undefined;
+        }
+
+        return {
+          ...draft,
+          parsedJSON: validated.data,
+        };
+      })
+      .filter((draft) => draft !== undefined);
+  } catch (error) {
+    console.error(error);
+
+    throw new Error('Failed to fetch drafts');
+  }
+};
