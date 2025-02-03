@@ -30,26 +30,28 @@ export const HorizontalNav = () => {
   const { address } = useAccount();
 
   const { isJudge, isAdmin, hasApplications } = userData || {};
-
+  console.log('isJudge', isJudge);
+  console.log('isAdmin', isAdmin);
+  console.log('hasApplications', hasApplications);
   const navItems = useMemo(() => {
-    let navItems = [...publicItems];
+    let items = [...publicItems];
     if (isAdmin) {
-      navItems.push({ label: 'Dashboard', url: '/admin-dashboard' });
+      items.push({ label: 'Dashboard', url: '/admin-dashboard' });
     }
 
     if (isJudge) {
-      navItems.push({ label: 'Dashboard', url: '/judge-dashboard ' });
+      items.push({ label: 'Dashboard', url: '/judge-dashboard ' });
     }
 
     if (hasApplications) {
-      navItems.push({
+      items.push({
         label: 'My Application',
         url: `/my-applications/${address}`,
       });
     }
 
-    return publicItems;
-  }, [isJudge, isAdmin]);
+    return items;
+  }, [isJudge, isAdmin, hasApplications]);
 
   return (
     <Group ml={40} mt={36} gap="xl">
