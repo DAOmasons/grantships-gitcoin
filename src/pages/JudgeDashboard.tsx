@@ -4,6 +4,9 @@ import { PageLayout } from '../layout/Page';
 import { useChews } from '../hooks/useChews';
 import { Link } from 'react-router-dom';
 import { useAccount } from 'wagmi';
+import { InfoBanner } from '../components/InfoBanner';
+
+const AWAITING_REVEAL = true;
 
 export const JudgeDashboard = () => {
   const { applicationRound, isLoadingAppRound } = useChews();
@@ -19,7 +22,7 @@ export const JudgeDashboard = () => {
             'Rounds Live',
             'Round Review',
           ]}
-          step={2}
+          step={1}
         />
       </Box>
       <Title order={3} fz="h3">
@@ -29,7 +32,13 @@ export const JudgeDashboard = () => {
         Community leaders volunteering their expertise
       </Text>
       <Box>
-        {!isLoadingAppRound &&
+        {AWAITING_REVEAL ? (
+          <InfoBanner
+            title="Coming Up Soon!"
+            description="Applications are still being reviewed and prepared for the Judge Vote"
+          />
+        ) : (
+          !isLoadingAppRound &&
           applicationRound?.applications.map((app, index) => {
             const hasUserVoted = app.votes.some(
               (vote) => vote.reviewer === address
@@ -63,7 +72,8 @@ export const JudgeDashboard = () => {
                 </Stack>
               </Group>
             );
-          })}
+          })
+        )}
       </Box>
     </PageLayout>
   );

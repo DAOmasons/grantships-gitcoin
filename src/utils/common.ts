@@ -15,3 +15,5 @@ export const charLimit = (str: string, limit = 18): string => {
   }
   return str;
 };
+
+export const urlRegex = /(https?:\/\/[^\s]+)/g;

@@ -2,8 +2,6 @@ import { Text, TextProps } from '@mantine/core';
 import { ReactNode } from 'react';
 import typeClasses from '../style/typography.module.css';
 
-console.log('typeClasses', typeClasses);
-
 export const ExternalLink = ({
   children,
   href,

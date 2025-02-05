@@ -4,6 +4,9 @@ import { getAppDrafts } from '../queries/getAppDrafts';
 import {
   Avatar,
   Box,
+  Button,
+  Card,
+  Flex,
   Group,
   Text,
   Title,
@@ -12,6 +15,8 @@ import {
 import fxClasses from '../style/effects.module.css';
 import { useNavigate } from 'react-router-dom';
 import { IconChevronRight } from '@tabler/icons-react';
+import { useTablet } from '../hooks/useBreakpoints';
+import { InfoBanner } from '../components/InfoBanner';
 
 export const Applications = () => {
   const { data: drafts } = useQuery({
@@ -20,6 +25,7 @@ export const Applications = () => {
   });
 
   const { colors } = useMantineTheme();
+  const isTablet = useTablet();
 
   const navigate = useNavigate();
 
@@ -32,40 +38,68 @@ export const Applications = () => {
         Applications submitted by prospective ship operators for the GG23.
       </Text>
       <Box>
-        {drafts?.map((draft) => {
-          return (
-            <Group
-              px="lg"
-              py="sm"
-              mb={32}
-              key={draft.id}
-              justify="space-between"
-              className={fxClasses.hoverCard}
-              onClick={() => navigate(`/view-draft/${draft.id}`)}
+        {drafts?.length ? (
+          drafts?.map((draft) => {
+            return (
+              <Group
+                px={isTablet ? 'sm' : 'lg'}
+                py="sm"
+                mb={32}
+                key={draft.id}
+                justify="space-between"
+                className={fxClasses.hoverCard}
+                onClick={() => navigate(`/view-draft/${draft.id}`)}
+              >
+                <Group>
+                  <Avatar size={56} bg={colors.dark[2]} src={draft.imgUrl} />
+                  <Box>
+                    <Text fw={600} fz="lg" mb={4} maw={240} lineClamp={1}>
+                      {draft.name}
+                    </Text>
+                    <Text c="subtle">Last Updated Jan 1, 2025</Text>
+                  </Box>
+                </Group>
+                {!isTablet && (
+                  <Group>
+                    <Box>
+                      <Text mb={10}>Status</Text>
+                      <Text c="subtle">In Review</Text>
+                    </Box>
+                    <IconChevronRight size={24} />
+                  </Group>
+                )}
+              </Group>
+            );
+          })
+        ) : (
+          <Box>
+            <InfoBanner
+              title="No Applications"
+              description="No applications have been submitted yet."
+            />
+          </Box>
+        )}
+        <Card variant="kelp-outline" mt="100px">
+          <Flex
+            justify="space-between"
+            align={'center'}
+            gap="md"
+            direction={isTablet ? 'column' : 'row'}
+          >
+            <Box>
+              <Text fz={isTablet ? 24 : 28} mb="12">
+                Want to Run a Round?
+              </Text>
+              <Text>Applications can be submitted any time</Text>
+            </Box>
+            <Button
+              onClick={() => navigate('/submit-application')}
+              size={isTablet ? 'sm' : undefined}
             >
-              <Group>
-                <Avatar
-                  size={56}
-                  bg={colors.dark[2]}
-                  src={draft.parsedJSON.imgUrl}
-                />
-                <Box>
-                  <Text fw={600} fz="lg" mb={4} maw={240} lineClamp={1}>
-                    {draft.parsedJSON.name}
-                  </Text>
-                  <Text c="subtle">Last Updated Jan 1, 2025</Text>
-                </Box>
-              </Group>
-              <Group>
-                <Box>
-                  <Text mb={10}>Status</Text>
-                  <Text c="subtle">In Review</Text>
-                </Box>
-                <IconChevronRight size={24} />
-              </Group>
-            </Group>
-          );
-        })}
+              Submit Application
+            </Button>
+          </Flex>
+        </Card>
       </Box>
     </PageLayout>
   );

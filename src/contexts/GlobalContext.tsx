@@ -19,6 +19,7 @@ type GlobalContextType = {
   isLoadingAppRound: boolean;
   refetchAppRound: () => void;
   appRoundError: Error | null;
+  currentStage?: number;
   judgeAmount: number;
 };
 
@@ -34,6 +35,7 @@ export const GlobalContext = createContext<GlobalContextType>({
   isLoadingAppRound: false,
   refetchAppRound: () => {},
   appRoundError: null,
+  currentStage: 0,
   //
   judgeAmount: 6,
 });
@@ -61,7 +63,9 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
     queryFn: () => getRounds(),
   });
 
-  const NUM_JUDGES = 6;
+  const currentStage = 1;
+
+  const NUM_JUDGES = 5;
 
   return (
     <GlobalContext.Provider
@@ -69,6 +73,7 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
         userData,
         isLoadingUser,
         userError,
+        currentStage,
         refetchAppRound,
         applicationRound,
         isLoadingAppRound,

@@ -1,9 +1,11 @@
 import { submitApplicationSchema } from '../schemas/submitApplicationSchema';
+import { appNetwork } from '../utils/config';
 import { sdk } from '../utils/indexer';
+import { getIpfsJson } from '../utils/ipfs';
 
 export const getAppDrafts = async () => {
   try {
-    const res = await sdk.applicationDrafts();
+    const res = await sdk.applicationDrafts({ chainId: appNetwork.id });
 
     const drafts = res.AppDraft;
 
@@ -13,17 +15,12 @@ export const getAppDrafts = async () => {
 
     return drafts
       .map((draft) => {
-        const validated = submitApplicationSchema.safeParse(
-          JSON.parse(draft.json)
-        );
-
-        if (!validated.success) {
-          return undefined;
-        }
+        const json = JSON.parse(draft.json);
 
         return {
           ...draft,
-          parsedJSON: validated.data,
+          name: json.name,
+          imgUrl: json.imgUrl,
         };
       })
       .filter((draft) => draft !== undefined);
@@ -42,9 +39,9 @@ export const getAppDraft = async (id: string) => {
       throw new Error('No draft found');
     }
 
-    const validated = submitApplicationSchema.safeParse(
-      JSON.parse(res.AppDraft_by_pk.json)
-    );
+    const offchainJson = await getIpfsJson(res.AppDraft_by_pk.ipfsHash);
+
+    const validated = submitApplicationSchema.safeParse(offchainJson);
 
     if (!validated.success) {
       throw new Error('Invalid draft');
@@ -63,7 +60,10 @@ export const getAppDraft = async (id: string) => {
 
 export const getAppDraftsByUser = async (userAddress: string) => {
   try {
-    const res = await sdk.applicationDraftsByUser({ userAddress });
+    const res = await sdk.applicationDraftsByUser({
+      userAddress,
+      chainId: appNetwork.id,
+    });
 
     const drafts = res.AppDraft;
 
@@ -73,20 +73,36 @@ export const getAppDraftsByUser = async (userAddress: string) => {
 
     return drafts
       .map((draft) => {
-        const validated = submitApplicationSchema.safeParse(
-          JSON.parse(draft.json)
-        );
-
-        if (!validated.success) {
-          return undefined;
-        }
+        const json = JSON.parse(draft.json);
 
         return {
           ...draft,
-          parsedJSON: validated.data,
+          name: json.name,
+          imgUrl: json.imgUrl,
         };
       })
       .filter((draft) => draft !== undefined);
+  } catch (error) {
+    console.error(error);
+
+    throw new Error('Failed to fetch drafts');
+  }
+};
+
+export const userHasAppDrafts = async (userAddress: string) => {
+  try {
+    const res = await sdk.applicationDraftsByUser({
+      userAddress,
+      chainId: appNetwork.id,
+    });
+
+    const drafts = res.AppDraft;
+
+    if (!drafts) {
+      throw new Error('No drafts found');
+    }
+
+    return drafts.length > 0;
   } catch (error) {
     console.error(error);
 

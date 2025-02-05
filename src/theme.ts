@@ -47,7 +47,7 @@ const PURPLE = [
   '#5c3ac9',
   '#4428a8',
   '#301a87',
-  '#1e0e66',
+  '#1B1525',
 ] as const;
 
 const SUBTLE_TEXT = ['', '', '', '', '#ADB5BD', '', '', '', '', ''] as const;

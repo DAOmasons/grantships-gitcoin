@@ -45,14 +45,10 @@ export const MyApplications = () => {
               onClick={() => navigate(`/view-draft/${draft.id}`)}
             >
               <Group>
-                <Avatar
-                  size={56}
-                  bg={colors.dark[2]}
-                  src={draft.parsedJSON.imgUrl}
-                />
+                <Avatar size={56} bg={colors.dark[2]} src={draft.imgUrl} />
                 <Box>
                   <Text fw={600} fz="lg" mb={4} maw={240} lineClamp={1}>
-                    {draft.parsedJSON.name}
+                    {draft.name}
                   </Text>
                   <Text c="subtle">Last Updated Jan 1, 2025</Text>
                 </Box>

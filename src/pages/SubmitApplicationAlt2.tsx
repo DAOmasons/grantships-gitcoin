@@ -5,6 +5,7 @@ import {
   Box,
   Card,
   Checkbox,
+  Flex,
   Group,
   InputLabel,
   List,
@@ -33,13 +34,17 @@ import { encodeAbiParameters, parseAbiParameters } from 'viem';
 import { ZER0_ADDRESS } from '../constants/setup';
 import { TAG } from '../constants/tags';
 import { useNavigate } from 'react-router-dom';
-import { useUserData } from '../hooks/useUserData';
+import { useMobile, useTablet } from '../hooks/useBreakpoints';
+import { pinJSONToIPFS } from '../utils/ipfs';
+import { notifications } from '@mantine/notifications';
 
 export const SubmitApplicationAlt2 = () => {
   const { colors } = useMantineTheme();
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
-  // const {} = useUserData()
+
+  const isTablet = useTablet();
+  const isMobile = useMobile();
 
   const {
     form,
@@ -54,23 +59,42 @@ export const SubmitApplicationAlt2 = () => {
   } = useApplicationForm();
   const { tx } = useTx();
 
-  const submitTx = () => {
+  const submitTx = async () => {
     const id = generateRandomBytes32();
 
     const valid = formSchema.safeParse(form.values);
 
-    if (!valid.success) {
-      // todo - show error message
-      throw new Error('Invalid form values');
-    }
+    const onChainJson = JSON.stringify({
+      name: form.values.name,
+      socialLink: form.values.socialLink,
+      id,
+      imgUrl: form.values.imgUrl,
+    });
 
-    const json = JSON.stringify({ ...form.values, id });
+    if (!valid.success) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to validate form values',
+        color: 'red',
+      });
+      return;
+    }
+    const pinRes = await pinJSONToIPFS({ ...form.values });
+
+    if (!pinRes.IpfsHash) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to pin content to IPFS',
+        color: 'red',
+      });
+      return;
+    }
 
     const tag = `${TAG.APPLICATION_POST}:${id}`;
 
     const bytes = encodeAbiParameters(
-      parseAbiParameters('string, (uint256, string)'),
-      [tag, [6969420n, json]]
+      parseAbiParameters('string, string, (uint256, string)'),
+      [tag, onChainJson, [1n, pinRes.IpfsHash]]
     );
 
     tx({
@@ -78,7 +102,7 @@ export const SubmitApplicationAlt2 = () => {
         abi: SayethAbi,
         address: ADDR.SAYETH,
         functionName: 'sayeth',
-        args: [ZER0_ADDRESS, bytes, false],
+        args: [ADDR.REFERRER, bytes, false],
       },
       writeContractOptions: {
         onPollSuccess() {
@@ -118,9 +142,14 @@ export const SubmitApplicationAlt2 = () => {
                 placeholder="Grant Program Name"
                 {...form.getInputProps('name')}
               />
-              <Group wrap="nowrap" gap="sm" align="start">
+              <Flex
+                wrap="nowrap"
+                gap={isTablet ? 'lg' : 'sm'}
+                align="start"
+                direction={isTablet ? 'column' : 'row'}
+              >
                 <TextInput
-                  w="50%"
+                  w={isTablet ? '100%' : '50%'}
                   label="Round Avatar URL"
                   required
                   leftSection={<IconLink color={colors.dark[4]} />}
@@ -128,14 +157,14 @@ export const SubmitApplicationAlt2 = () => {
                   {...form.getInputProps('imgUrl')}
                 />
                 <TextInput
-                  w="50%"
+                  w={isTablet ? '100%' : '50%'}
                   label="Social Link"
                   required
                   leftSection={<IconLink color={colors.dark[4]} />}
                   placeholder="https://platform.com/profile"
                   {...form.getInputProps('socialLink')}
                 />
-              </Group>
+              </Flex>
               <Textarea
                 label="Round Description"
                 required
@@ -148,7 +177,7 @@ export const SubmitApplicationAlt2 = () => {
                 <InputLabel fz="md" fw={600} mb={12} required>
                   Type of Projects to Fund
                 </InputLabel>
-                <Box mx="md">
+                <Box mx={isMobile ? 'xs' : 'md'}>
                   <Text c="subtle" fw={600} fz="sm">
                     Example
                   </Text>
@@ -169,10 +198,10 @@ export const SubmitApplicationAlt2 = () => {
                 <InputLabel fz="md" fw={600} mb={12} required>
                   Round History
                 </InputLabel>
-                <Text c="subtle" mb="xs">
+                <Text c="subtle" mb={12}>
                   Clearly identify the round history.
                 </Text>
-                <Box mx="md">
+                <Box mx={isMobile ? 'xs' : 'md'}>
                   <Text c="subtle" fw={600} fz="sm">
                     Example
                   </Text>
@@ -213,7 +242,7 @@ export const SubmitApplicationAlt2 = () => {
                   Identify the round operator with relevant experience, and
                   provide detailed bios and social handle links.
                 </Text>
-                <Box mx="md">
+                <Box mx={isMobile ? 'xs' : 'md'}>
                   <Text c="subtle" fw={600} fz="sm">
                     Example
                   </Text>
@@ -240,7 +269,7 @@ export const SubmitApplicationAlt2 = () => {
                   At least two additional team members, emphasizing their
                   relevant experience.
                 </Text>
-                <Box mx="md">
+                <Box mx={isMobile ? 'xs' : 'md'}>
                   <Text c="subtle" fw={600} fz="sm">
                     Example
                   </Text>
@@ -360,7 +389,7 @@ export const SubmitApplicationAlt2 = () => {
                 <InputLabel fz="md" fw={600} mb={12} required>
                   Funding Mechanism
                 </InputLabel>
-                <Box mx="md">
+                <Box mx={isMobile ? 'xs' : 'md'}>
                   <Text c="subtle" fw={600} fz="sm">
                     Example
                   </Text>
@@ -411,7 +440,7 @@ export const SubmitApplicationAlt2 = () => {
                     Scaling and growing the Ethereum ecosystem
                   </List.Item>
                 </List>
-                <Box mx="md">
+                <Box mx={isMobile ? 'xs' : 'md'}>
                   <Text c="subtle" fw={600} fz="sm">
                     Example
                   </Text>
@@ -440,7 +469,7 @@ export const SubmitApplicationAlt2 = () => {
                   evaluate the success and impact of the grantees over
                   successive rounds.
                 </Text>
-                <Box mx="md">
+                <Box mx={isMobile ? 'xs' : 'md'}>
                   <Text c="subtle" fw={600} fz="sm">
                     Example
                   </Text>
@@ -483,7 +512,7 @@ export const SubmitApplicationAlt2 = () => {
                   eligible grantees, and detail the plan for assessing grantee
                   impact over successive rounds.
                 </Text>
-                <Box mx="md">
+                <Box mx={isMobile ? 'xs' : 'md'}>
                   <Text c="subtle" fw={600} fz="sm">
                     Example
                   </Text>
@@ -506,7 +535,7 @@ export const SubmitApplicationAlt2 = () => {
                 <InputLabel fz="md" fw={600} mb={8} required>
                   Estimated Number of Eligible Grantees
                 </InputLabel>
-                <Box mx="md" mb="sm">
+                <Box mx={isMobile ? 'xs' : 'md'} mb="sm">
                   <Text c="subtle" fw={600} fz="sm">
                     Example
                   </Text>
@@ -537,7 +566,7 @@ export const SubmitApplicationAlt2 = () => {
                   This is to avoid any confusion for reviewers. And outline a
                   clear plan for future fundraising, if not already in place.
                 </Text>
-                <Box mx="md">
+                <Box mx={isMobile ? 'xs' : 'md'}>
                   <Text c="subtle" fw={600} fz="sm">
                     Example
                   </Text>
@@ -633,10 +662,10 @@ export const SubmitApplicationAlt2 = () => {
                   {...form.getInputProps('autoEnroll')}
                 />
                 <Card variant="solid">
-                  <Group wrap="nowrap" gap={'xs'}>
+                  <Group wrap="nowrap" gap={'md'}>
                     <Box
                       component="span"
-                      style={{ transform: 'translateY(-20px)' }}
+                      // style={{ transform: 'translateY(-20px)' }}
                     >
                       <IconExclamationCircle
                         size={28}

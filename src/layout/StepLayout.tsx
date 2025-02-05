@@ -1,6 +1,7 @@
 import { Box, Button, Group, Text, Title } from '@mantine/core';
 import { ReactNode } from 'react';
 import { TxButton } from '../components/TxButton';
+import { useMobile } from '../hooks/useBreakpoints';
 
 export const StepLayout = ({
   title,
@@ -21,15 +22,21 @@ export const StepLayout = ({
 }) => {
   const totalSteps = 6;
 
+  const isMobile = useMobile();
+
   return (
-    <Box mt="xl">
-      <Title order={3} fz="h3" mb="sm">
+    <Box mt={isMobile ? 'sm' : 'xl'}>
+      <Title order={3} fz={isMobile ? 'h4' : 'h3'} mb="sm">
         {title}
       </Title>
       {description && <Text mb={'lg'}>{description}</Text>}
-      <Box mx="32">{children}</Box>
+      <Box mx={isMobile ? '10' : '32'}>{children}</Box>
       <Box mt={70}>
-        <Group justify="center" gap="xl">
+        <Group
+          justify="center"
+          gap={isMobile ? 'md' : 'xl'}
+          wrap={isMobile ? 'wrap-reverse' : 'wrap'}
+        >
           <Button
             variant="secondary"
             disabled={step === 0}
