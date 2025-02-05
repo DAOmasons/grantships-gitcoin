@@ -25,6 +25,7 @@ export type Scalars = {
 /** columns and relationships of "AppDraft" */
 export type AppDraft = {
   __typename?: 'AppDraft';
+  chainId: Scalars['Int']['output'];
   contentProtocol: Scalars['numeric']['output'];
   db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
   id: Scalars['String']['output'];
@@ -39,6 +40,7 @@ export type AppDraft_Bool_Exp = {
   _and?: InputMaybe<Array<AppDraft_Bool_Exp>>;
   _not?: InputMaybe<AppDraft_Bool_Exp>;
   _or?: InputMaybe<Array<AppDraft_Bool_Exp>>;
+  chainId?: InputMaybe<Int_Comparison_Exp>;
   contentProtocol?: InputMaybe<Numeric_Comparison_Exp>;
   db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
@@ -50,6 +52,7 @@ export type AppDraft_Bool_Exp = {
 
 /** Ordering options when selecting data from "AppDraft". */
 export type AppDraft_Order_By = {
+  chainId?: InputMaybe<Order_By>;
   contentProtocol?: InputMaybe<Order_By>;
   db_write_timestamp?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -61,6 +64,8 @@ export type AppDraft_Order_By = {
 
 /** select columns of table "AppDraft" */
 export enum AppDraft_Select_Column {
+  /** column name */
+  ChainId = 'chainId',
   /** column name */
   ContentProtocol = 'contentProtocol',
   /** column name */
@@ -87,6 +92,7 @@ export type AppDraft_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type AppDraft_Stream_Cursor_Value_Input = {
+  chainId?: InputMaybe<Scalars['Int']['input']>;
   contentProtocol?: InputMaybe<Scalars['numeric']['input']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
@@ -4520,7 +4526,9 @@ export type Timestamptz_Comparison_Exp = {
 
 export type DraftFragment = { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string };
 
-export type ApplicationDraftsQueryVariables = Exact<{ [key: string]: never; }>;
+export type ApplicationDraftsQueryVariables = Exact<{
+  chainId: Scalars['Int']['input'];
+}>;
 
 
 export type ApplicationDraftsQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string }> };
@@ -4534,6 +4542,7 @@ export type ApplicationDraftQuery = { __typename?: 'query_root', AppDraft_by_pk?
 
 export type ApplicationDraftsByUserQueryVariables = Exact<{
   userAddress: Scalars['String']['input'];
+  chainId: Scalars['Int']['input'];
 }>;
 
 
@@ -4592,8 +4601,8 @@ export const ApplicationFragmentDoc = gql`
 }
     ${VoteFragmentDoc}`;
 export const ApplicationDraftsDocument = gql`
-    query applicationDrafts {
-  AppDraft {
+    query applicationDrafts($chainId: Int!) {
+  AppDraft(where: {chainId: {_eq: $chainId}}) {
     ...Draft
   }
 }
@@ -4606,8 +4615,8 @@ export const ApplicationDraftDocument = gql`
 }
     ${DraftFragmentDoc}`;
 export const ApplicationDraftsByUserDocument = gql`
-    query applicationDraftsByUser($userAddress: String!) {
-  AppDraft(where: {userAddress: {_eq: $userAddress}}) {
+    query applicationDraftsByUser($userAddress: String!, $chainId: Int!) {
+  AppDraft(where: {userAddress: {_eq: $userAddress}, chainId: {_eq: $chainId}}) {
     ...Draft
   }
 }
@@ -4643,7 +4652,7 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    applicationDrafts(variables?: ApplicationDraftsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ApplicationDraftsQuery> {
+    applicationDrafts(variables: ApplicationDraftsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ApplicationDraftsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<ApplicationDraftsQuery>(ApplicationDraftsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'applicationDrafts', 'query', variables);
     },
     applicationDraft(variables: ApplicationDraftQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ApplicationDraftQuery> {

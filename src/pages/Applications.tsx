@@ -13,6 +13,7 @@ import fxClasses from '../style/effects.module.css';
 import { useNavigate } from 'react-router-dom';
 import { IconChevronRight } from '@tabler/icons-react';
 import { useTablet } from '../hooks/useBreakpoints';
+import { InfoBanner } from '../components/InfoBanner';
 
 export const Applications = () => {
   const { data: drafts } = useQuery({
@@ -34,42 +35,49 @@ export const Applications = () => {
         Applications submitted by prospective ship operators for the GG23.
       </Text>
       <Box>
-        {drafts?.map((draft) => {
-          return (
-            <Group
-              px={isTablet ? 'sm' : 'lg'}
-              py="sm"
-              mb={32}
-              key={draft.id}
-              justify="space-between"
-              className={fxClasses.hoverCard}
-              onClick={() => navigate(`/view-draft/${draft.id}`)}
-            >
-              <Group>
-                <Avatar
-                  size={56}
-                  bg={colors.dark[2]}
-                  src={draft.parsedJSON.imgUrl}
-                />
-                <Box>
-                  <Text fw={600} fz="lg" mb={4} maw={240} lineClamp={1}>
-                    {draft.parsedJSON.name}
-                  </Text>
-                  <Text c="subtle">Last Updated Jan 1, 2025</Text>
-                </Box>
-              </Group>
-              {!isTablet && (
+        {drafts?.length ? (
+          drafts?.map((draft) => {
+            return (
+              <Group
+                px={isTablet ? 'sm' : 'lg'}
+                py="sm"
+                mb={32}
+                key={draft.id}
+                justify="space-between"
+                className={fxClasses.hoverCard}
+                onClick={() => navigate(`/view-draft/${draft.id}`)}
+              >
                 <Group>
+                  <Avatar
+                    size={56}
+                    bg={colors.dark[2]}
+                    src={draft.parsedJSON.imgUrl}
+                  />
                   <Box>
-                    <Text mb={10}>Status</Text>
-                    <Text c="subtle">In Review</Text>
+                    <Text fw={600} fz="lg" mb={4} maw={240} lineClamp={1}>
+                      {draft.parsedJSON.name}
+                    </Text>
+                    <Text c="subtle">Last Updated Jan 1, 2025</Text>
                   </Box>
-                  <IconChevronRight size={24} />
                 </Group>
-              )}
-            </Group>
-          );
-        })}
+                {!isTablet && (
+                  <Group>
+                    <Box>
+                      <Text mb={10}>Status</Text>
+                      <Text c="subtle">In Review</Text>
+                    </Box>
+                    <IconChevronRight size={24} />
+                  </Group>
+                )}
+              </Group>
+            );
+          })
+        ) : (
+          <InfoBanner
+            title="No Applications"
+            description="No applications have been submitted yet."
+          />
+        )}
       </Box>
     </PageLayout>
   );

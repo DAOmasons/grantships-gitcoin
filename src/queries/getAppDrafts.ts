@@ -1,9 +1,10 @@
 import { submitApplicationSchema } from '../schemas/submitApplicationSchema';
+import { appNetwork } from '../utils/config';
 import { sdk } from '../utils/indexer';
 
 export const getAppDrafts = async () => {
   try {
-    const res = await sdk.applicationDrafts();
+    const res = await sdk.applicationDrafts({ chainId: appNetwork.id });
 
     const drafts = res.AppDraft;
 
@@ -63,7 +64,10 @@ export const getAppDraft = async (id: string) => {
 
 export const getAppDraftsByUser = async (userAddress: string) => {
   try {
-    const res = await sdk.applicationDraftsByUser({ userAddress });
+    const res = await sdk.applicationDraftsByUser({
+      userAddress,
+      chainId: appNetwork.id,
+    });
 
     const drafts = res.AppDraft;
 
