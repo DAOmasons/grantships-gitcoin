@@ -23,7 +23,7 @@ const splainerData = [
     description: [
       'Community members apply to be judges',
       'GTC holders vote on judges',
-      'Top 4 judges are elected',
+      'Top 5 judges are elected',
     ],
     icon: IconGavel,
   },
