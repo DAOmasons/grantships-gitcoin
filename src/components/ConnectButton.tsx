@@ -1,9 +1,9 @@
 import { useAccount } from 'wagmi';
 import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit';
-import { Button, useMantineTheme } from '@mantine/core';
+import { Button, ButtonProps, useMantineTheme } from '@mantine/core';
 import { useEns } from '../hooks/useEns';
 
-export const ConnectButton = () => {
+export const ConnectButton = (props: ButtonProps) => {
   const { address, isConnected } = useAccount();
   const theme = useMantineTheme();
   const { openConnectModal } = useConnectModal();
@@ -12,7 +12,12 @@ export const ConnectButton = () => {
 
   if (isConnected && address) {
     return (
-      <Button onClick={openAccountModal} size="sm" variant="secondary">
+      <Button
+        onClick={openAccountModal}
+        size="sm"
+        variant="secondary"
+        {...props}
+      >
         {name}
       </Button>
     );
@@ -24,6 +29,7 @@ export const ConnectButton = () => {
         openConnectModal?.();
       }}
       size="sm"
+      {...props}
     >
       Connect Wallet
     </Button>
