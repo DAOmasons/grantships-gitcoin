@@ -1,4 +1,11 @@
-import { Accordion, Group, Stack, Text, useMantineTheme } from '@mantine/core';
+import {
+  Accordion,
+  Box,
+  Group,
+  Stack,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import {
   IconArrowBadgeRight,
   IconAtom,
@@ -7,6 +14,7 @@ import {
   IconMilitaryAward,
 } from '@tabler/icons-react';
 import { useState } from 'react';
+import { useTablet } from '../hooks/useBreakpoints';
 
 const splainerData = [
   {
@@ -58,6 +66,7 @@ export const SplainerAccordion = ({
 }) => {
   const [value, setValue] = useState<string | null>(activeRound || null);
   const { colors } = useMantineTheme();
+  const isTablet = useTablet();
   return (
     <Accordion defaultValue={activeRound} value={value} onChange={setValue}>
       {splainerData.map((item) => {
@@ -102,12 +111,24 @@ export const SplainerAccordion = ({
             <Accordion.Panel>
               <Stack gap="sm">
                 {item.description.map((point) => (
-                  <Group gap={8} key={point}>
-                    <IconArrowBadgeRight
-                      size={20}
-                      stroke={1.5}
-                      color={colors.dark[4]}
-                    />
+                  <Group
+                    gap={8}
+                    key={point}
+                    wrap="nowrap"
+                    align={isTablet ? 'start' : undefined}
+                  >
+                    <Box h={20} w={20}>
+                      <IconArrowBadgeRight
+                        size={20}
+                        stroke={1.5}
+                        color={colors.dark[4]}
+                        style={
+                          isTablet
+                            ? { transform: 'translateY(1px)' }
+                            : undefined
+                        }
+                      />
+                    </Box>
                     <Text c="subtle">{point}</Text>
                   </Group>
                 ))}

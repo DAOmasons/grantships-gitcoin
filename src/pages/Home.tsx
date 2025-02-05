@@ -22,7 +22,7 @@ import { CycleCircle } from '../components/CycleCircle';
 import { GSMotif } from '../assets/GSMotif';
 import { useNavigate } from 'react-router-dom';
 import { useChews } from '../hooks/useChews';
-import { useLaptop, useTablet } from '../hooks/useBreakpoints';
+import { useLaptop, useMobile, useTablet } from '../hooks/useBreakpoints';
 import { useMediaQuery } from '@mantine/hooks';
 
 export const Home = () => {
@@ -30,8 +30,9 @@ export const Home = () => {
   const navigate = useNavigate();
   const { currentStage } = useChews();
 
+  const isMobile = useMobile();
+  const isTablet = useTablet();
   const collapseTopSection = useMediaQuery('(max-width: 1100px)');
-  console.log('collapseTopSection', collapseTopSection);
 
   return (
     <Box>
@@ -49,14 +50,19 @@ export const Home = () => {
         <Flex
           align={'center'}
           h={700}
-          mx="xl"
+          mx={collapseTopSection ? undefined : 'xl'}
           gap="md"
           justify={collapseTopSection ? 'center' : 'space-between'}
           direction={collapseTopSection ? 'column' : 'row'}
         >
-          <Box maw={450} pos="relative">
-            <GSMotif sm={collapseTopSection} />
-            <Title order={1} fz="h1" mb="sm" c="highlight">
+          <Box
+            maw={450}
+            pos="relative"
+            mb={collapseTopSection ? 75 : undefined}
+            pt={collapseTopSection ? 75 : undefined}
+          >
+            {!isMobile && <GSMotif sm={collapseTopSection} />}
+            <Title order={1} fz={isMobile ? 'h2' : 'h1'} mb="sm" c="highlight">
               <span style={{ color: theme.colors.purple[6] }}>Accelerate</span>
               <br />
               What Matters
@@ -81,20 +87,37 @@ export const Home = () => {
         </Flex>
       </Container>
       <InnerContainer>
-        <Card variant="kelp-outline" mb={120}>
-          <Group justify="space-between">
+        <Card
+          variant="kelp-outline"
+          mb={120}
+          maw={isTablet ? 450 : undefined}
+          mx={isTablet ? 'auto' : undefined}
+        >
+          <Flex
+            justify="space-between"
+            align={'center'}
+            gap="md"
+            direction={isTablet ? 'column' : 'row'}
+          >
             <Box>
-              <Text fz={28} mb="12">
+              <Text fz={isTablet ? 24 : 28} mb="12">
                 Want to Run a Round?
               </Text>
               <Text>Applications can be submitted any time</Text>
             </Box>
-            <Button onClick={() => navigate('submit-application')}>
+            <Button
+              onClick={() => navigate('submit-application')}
+              size={isTablet ? 'sm' : undefined}
+            >
               Submit Application
             </Button>
-          </Group>
+          </Flex>
         </Card>
-        <Box mb={120}>
+        <Box
+          mb={120}
+          maw={isTablet ? 450 : undefined}
+          mx={isTablet ? 'auto' : undefined}
+        >
           <Title mb="xs" fz="h3" order={2}>
             Round Selection
           </Title>
@@ -113,14 +136,18 @@ export const Home = () => {
             </Group>
           </Card>
         </Box>
-        <Box mb={120}>
+        <Box
+          mb={120}
+          maw={isTablet ? 450 : undefined}
+          mx={isTablet ? 'auto' : undefined}
+        >
           <Title mb="xs" fz="h3" order={2}>
             Our Grant Selection Process
           </Title>
-          <Text c="subtle">
+          <Text c="subtle" mb={isTablet ? 'lg' : undefined}>
             The GrantShips evolutionary mechanism in a nutshell
           </Text>
-          <Box p="lg">
+          <Box p={isTablet ? undefined : 'lg'}>
             <SplainerAccordion
               activeRound={
                 currentStage != null ? currentStage.toString() : undefined

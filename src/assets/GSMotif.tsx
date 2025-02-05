@@ -6,7 +6,7 @@ export const GSMotif = ({ sm }: { sm?: boolean }) => {
   return (
     <Box
       pos="absolute"
-      style={{ zIndex: -1, right: sm ? 0 : -50, top: sm ? -20 : -50 }}
+      style={{ zIndex: -1, right: sm ? 0 : -50, top: sm ? 60 : -50 }}
     >
       <svg
         width={sm ? '160' : '190'}
