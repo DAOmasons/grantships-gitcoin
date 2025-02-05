@@ -5,6 +5,7 @@ fragment Draft on AppDraft {
   lastUpdated
   contentProtocol
   json
+  ipfsHash
 }
 
 query applicationDrafts($chainId: Int!) {

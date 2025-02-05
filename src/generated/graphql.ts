@@ -29,6 +29,7 @@ export type AppDraft = {
   contentProtocol: Scalars['numeric']['output'];
   db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
   id: Scalars['String']['output'];
+  ipfsHash: Scalars['String']['output'];
   json: Scalars['String']['output'];
   lastUpdated: Scalars['Int']['output'];
   tag: Scalars['String']['output'];
@@ -44,6 +45,7 @@ export type AppDraft_Bool_Exp = {
   contentProtocol?: InputMaybe<Numeric_Comparison_Exp>;
   db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
+  ipfsHash?: InputMaybe<String_Comparison_Exp>;
   json?: InputMaybe<String_Comparison_Exp>;
   lastUpdated?: InputMaybe<Int_Comparison_Exp>;
   tag?: InputMaybe<String_Comparison_Exp>;
@@ -56,6 +58,7 @@ export type AppDraft_Order_By = {
   contentProtocol?: InputMaybe<Order_By>;
   db_write_timestamp?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  ipfsHash?: InputMaybe<Order_By>;
   json?: InputMaybe<Order_By>;
   lastUpdated?: InputMaybe<Order_By>;
   tag?: InputMaybe<Order_By>;
@@ -72,6 +75,8 @@ export enum AppDraft_Select_Column {
   DbWriteTimestamp = 'db_write_timestamp',
   /** column name */
   Id = 'id',
+  /** column name */
+  IpfsHash = 'ipfsHash',
   /** column name */
   Json = 'json',
   /** column name */
@@ -96,6 +101,7 @@ export type AppDraft_Stream_Cursor_Value_Input = {
   contentProtocol?: InputMaybe<Scalars['numeric']['input']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash?: InputMaybe<Scalars['String']['input']>;
   json?: InputMaybe<Scalars['String']['input']>;
   lastUpdated?: InputMaybe<Scalars['Int']['input']>;
   tag?: InputMaybe<Scalars['String']['input']>;
@@ -4524,21 +4530,21 @@ export type Timestamptz_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
-export type DraftFragment = { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string };
+export type DraftFragment = { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string };
 
 export type ApplicationDraftsQueryVariables = Exact<{
   chainId: Scalars['Int']['input'];
 }>;
 
 
-export type ApplicationDraftsQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string }> };
+export type ApplicationDraftsQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string }> };
 
 export type ApplicationDraftQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type ApplicationDraftQuery = { __typename?: 'query_root', AppDraft_by_pk?: { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string } | null };
+export type ApplicationDraftQuery = { __typename?: 'query_root', AppDraft_by_pk?: { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string } | null };
 
 export type ApplicationDraftsByUserQueryVariables = Exact<{
   userAddress: Scalars['String']['input'];
@@ -4546,7 +4552,7 @@ export type ApplicationDraftsByUserQueryVariables = Exact<{
 }>;
 
 
-export type ApplicationDraftsByUserQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string }> };
+export type ApplicationDraftsByUserQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string }> };
 
 export type VoteFragment = { __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string };
 
@@ -4574,6 +4580,7 @@ export const DraftFragmentDoc = gql`
   lastUpdated
   contentProtocol
   json
+  ipfsHash
 }
     `;
 export const VoteFragmentDoc = gql`

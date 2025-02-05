@@ -35,6 +35,8 @@ import { ZER0_ADDRESS } from '../constants/setup';
 import { TAG } from '../constants/tags';
 import { useNavigate } from 'react-router-dom';
 import { useMobile, useTablet } from '../hooks/useBreakpoints';
+import { pinJSONToIPFS } from '../utils/ipfs';
+import { notifications } from '@mantine/notifications';
 
 export const SubmitApplicationAlt2 = () => {
   const { colors } = useMantineTheme();
@@ -57,23 +59,42 @@ export const SubmitApplicationAlt2 = () => {
   } = useApplicationForm();
   const { tx } = useTx();
 
-  const submitTx = () => {
+  const submitTx = async () => {
     const id = generateRandomBytes32();
 
     const valid = formSchema.safeParse(form.values);
 
-    if (!valid.success) {
-      // todo - show error message
-      throw new Error('Invalid form values');
-    }
+    const onChainJson = JSON.stringify({
+      name: form.values.name,
+      socialLink: form.values.socialLink,
+      id,
+      imgUrl: form.values.imgUrl,
+    });
 
-    const json = JSON.stringify({ ...form.values, id });
+    if (!valid.success) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to validate form values',
+        color: 'red',
+      });
+      return;
+    }
+    const pinRes = await pinJSONToIPFS({ ...form.values });
+
+    if (!pinRes.IpfsHash) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to pin content to IPFS',
+        color: 'red',
+      });
+      return;
+    }
 
     const tag = `${TAG.APPLICATION_POST}:${id}`;
 
     const bytes = encodeAbiParameters(
-      parseAbiParameters('string, (uint256, string)'),
-      [tag, [6969420n, json]]
+      parseAbiParameters('string, string, (uint256, string)'),
+      [tag, onChainJson, [1n, pinRes.IpfsHash]]
     );
 
     tx({
@@ -81,7 +102,7 @@ export const SubmitApplicationAlt2 = () => {
         abi: SayethAbi,
         address: ADDR.SAYETH,
         functionName: 'sayeth',
-        args: [ZER0_ADDRESS, bytes, false],
+        args: [ADDR.REFERRER, bytes, false],
       },
       writeContractOptions: {
         onPollSuccess() {
