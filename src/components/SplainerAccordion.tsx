@@ -42,7 +42,7 @@ const splainerData = [
     value: '3',
     label: 'Stage 3: GG23 Community Rounds',
     description: [
-      'Winning rounds compete to run the best Quadratic Round on GG23',
+      'Winning rounds compete to run the best Community Round on GG23',
       'Metrics are recorded for review',
     ],
     icon: IconAtom,

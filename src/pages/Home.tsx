@@ -79,7 +79,7 @@ export const Home = () => {
               phases={[
                 { label: 'Judge Election', Icon: IconGavel },
                 { label: 'Round Selection', Icon: IconMilitaryAward },
-                { label: 'Quadratic Round', Icon: IconAtom },
+                { label: 'Community Round', Icon: IconAtom },
                 { label: 'Round Reviews', Icon: IconAward },
               ]}
             />
