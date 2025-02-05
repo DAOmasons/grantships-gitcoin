@@ -77,29 +77,29 @@ export const Applications = () => {
               title="No Applications"
               description="No applications have been submitted yet."
             />
-            <Card variant="kelp-outline" mt="100px">
-              <Flex
-                justify="space-between"
-                align={'center'}
-                gap="md"
-                direction={isTablet ? 'column' : 'row'}
-              >
-                <Box>
-                  <Text fz={isTablet ? 24 : 28} mb="12">
-                    Want to Run a Round?
-                  </Text>
-                  <Text>Applications can be submitted any time</Text>
-                </Box>
-                <Button
-                  onClick={() => navigate('/submit-application')}
-                  size={isTablet ? 'sm' : undefined}
-                >
-                  Submit Application
-                </Button>
-              </Flex>
-            </Card>
           </Box>
         )}
+        <Card variant="kelp-outline" mt="100px">
+          <Flex
+            justify="space-between"
+            align={'center'}
+            gap="md"
+            direction={isTablet ? 'column' : 'row'}
+          >
+            <Box>
+              <Text fz={isTablet ? 24 : 28} mb="12">
+                Want to Run a Round?
+              </Text>
+              <Text>Applications can be submitted any time</Text>
+            </Box>
+            <Button
+              onClick={() => navigate('/submit-application')}
+              size={isTablet ? 'sm' : undefined}
+            >
+              Submit Application
+            </Button>
+          </Flex>
+        </Card>
       </Box>
     </PageLayout>
   );
