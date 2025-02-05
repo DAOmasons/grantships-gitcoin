@@ -7,7 +7,7 @@ import { TxProvider } from './contexts/TxContext';
 import { BrowserRouter } from 'react-router-dom';
 import { rbkTheme, theme } from './theme';
 import { ClientRoutes } from './Routes';
-import { HorizontalNav } from './layout/HorizontalNav';
+import { Nav } from './layout/Nav';
 import { WagmiProvider } from 'wagmi';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { config } from './utils/config';
@@ -25,7 +25,7 @@ export default function App() {
             <GlobalContextProvider>
               <MantineProvider theme={theme} defaultColorScheme="dark">
                 <TxProvider>
-                  <HorizontalNav />
+                  <Nav />
                   <ClientRoutes />
                 </TxProvider>
               </MantineProvider>

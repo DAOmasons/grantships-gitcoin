@@ -4,19 +4,21 @@ import { Icon } from '@tabler/icons-react';
 export const CycleCircle = ({
   currentPhase,
   phases,
+  sm,
 }: {
   currentPhase: number;
   phases: {
     label: string;
     Icon: Icon;
   }[];
+  sm?: boolean;
 }) => {
   const theme = useMantineTheme();
   return (
     <Box pos="relative">
       <svg
-        width="428"
-        height="428"
+        width={sm ? '328' : '428'}
+        height={sm ? '328' : '428'}
         viewBox="0 0 428 428"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -47,14 +49,14 @@ export const CycleCircle = ({
         />
       </svg>
       <Box pos="absolute" top="0" right="0" left="0" bottom="0">
-        <Stack align="center" mt={64} gap="sm">
+        <Stack align="center" mt={sm ? 42 : 64} gap={'sm'}>
           {phases.map((p, index) => (
             <Stack
               key={p.label}
               gap={0}
-              py={8}
+              py={sm ? 6 : 8}
               bg={theme.colors.dark[6]}
-              w={189}
+              w={sm ? 149 : 189}
               style={{
                 border: `1px solid ${currentPhase > index ? theme.colors.purple[6] : theme.colors.dark[6]}`,
                 borderRadius: 30,
@@ -64,7 +66,7 @@ export const CycleCircle = ({
               <Group gap={4} mb={2}>
                 <p.Icon
                   stroke={1}
-                  size={24}
+                  size={sm ? 18 : 24}
                   color={
                     currentPhase > index
                       ? theme.colors.purple[6]
@@ -73,7 +75,7 @@ export const CycleCircle = ({
                   style={{ transform: 'translateY(-1.5px)' }}
                 />
                 <Text
-                  fz="sm"
+                  fz={sm ? 'xs' : 'sm'}
                   fw={500}
                   c={currentPhase > index ? 'highlight' : theme.colors.dark[5]}
                 >
@@ -81,7 +83,7 @@ export const CycleCircle = ({
                 </Text>
               </Group>
               <Text
-                fz="xs"
+                fz={sm ? 10 : 'xs'}
                 c={currentPhase > index ? 'highlight' : theme.colors.dark[5]}
               >
                 {p.label}

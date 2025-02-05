@@ -65,7 +65,7 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
 
   const currentStage = 1;
 
-  const NUM_JUDGES = 6;
+  const NUM_JUDGES = 5;
 
   return (
     <GlobalContext.Provider

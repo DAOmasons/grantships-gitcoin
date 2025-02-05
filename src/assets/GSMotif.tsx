@@ -1,12 +1,16 @@
 import { Box, useMantineTheme } from '@mantine/core';
 
-export const GSMotif = () => {
+export const GSMotif = ({ sm }: { sm?: boolean }) => {
   const theme = useMantineTheme();
+
   return (
-    <Box pos="absolute" style={{ zIndex: -1, right: -50, top: -50 }}>
+    <Box
+      pos="absolute"
+      style={{ zIndex: -1, right: sm ? 0 : -50, top: sm ? -20 : -50 }}
+    >
       <svg
-        width="190"
-        height="209"
+        width={sm ? '160' : '190'}
+        height={sm ? '190' : '209'}
         viewBox="0 0 190 209"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

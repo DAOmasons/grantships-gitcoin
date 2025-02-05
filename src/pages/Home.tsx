@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Container,
+  Flex,
   Group,
   Text,
   Title,
@@ -21,11 +22,16 @@ import { CycleCircle } from '../components/CycleCircle';
 import { GSMotif } from '../assets/GSMotif';
 import { useNavigate } from 'react-router-dom';
 import { useChews } from '../hooks/useChews';
+import { useLaptop, useTablet } from '../hooks/useBreakpoints';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const Home = () => {
   const theme = useMantineTheme();
   const navigate = useNavigate();
   const { currentStage } = useChews();
+
+  const collapseTopSection = useMediaQuery('(max-width: 1100px)');
+  console.log('collapseTopSection', collapseTopSection);
 
   return (
     <Box>
@@ -40,9 +46,16 @@ export const Home = () => {
         <BGImage />
       </Box>
       <Container maw={1280} mb={120}>
-        <Group align="center" h={700} mx="xl">
+        <Flex
+          align={'center'}
+          h={700}
+          mx="xl"
+          gap="md"
+          justify={collapseTopSection ? 'center' : 'space-between'}
+          direction={collapseTopSection ? 'column' : 'row'}
+        >
           <Box maw={450} pos="relative">
-            <GSMotif />
+            <GSMotif sm={collapseTopSection} />
             <Title order={1} fz="h1" mb="sm" c="highlight">
               <span style={{ color: theme.colors.purple[6] }}>Accelerate</span>
               <br />
@@ -53,9 +66,10 @@ export const Home = () => {
               helps Gitcoin fund more of what matters.
             </Text>
           </Box>
-          <Box ml="auto">
+          <Box ml={collapseTopSection ? undefined : 'auto'}>
             <CycleCircle
               currentPhase={currentStage || 0}
+              sm={collapseTopSection}
               phases={[
                 { label: 'Judge Election', Icon: IconGavel },
                 { label: 'Round Selection', Icon: IconMilitaryAward },
@@ -64,7 +78,7 @@ export const Home = () => {
               ]}
             />
           </Box>
-        </Group>
+        </Flex>
       </Container>
       <InnerContainer>
         <Card variant="kelp-outline" mb={120}>
