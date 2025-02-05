@@ -20,10 +20,12 @@ import { SplainerAccordion } from '../components/SplainerAccordion';
 import { CycleCircle } from '../components/CycleCircle';
 import { GSMotif } from '../assets/GSMotif';
 import { useNavigate } from 'react-router-dom';
+import { useChews } from '../hooks/useChews';
 
 export const Home = () => {
   const theme = useMantineTheme();
   const navigate = useNavigate();
+  const { currentStage } = useChews();
 
   return (
     <Box>
@@ -53,7 +55,7 @@ export const Home = () => {
           </Box>
           <Box ml="auto">
             <CycleCircle
-              currentPhase={2}
+              currentPhase={currentStage || 0}
               phases={[
                 { label: 'Judge Election', Icon: IconGavel },
                 { label: 'Round Selection', Icon: IconMilitaryAward },
@@ -105,7 +107,11 @@ export const Home = () => {
             The GrantShips evolutionary mechanism in a nutshell
           </Text>
           <Box p="lg">
-            <SplainerAccordion activeRound="2" />
+            <SplainerAccordion
+              activeRound={
+                currentStage != null ? currentStage.toString() : undefined
+              }
+            />
           </Box>
         </Box>
       </InnerContainer>

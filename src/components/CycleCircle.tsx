@@ -5,7 +5,7 @@ export const CycleCircle = ({
   currentPhase,
   phases,
 }: {
-  currentPhase: 0 | 1 | 2 | 3 | 4;
+  currentPhase: number;
   phases: {
     label: string;
     Icon: Icon;

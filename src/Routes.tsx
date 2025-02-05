@@ -8,7 +8,6 @@ import { JudgeDashboard } from './pages/JudgeDashboard';
 import { VoteApplication } from './pages/VoteApplication';
 import { ViewApplication } from './pages/ViewApplication';
 import { Review } from './pages/ReviewApplication';
-import { SubmitApplicationAlt } from './pages/SubmitApplicationAlt';
 import { SubmitApplicationAlt2 } from './pages/SubmitApplicationAlt2';
 import { Applications } from './pages/Applications';
 import { ViewDraft } from './pages/ViewDraft';
