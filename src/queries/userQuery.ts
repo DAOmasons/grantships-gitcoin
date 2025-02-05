@@ -3,7 +3,7 @@ import { publicClient } from '../utils/config';
 import { ADDR } from '../constants/addresses';
 import HatsAbi from '../abi/Hats.json';
 import { HATS } from '../constants/setup';
-import { getAppDraftsByUser, userHasAppDrafts } from './getAppDrafts';
+import { userHasAppDrafts } from './getAppDrafts';
 
 const userApplications = async (address: Address) => {
   const appDrafts = await userHasAppDrafts(address);
