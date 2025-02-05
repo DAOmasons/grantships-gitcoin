@@ -12,6 +12,7 @@ import {
 import fxClasses from '../style/effects.module.css';
 import { useNavigate } from 'react-router-dom';
 import { IconChevronRight } from '@tabler/icons-react';
+import { useTablet } from '../hooks/useBreakpoints';
 
 export const Applications = () => {
   const { data: drafts } = useQuery({
@@ -20,6 +21,7 @@ export const Applications = () => {
   });
 
   const { colors } = useMantineTheme();
+  const isTablet = useTablet();
 
   const navigate = useNavigate();
 
@@ -35,7 +37,7 @@ export const Applications = () => {
         {drafts?.map((draft) => {
           return (
             <Group
-              px="lg"
+              px={isTablet ? 'sm' : 'lg'}
               py="sm"
               mb={32}
               key={draft.id}
@@ -56,13 +58,15 @@ export const Applications = () => {
                   <Text c="subtle">Last Updated Jan 1, 2025</Text>
                 </Box>
               </Group>
-              <Group>
-                <Box>
-                  <Text mb={10}>Status</Text>
-                  <Text c="subtle">In Review</Text>
-                </Box>
-                <IconChevronRight size={24} />
-              </Group>
+              {!isTablet && (
+                <Group>
+                  <Box>
+                    <Text mb={10}>Status</Text>
+                    <Text c="subtle">In Review</Text>
+                  </Box>
+                  <IconChevronRight size={24} />
+                </Group>
+              )}
             </Group>
           );
         })}

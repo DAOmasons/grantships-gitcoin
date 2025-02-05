@@ -1,10 +1,24 @@
 import React from 'react';
 import { PageLayout } from '../layout/Page';
-import { Avatar, Box, Card, Group, Stack, Text, Title } from '@mantine/core';
+import {
+  Avatar,
+  Box,
+  Card,
+  Divider,
+  Flex,
+  Group,
+  Stack,
+  Text,
+  Title,
+  useMantineTheme,
+} from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { getAppDraft } from '../queries/getAppDrafts';
 import { ExternalLink } from '../components/typography';
+import { useTablet } from '../hooks/useBreakpoints';
+import { useClipboard } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 
 export const ViewDraft = () => {
   const { id } = useParams();
@@ -18,6 +32,10 @@ export const ViewDraft = () => {
     queryFn: () => getAppDraft(id as string),
     enabled: !!id,
   });
+
+  const { colors } = useMantineTheme();
+  const { copy } = useClipboard();
+  const isTablet = useTablet();
 
   if (isLoading) {
     return (
@@ -48,8 +66,8 @@ export const ViewDraft = () => {
         <Title fz="h3" order={3} mb="sm">
           Round Info
         </Title>
-        <Group wrap="nowrap" gap="sm">
-          <Box w="50%">
+        <Flex wrap="nowrap" gap="sm" direction={isTablet ? 'column' : 'row'}>
+          <Box w={isTablet ? '100%' : '50%'}>
             <Text fw={600} mb={10}>
               Name
             </Text>
@@ -59,17 +77,28 @@ export const ViewDraft = () => {
               </Text>
             </Card>
           </Box>
-          <Box w="50%">
+          <Box w={isTablet ? '100%' : '50%'}>
             <Text fw={600} mb={10}>
               Address
             </Text>
-            <Card variant="inner">
+            <Card
+              variant="inner"
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                copy(draft.userAddress);
+                notifications.show({
+                  title: 'Copied to clipboard',
+                  message: draft.userAddress,
+                  color: colors.kelp[6],
+                });
+              }}
+            >
               <Text c="subtle" lineClamp={1}>
                 {draft.userAddress}
               </Text>
             </Card>
           </Box>
-        </Group>
+        </Flex>
         <ResponseBlock
           label="Round Description"
           response={draft.parsedJSON.description}
@@ -83,6 +112,7 @@ export const ViewDraft = () => {
           label="Round History"
           response={draft.parsedJSON.roundHistory}
         />
+        <Divider color={colors.dark[6]} mt="lg" mb="xs" />
         <Title fz="h3" order={3} mb="sm">
           Round Operator and Team
         </Title>
@@ -95,6 +125,7 @@ export const ViewDraft = () => {
           response={draft.parsedJSON['Team Members']}
         />
         <ResponseBlock label="Advisors" response={draft.parsedJSON.advisors} />
+        <Divider color={colors.dark[6]} mt="lg" mb="xs" />
         <Title fz="h3" order={3} mb="sm">
           Round Strategy
         </Title>
@@ -110,6 +141,7 @@ export const ViewDraft = () => {
           label="Marketing Strategy Link"
           href={draft.parsedJSON.marketingPlanURL}
         />
+        <Divider color={colors.dark[6]} mt="lg" mb="xs" />
         <Title fz="h3" order={3} mb="sm">
           Impact & Intents
         </Title>
@@ -121,6 +153,8 @@ export const ViewDraft = () => {
           label="Impact Assessment Plan"
           response={draft.parsedJSON['Impact Assessment Plan']}
         />
+        <Divider color={colors.dark[6]} mt="lg" mb="xs" />
+
         <Title fz="h3" order={3} mb="sm">
           Community Engagement
         </Title>
@@ -136,6 +170,7 @@ export const ViewDraft = () => {
           label="Anticipated Matching Pool"
           response={draft.parsedJSON['Matching Pool Impact']}
         />
+        <Divider color={colors.dark[6]} mt="lg" mb="xs" />
         <Title fz="h3" order={3} mb="sm">
           Conclusion
         </Title>
@@ -169,7 +204,9 @@ const ResponseBlock = ({
         {label}
       </Text>
       <Card variant="inner">
-        <Text c="subtle">{response}</Text>
+        <Text c="subtle" className={'ws-pre-wrap'}>
+          {response}
+        </Text>
       </Card>
     </Box>
   );
