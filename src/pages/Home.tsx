@@ -22,7 +22,7 @@ import { CycleCircle } from '../components/CycleCircle';
 import { GSMotif } from '../assets/GSMotif';
 import { useNavigate } from 'react-router-dom';
 import { useChews } from '../hooks/useChews';
-import { useLaptop, useMobile, useTablet } from '../hooks/useBreakpoints';
+import { useMobile, useTablet } from '../hooks/useBreakpoints';
 import { useMediaQuery } from '@mantine/hooks';
 
 export const Home = () => {
