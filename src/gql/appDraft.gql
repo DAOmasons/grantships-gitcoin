@@ -27,3 +27,11 @@ query applicationDraftsByUser($userAddress: String!, $chainId: Int!) {
     ...Draft
   }
 }
+
+query applicationsByUserExists($userAddress: String!, $chainId: Int!) {
+  AppDraft(
+    where: { userAddress: { _eq: $userAddress }, chainId: { _eq: $chainId } }
+  ) {
+    id
+  }
+}

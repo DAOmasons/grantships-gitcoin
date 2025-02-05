@@ -88,3 +88,24 @@ export const getAppDraftsByUser = async (userAddress: string) => {
     throw new Error('Failed to fetch drafts');
   }
 };
+
+export const userHasAppDrafts = async (userAddress: string) => {
+  try {
+    const res = await sdk.applicationDraftsByUser({
+      userAddress,
+      chainId: appNetwork.id,
+    });
+
+    const drafts = res.AppDraft;
+
+    if (!drafts) {
+      throw new Error('No drafts found');
+    }
+
+    return drafts.length > 0;
+  } catch (error) {
+    console.error(error);
+
+    throw new Error('Failed to fetch drafts');
+  }
+};

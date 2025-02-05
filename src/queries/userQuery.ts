@@ -3,13 +3,13 @@ import { publicClient } from '../utils/config';
 import { ADDR } from '../constants/addresses';
 import HatsAbi from '../abi/Hats.json';
 import { HATS } from '../constants/setup';
-import { getAppDraftsByUser } from './getAppDrafts';
+import { getAppDraftsByUser, userHasAppDrafts } from './getAppDrafts';
 
 const userApplications = async (address: Address) => {
-  const appDrafts = await getAppDraftsByUser(address);
+  const appDrafts = await userHasAppDrafts(address);
 
   return {
-    hasApplications: appDrafts.length > 0,
+    hasApplications: appDrafts,
     userDrafts: appDrafts,
   };
 };
@@ -45,7 +45,7 @@ const hatsRoleQuery = async (address: Address) => {
 export const userQuery = async (userAddress: Address) => {
   try {
     const { isAdmin, isJudge } = await hatsRoleQuery(userAddress);
-    const { hasApplications, userDrafts } = await userApplications(userAddress);
+    const { hasApplications } = await userApplications(userAddress);
 
     return { isAdmin, isJudge, hasApplications };
   } catch (error) {
