@@ -1,9 +1,7 @@
-import React from 'react';
 import { PageLayout } from '../layout/Page';
-import { Box, Card, Flex, Text, Title, useMantineTheme } from '@mantine/core';
+import { Card, Flex, Text, Title, useMantineTheme } from '@mantine/core';
 
 export const Elections = () => {
-  const { colors } = useMantineTheme();
   return (
     <PageLayout title="Judge Elections">
       <Title order={3} fz="h3" mb="xxl">

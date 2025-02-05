@@ -26,10 +26,10 @@ const publicItems = [
     url: '/applications',
   },
 
-  {
-    label: 'Reviews',
-    url: '/reviews',
-  },
+  // {
+  //   label: 'Reviews',
+  //   url: '/reviews',
+  // },
 ];
 
 export const Nav = () => {

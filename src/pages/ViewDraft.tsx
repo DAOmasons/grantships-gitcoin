@@ -1,4 +1,3 @@
-import React from 'react';
 import { PageLayout } from '../layout/Page';
 import {
   Avatar,
@@ -19,6 +18,7 @@ import { ExternalLink } from '../components/typography';
 import { useTablet } from '../hooks/useBreakpoints';
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
+import { urlRegex } from '../utils/common';
 
 export const ViewDraft = () => {
   const { id } = useParams();
@@ -198,6 +198,18 @@ const ResponseBlock = ({
   label: string;
   response: string;
 }) => {
+  const renderWithLinks = (text: string) => {
+    return text.split(urlRegex).map((part, index) => {
+      if (part.match(urlRegex)) {
+        return (
+          <ExternalLink key={`${part}-${index}`} href={part}>
+            {part}
+          </ExternalLink>
+        );
+      }
+      return part;
+    });
+  };
   return (
     <Box>
       <Text fw={600} mb={10}>
@@ -205,7 +217,7 @@ const ResponseBlock = ({
       </Text>
       <Card variant="inner">
         <Text c="subtle" className={'ws-pre-wrap'}>
-          {response}
+          {renderWithLinks(response)}
         </Text>
       </Card>
     </Box>
