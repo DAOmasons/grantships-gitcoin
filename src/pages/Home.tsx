@@ -132,7 +132,15 @@ export const Home = () => {
               to see the progress of the election.
             </Text>
             <Group justify="center">
-              <Button variant="secondary">View Election Progress</Button>
+              <Button
+                variant="secondary"
+                component="a"
+                href="https://gov.gitcoin.co/t/2025-delegate-nominations/19903"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View Election Progress
+              </Button>
             </Group>
           </Card>
         </Box>
