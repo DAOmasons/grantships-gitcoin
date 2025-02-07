@@ -119,20 +119,20 @@ export const Home = () => {
           mx={isTablet ? 'auto' : undefined}
         >
           <Title mb="xs" fz="h3" order={2}>
-            Round Selection
+            Judge Election
           </Title>
           <Text c="subtle" mb="lg">
-            Stage 2 - Select Community Rounds for GG23
+            Stage 1 - Elect Judges for Round Selection
           </Text>
           <Card variant="solid">
             <Text mb="md" lh={1.4}>
-              In this stage, judges elected by Gitcoin DAO read and rank each
-              application against a grading rubric. See the progress of current
-              applications, their grading on the Gitcoin round selection rubric,
-              and read their written reviews.
+              In this stage, Gitcoin DAO votes to elect judges who will be
+              responsible for the selection of grant rounds. For this round of
+              GrantShips, this vote will be held off-app. Click the button below
+              to see the progress of the election.
             </Text>
             <Group justify="center">
-              <Button variant="secondary">View Application Progress</Button>
+              <Button variant="secondary">View Election Progress</Button>
             </Group>
           </Card>
         </Box>
