@@ -426,15 +426,18 @@ export const SubmitApplicationAlt2 = () => {
                 </InputLabel>
                 <List c="subtle" mb="xs">
                   <List.Item>
-                    <Bold>Allo GMV</Bold> (A round needs to reach 20%
-                    crowdfunding proportional to their matching pool. For
-                    example, if Gitcoin provides $20k in matching but the amount
-                    crowdfunded in a round is less than $4k).{' '}
-                    <Bold>If not:</Bold>
+                    Helping to advance Gitcoin's{' '}
+                    <ExternalLink
+                      href={
+                        'https://gov.gitcoin.co/t/update-gitcoins-adopted-mission-and-vision-statements/15039'
+                      }
+                    >
+                      mission and vision
+                    </ExternalLink>
                   </List.Item>
-
                   <List.Item>
-                    Supporting builders building on top of Allo
+                    Supporting builders building on top of or integrating with
+                    Gitcoin’s tools
                   </List.Item>
                   <List.Item>
                     Scaling and growing the Ethereum ecosystem
