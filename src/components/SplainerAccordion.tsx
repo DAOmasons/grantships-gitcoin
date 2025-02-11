@@ -33,8 +33,7 @@ const splainerData = [
     description: [
       'Prospective round operators submit applications',
       'Judges score applications on a rubric',
-      'Top five applications become GG Community Rounds',
-      'Highest scoring rounds get additional funding',
+      'Top applicants become GG Community Rounds',
     ],
     icon: IconMilitaryAward,
   },
@@ -43,7 +42,7 @@ const splainerData = [
     label: 'Stage 3: GG23 Community Rounds',
     description: [
       'Winning rounds compete to run the best Community Round on GG23',
-      'Metrics are recorded for review',
+      'Impact/Achievements are recorded for review',
     ],
     icon: IconAtom,
   },
@@ -51,9 +50,9 @@ const splainerData = [
     value: '4',
     label: 'Stage 4: Review Rounds',
     description: [
-      'Judges review the performance of each Community Round',
-      'All rounds are scored on a rubric',
-      'Top 2 rounds are automatically selected for the next round',
+      'GTC holders review the performance of each Community Round',
+      'All rounds are scored on self-reported success metrics',
+      'Top 3 rounds are automatically selected for the next round',
     ],
     icon: IconAward,
   },
