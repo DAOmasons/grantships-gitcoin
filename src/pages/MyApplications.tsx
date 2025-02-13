@@ -12,6 +12,7 @@ import {
 import fxClasses from '../style/effects.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IconChevronRight } from '@tabler/icons-react';
+import { secondsToLongDate } from '../utils/time';
 
 export const MyApplications = () => {
   const { address } = useParams();
@@ -50,7 +51,7 @@ export const MyApplications = () => {
                   <Text fw={600} fz="lg" mb={4} maw={240} lineClamp={1}>
                     {draft.name}
                   </Text>
-                  <Text c="subtle">Last Updated Jan 1, 2025</Text>
+                  <Text c="subtle">{secondsToLongDate(draft.lastUpdated)}</Text>
                 </Box>
               </Group>
               <Group>
