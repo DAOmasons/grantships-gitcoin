@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { IconChevronRight } from '@tabler/icons-react';
 import { useTablet } from '../hooks/useBreakpoints';
 import { InfoBanner } from '../components/InfoBanner';
+import { secondsToLongDate } from '../utils/time';
 
 export const Applications = () => {
   const { data: drafts } = useQuery({
@@ -56,7 +57,9 @@ export const Applications = () => {
                     <Text fw={600} fz="lg" mb={4} maw={240} lineClamp={1}>
                       {draft.name}
                     </Text>
-                    <Text c="subtle">Last Updated Jan 1, 2025</Text>
+                    <Text c="subtle">
+                      {secondsToLongDate(draft.lastUpdated)}
+                    </Text>
                   </Box>
                 </Group>
                 {!isTablet && (
