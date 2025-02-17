@@ -1,5 +1,6 @@
 import { PageLayout } from '../layout/Page';
 import {
+  ActionIcon,
   Avatar,
   Box,
   Card,
@@ -12,6 +13,7 @@ import {
   Textarea,
   TextInput,
   Title,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
@@ -22,12 +24,14 @@ import { useTablet } from '../hooks/useBreakpoints';
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { urlRegex } from '../utils/common';
-import { useForm } from '@mantine/form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
+import { IconPencil } from '@tabler/icons-react';
+import { useAccount } from 'wagmi';
 
 export const AppDraft = () => {
   const { id } = useParams();
+  const { address } = useAccount();
 
   const {
     data: draft,
@@ -46,6 +50,52 @@ export const AppDraft = () => {
   const isTablet = useTablet();
 
   const { form } = useApplicationForm();
+
+  const userIsApplicant = address === draft?.userAddress;
+
+  useEffect(() => {
+    if (draft) {
+      form.setValues({
+        name: draft.parsedJSON.name,
+        imgUrl: draft.parsedJSON.imgUrl,
+        socialLink: draft.parsedJSON.socialLink,
+        description: draft.parsedJSON.description,
+        typeOfProjects: draft.parsedJSON.typeOfProjects,
+        roundHistory: draft.parsedJSON.roundHistory,
+
+        // Step 2: Round Operator and Team
+
+        'Identified Round Operator':
+          draft.parsedJSON['Identified Round Operator'],
+        'Team Members': draft.parsedJSON['Team Members'],
+        advisors: draft.parsedJSON.advisors,
+
+        // Step 3: Round Strategy
+
+        eligibilityCriteria: draft.parsedJSON.eligibilityCriteria,
+        marketingPlanURL: draft.parsedJSON.marketingPlanURL,
+        fundingMechanism: draft.parsedJSON.fundingMechanism,
+
+        // Step 4: Impact and Intents
+
+        'Mission Alignment': draft.parsedJSON['Mission Alignment'],
+        'Impact Assessment Plan': draft.parsedJSON['Impact Assessment Plan'],
+
+        // Step 5: Community Engagement
+
+        'Community Size and Engagement':
+          draft.parsedJSON['Community Size and Engagement'],
+        granteeEstimate: draft.parsedJSON.granteeEstimate,
+        'Matching Pool Impact': draft.parsedJSON['Matching Pool Impact'],
+
+        // Step 6: Final Notes
+
+        COI: draft.parsedJSON.COI,
+        considerations: draft.parsedJSON.considerations,
+        moreInfo: draft.parsedJSON.moreInfo,
+      });
+    }
+  }, [draft]);
 
   if (isLoading) {
     return (
@@ -73,12 +123,29 @@ export const AppDraft = () => {
         <Avatar src={draft?.parsedJSON.imgUrl} bg="white" size={171} mb="xl" />
       </Group>
       <Stack gap="lg" mb={100}>
-        <Title fz="h3" order={3} mb="sm">
-          Round Info
-        </Title>
+        <Group mb="sm" justify="space-between">
+          <Title fz="h3" order={3}>
+            Round Info
+          </Title>
+          {/* {userIsApplicant && ( */}
+          <ActionIcon onClick={() => setIsEdit(!isEdit)}>
+            <IconPencil />
+          </ActionIcon>
+          {/* )} */}
+        </Group>
         <Flex wrap="nowrap" gap="sm" direction={isTablet ? 'column' : 'row'}>
           <Box w={isTablet ? '100%' : '50%'}>
-            {!isEdit ? (
+            {isEdit ? (
+              <>
+                <InputLabel fw={600} mb={10}>
+                  Name
+                </InputLabel>
+                <TextInput
+                  value={draft?.parsedJSON.name}
+                  {...form.getInputProps('name')}
+                />
+              </>
+            ) : (
               <>
                 <Text fw={600} mb={10}>
                   Name
@@ -90,23 +157,22 @@ export const AppDraft = () => {
                   </Text>
                 </Card>
               </>
-            ) : (
-              <>
-                <InputLabel fw={600} mb={10}>
-                  Name
-                </InputLabel>
-                <TextInput value={draft?.parsedJSON.name} />
-              </>
             )}
           </Box>
           <Box w={isTablet ? '100%' : '50%'}>
             {isEdit ? (
-              <>
-                <InputLabel fw={600} mb={10}>
-                  Address
-                </InputLabel>
-                <TextInput value={draft?.userAddress} />
-              </>
+              <Tooltip label="Address for application cannot be edited">
+                <Box>
+                  <InputLabel fw={600} mb={10}>
+                    Address
+                  </InputLabel>
+                  <TextInput
+                    value={draft?.userAddress}
+                    disabled
+                    onChange={() => {}}
+                  />
+                </Box>
+              </Tooltip>
             ) : (
               <>
                 <Text fw={600} mb={10}>
@@ -136,21 +202,29 @@ export const AppDraft = () => {
           label="Round Description"
           response={draft.parsedJSON.description}
           isEdit={isEdit}
+          id={'description'}
+          form={form}
         />
         <ResponseLink
           label="Social Link"
           href={draft.parsedJSON.socialLink}
           isEdit={isEdit}
+          id={'socialLink'}
+          form={form}
         />
         <ResponseBlock
           label="Type of Projects Funded"
           response={draft.parsedJSON.typeOfProjects}
           isEdit={isEdit}
+          id={'typeOfProjects'}
+          form={form}
         />
         <ResponseBlock
           label="Round History"
           response={draft.parsedJSON.roundHistory}
           isEdit={isEdit}
+          id={'roundHistory'}
+          form={form}
         />
         <Divider color={colors.dark[6]} mt="lg" mb="xs" />
         <Title fz="h3" order={3} mb="sm">
@@ -160,16 +234,22 @@ export const AppDraft = () => {
           label="Round Operator"
           response={draft.parsedJSON['Identified Round Operator']}
           isEdit={isEdit}
+          id={'Identified Round Operator'}
+          form={form}
         />
         <ResponseBlock
           label="Team Members"
           response={draft.parsedJSON['Team Members']}
           isEdit={isEdit}
+          id={'Team Members'}
+          form={form}
         />
         <ResponseBlock
           label="Advisors"
           response={draft.parsedJSON.advisors}
           isEdit={isEdit}
+          id={'advisors'}
+          form={form}
         />
         <Divider color={colors.dark[6]} mt="lg" mb="xs" />
         <Title fz="h3" order={3} mb="sm">
@@ -179,16 +259,22 @@ export const AppDraft = () => {
           label="Round Eligibility Criteria"
           response={draft.parsedJSON.eligibilityCriteria}
           isEdit={isEdit}
+          id={'eligibilityCriteria'}
+          form={form}
         />
         <ResponseBlock
           label="Round Mechanism"
           response={draft.parsedJSON.fundingMechanism}
           isEdit={isEdit}
+          id={'fundingMechanism'}
+          form={form}
         />
         <ResponseLink
           label="Marketing Strategy Link"
           href={draft.parsedJSON.marketingPlanURL}
           isEdit={isEdit}
+          id={'marketingPlanURL'}
+          form={form}
         />
         <Divider color={colors.dark[6]} mt="lg" mb="xs" />
         <Title fz="h3" order={3} mb="sm">
@@ -198,11 +284,15 @@ export const AppDraft = () => {
           label="Alignment with Gitcoin DAO Intents"
           response={draft.parsedJSON['Mission Alignment']}
           isEdit={isEdit}
+          id={'Mission Alignment'}
+          form={form}
         />
         <ResponseBlock
           label="Impact Assessment Plan"
           response={draft.parsedJSON['Impact Assessment Plan']}
           isEdit={isEdit}
+          id={'Impact Assessment Plan'}
+          form={form}
         />
         <Divider color={colors.dark[6]} mt="lg" mb="xs" />
 
@@ -213,16 +303,22 @@ export const AppDraft = () => {
           label="Community Size and Engagement"
           isEdit={isEdit}
           response={draft.parsedJSON['Community Size and Engagement']}
+          id={'Community Size and Engagement'}
+          form={form}
         />
         <ResponseBlock
           label="Estimated Number of Grantees"
           isEdit={isEdit}
           response={draft.parsedJSON.granteeEstimate}
+          id={'granteeEstimate'}
+          form={form}
         />
         <ResponseBlock
           label="Anticipated Matching Pool"
           isEdit={isEdit}
           response={draft.parsedJSON['Matching Pool Impact']}
+          id={'Matching Pool Impact'}
+          form={form}
         />
         <Divider color={colors.dark[6]} mt="lg" mb="xs" />
         <Title fz="h3" order={3} mb="sm">
@@ -232,16 +328,22 @@ export const AppDraft = () => {
           label="Stated Conflicts of Interest"
           isEdit={isEdit}
           response={draft.parsedJSON.COI}
+          id={'COI'}
+          form={form}
         />
         <ResponseBlock
           label="Additional Considerations"
           isEdit={isEdit}
           response={draft.parsedJSON.considerations}
+          id={'considerations'}
+          form={form}
         />
         <ResponseBlock
           label="More Information"
           isEdit={isEdit}
           response={draft.parsedJSON.moreInfo}
+          id={'moreInfo'}
+          form={form}
         />
       </Stack>
     </PageLayout>
@@ -264,12 +366,14 @@ const ResponseBlock = ({
   label,
   response,
   isEdit,
+  id,
   form,
 }: {
   label: string;
   response: string;
   isEdit?: boolean;
-  form?: any;
+  id: string;
+  form: any;
 }) => {
   if (isEdit) {
     return (
@@ -282,6 +386,7 @@ const ResponseBlock = ({
           className={'ws-pre-wrap'}
           value={response}
           size="sm"
+          {...form.getInputProps(id)}
         />
       </Box>
     );
@@ -304,10 +409,14 @@ const ResponseLink = ({
   label,
   href,
   isEdit,
+  id,
+  form,
 }: {
   label: string;
   href: string;
   isEdit?: boolean;
+  id: string;
+  form;
 }) => {
   if (isEdit) {
     return (
@@ -316,7 +425,7 @@ const ResponseLink = ({
           {label}
         </InputLabel>
 
-        <TextInput value={href} />
+        <TextInput value={href} {...form.getInputProps(id)} />
       </Box>
     );
   }
