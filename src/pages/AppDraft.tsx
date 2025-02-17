@@ -3,6 +3,7 @@ import {
   ActionIcon,
   Avatar,
   Box,
+  Button,
   Card,
   Divider,
   Flex,
@@ -28,6 +29,12 @@ import { useEffect, useState } from 'react';
 import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
 import { IconPencil } from '@tabler/icons-react';
 import { useAccount } from 'wagmi';
+import { pinJSONToIPFS } from '../utils/ipfs';
+import { TAG } from '../constants/tags';
+import { encodeAbiParameters, parseAbiParameters } from 'viem';
+import { useTx } from '../contexts/useTx';
+import SayethAbi from '../abi/Sayeth.json';
+import { ADDR } from '../constants/addresses';
 
 export const AppDraft = () => {
   const { id } = useParams();
@@ -37,23 +44,25 @@ export const AppDraft = () => {
     data: draft,
     error,
     isLoading,
+    refetch,
   } = useQuery({
     queryKey: ['app-draft', id],
     queryFn: () => getAppDraft(id as string),
     enabled: !!id,
   });
 
-  const [isEdit, setIsEdit] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
 
   const { colors } = useMantineTheme();
   const { copy } = useClipboard();
   const isTablet = useTablet();
+  const { tx } = useTx();
 
-  const { form } = useApplicationForm();
+  const { form, formSchema, hasErrors } = useApplicationForm();
+
+  console.log('hasErrors', hasErrors);
 
   const userIsApplicant = address === draft?.userAddress;
-
-  console.log(form.values);
 
   useEffect(() => {
     if (draft) {
@@ -119,21 +128,88 @@ export const AppDraft = () => {
     return <PageLayout title="GG Round Application">No data</PageLayout>;
   }
 
+  const handleEdit = async () => {
+    const valid = formSchema.safeParse(form.values);
+
+    const onChainJson = JSON.stringify({
+      name: form.values.name,
+      socialLink: form.values.socialLink,
+      id,
+      imgUrl: form.values.imgUrl,
+    });
+
+    if (!valid.success) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to validate form values',
+        color: 'red',
+      });
+      return;
+    }
+
+    const pinRes = await pinJSONToIPFS({ ...form.values });
+
+    if (!pinRes.IpfsHash) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to pin content to IPFS',
+        color: 'red',
+      });
+      return;
+    }
+
+    const tag = `${TAG.APPLICATION_EDIT}:${id}`;
+
+    const bytes = encodeAbiParameters(
+      parseAbiParameters('string, string, (uint256, string)'),
+      [tag, onChainJson, [1n, pinRes.IpfsHash]]
+    );
+
+    tx({
+      writeContractParams: {
+        abi: SayethAbi,
+        address: ADDR.SAYETH,
+        functionName: 'sayeth',
+        args: [ADDR.REFERRER, bytes, false],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          refetch();
+          // navigate(`/view-draft/${id}`);
+        },
+      },
+    });
+  };
+
   return (
     <PageLayout title="GG Round Application">
       <Group justify="center">
-        <Avatar src={draft?.parsedJSON.imgUrl} bg="white" size={171} mb="xl" />
+        <Avatar
+          src={form.values.imgUrl || draft?.parsedJSON.imgUrl}
+          bg="white"
+          size={171}
+          mb="xl"
+        />
       </Group>
       <Stack gap="lg" mb={100}>
         <Group mb="sm" justify="space-between">
           <Title fz="h3" order={3}>
             Round Info
           </Title>
-          {/* {userIsApplicant && ( */}
-          <ActionIcon onClick={() => setIsEdit(!isEdit)}>
-            <IconPencil />
-          </ActionIcon>
-          {/* )} */}
+          {userIsApplicant ? (
+            <ActionIcon onClick={() => setIsEdit(!isEdit)}>
+              <IconPencil />
+            </ActionIcon>
+          ) : (
+            <Tooltip label="Only applicant address wallet can edit this application">
+              <IconPencil
+                color={colors.dark[5]}
+                style={{
+                  cursor: 'not-allowed',
+                }}
+              />
+            </Tooltip>
+          )}
         </Group>
         <Flex wrap="nowrap" gap="sm" direction={isTablet ? 'column' : 'row'}>
           <Box w={isTablet ? '100%' : '50%'}>
@@ -356,6 +432,11 @@ export const AppDraft = () => {
           id={'moreInfo'}
           form={form}
         />
+        {isEdit && (
+          <Group justify="center">
+            <Button onClick={() => handleEdit()}>Edit Application</Button>
+          </Group>
+        )}
       </Stack>
     </PageLayout>
   );
