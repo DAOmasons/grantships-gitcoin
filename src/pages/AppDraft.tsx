@@ -6,8 +6,11 @@ import {
   Divider,
   Flex,
   Group,
+  InputLabel,
   Stack,
   Text,
+  Textarea,
+  TextInput,
   Title,
   useMantineTheme,
 } from '@mantine/core';
@@ -19,8 +22,11 @@ import { useTablet } from '../hooks/useBreakpoints';
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { urlRegex } from '../utils/common';
+import { useForm } from '@mantine/form';
+import { useState } from 'react';
+import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
 
-export const ViewDraft = () => {
+export const AppDraft = () => {
   const { id } = useParams();
 
   const {
@@ -33,9 +39,13 @@ export const ViewDraft = () => {
     enabled: !!id,
   });
 
+  const [isEdit, setIsEdit] = useState(true);
+
   const { colors } = useMantineTheme();
   const { copy } = useClipboard();
   const isTablet = useTablet();
+
+  const { form } = useApplicationForm();
 
   if (isLoading) {
     return (
@@ -68,49 +78,79 @@ export const ViewDraft = () => {
         </Title>
         <Flex wrap="nowrap" gap="sm" direction={isTablet ? 'column' : 'row'}>
           <Box w={isTablet ? '100%' : '50%'}>
-            <Text fw={600} mb={10}>
-              Name
-            </Text>
-            <Card variant="inner">
-              <Text c="subtle" lineClamp={1}>
-                {draft?.parsedJSON.name}
-              </Text>
-            </Card>
+            {!isEdit ? (
+              <>
+                <Text fw={600} mb={10}>
+                  Name
+                </Text>
+
+                <Card variant="inner">
+                  <Text c="subtle" lineClamp={1}>
+                    {draft?.parsedJSON.name}
+                  </Text>
+                </Card>
+              </>
+            ) : (
+              <>
+                <InputLabel fw={600} mb={10}>
+                  Name
+                </InputLabel>
+                <TextInput value={draft?.parsedJSON.name} />
+              </>
+            )}
           </Box>
           <Box w={isTablet ? '100%' : '50%'}>
-            <Text fw={600} mb={10}>
-              Address
-            </Text>
-            <Card
-              variant="inner"
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                copy(draft.userAddress);
-                notifications.show({
-                  title: 'Copied to clipboard',
-                  message: draft.userAddress,
-                  color: colors.kelp[6],
-                });
-              }}
-            >
-              <Text c="subtle" lineClamp={1}>
-                {draft.userAddress}
-              </Text>
-            </Card>
+            {isEdit ? (
+              <>
+                <InputLabel fw={600} mb={10}>
+                  Address
+                </InputLabel>
+                <TextInput value={draft?.userAddress} />
+              </>
+            ) : (
+              <>
+                <Text fw={600} mb={10}>
+                  Address
+                </Text>
+                <Card
+                  variant="inner"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    copy(draft.userAddress);
+                    notifications.show({
+                      title: 'Copied to clipboard',
+                      message: draft.userAddress,
+                      color: colors.kelp[6],
+                    });
+                  }}
+                >
+                  <Text c="subtle" lineClamp={1}>
+                    {draft.userAddress}
+                  </Text>
+                </Card>
+              </>
+            )}
           </Box>
         </Flex>
         <ResponseBlock
           label="Round Description"
           response={draft.parsedJSON.description}
+          isEdit={isEdit}
         />
-        <ResponseLink label="Social Link" href={draft.parsedJSON.socialLink} />
+        <ResponseLink
+          label="Social Link"
+          href={draft.parsedJSON.socialLink}
+          isEdit={isEdit}
+        />
         <ResponseBlock
           label="Type of Projects Funded"
           response={draft.parsedJSON.typeOfProjects}
+          isEdit={isEdit}
         />
         <ResponseBlock
           label="Round History"
           response={draft.parsedJSON.roundHistory}
+          isEdit={isEdit}
         />
         <Divider color={colors.dark[6]} mt="lg" mb="xs" />
         <Title fz="h3" order={3} mb="sm">
@@ -119,12 +159,18 @@ export const ViewDraft = () => {
         <ResponseBlock
           label="Round Operator"
           response={draft.parsedJSON['Identified Round Operator']}
+          isEdit={isEdit}
         />
         <ResponseBlock
           label="Team Members"
           response={draft.parsedJSON['Team Members']}
+          isEdit={isEdit}
         />
-        <ResponseBlock label="Advisors" response={draft.parsedJSON.advisors} />
+        <ResponseBlock
+          label="Advisors"
+          response={draft.parsedJSON.advisors}
+          isEdit={isEdit}
+        />
         <Divider color={colors.dark[6]} mt="lg" mb="xs" />
         <Title fz="h3" order={3} mb="sm">
           Round Strategy
@@ -132,14 +178,17 @@ export const ViewDraft = () => {
         <ResponseBlock
           label="Round Eligibility Criteria"
           response={draft.parsedJSON.eligibilityCriteria}
+          isEdit={isEdit}
         />
         <ResponseBlock
           label="Round Mechanism"
           response={draft.parsedJSON.fundingMechanism}
+          isEdit={isEdit}
         />
         <ResponseLink
           label="Marketing Strategy Link"
           href={draft.parsedJSON.marketingPlanURL}
+          isEdit={isEdit}
         />
         <Divider color={colors.dark[6]} mt="lg" mb="xs" />
         <Title fz="h3" order={3} mb="sm">
@@ -148,10 +197,12 @@ export const ViewDraft = () => {
         <ResponseBlock
           label="Alignment with Gitcoin DAO Intents"
           response={draft.parsedJSON['Mission Alignment']}
+          isEdit={isEdit}
         />
         <ResponseBlock
           label="Impact Assessment Plan"
           response={draft.parsedJSON['Impact Assessment Plan']}
+          isEdit={isEdit}
         />
         <Divider color={colors.dark[6]} mt="lg" mb="xs" />
 
@@ -160,14 +211,17 @@ export const ViewDraft = () => {
         </Title>
         <ResponseBlock
           label="Community Size and Engagement"
+          isEdit={isEdit}
           response={draft.parsedJSON['Community Size and Engagement']}
         />
         <ResponseBlock
           label="Estimated Number of Grantees"
+          isEdit={isEdit}
           response={draft.parsedJSON.granteeEstimate}
         />
         <ResponseBlock
           label="Anticipated Matching Pool"
+          isEdit={isEdit}
           response={draft.parsedJSON['Matching Pool Impact']}
         />
         <Divider color={colors.dark[6]} mt="lg" mb="xs" />
@@ -176,40 +230,62 @@ export const ViewDraft = () => {
         </Title>
         <ResponseBlock
           label="Stated Conflicts of Interest"
+          isEdit={isEdit}
           response={draft.parsedJSON.COI}
         />
         <ResponseBlock
           label="Additional Considerations"
+          isEdit={isEdit}
           response={draft.parsedJSON.considerations}
         />
         <ResponseBlock
           label="More Information"
+          isEdit={isEdit}
           response={draft.parsedJSON.moreInfo}
         />
       </Stack>
     </PageLayout>
   );
 };
+const renderWithLinks = (text: string) => {
+  return text.split(urlRegex).map((part, index) => {
+    if (part.match(urlRegex)) {
+      return (
+        <ExternalLink key={`${part}-${index}`} href={part}>
+          {part}
+        </ExternalLink>
+      );
+    }
+    return part;
+  });
+};
 
 const ResponseBlock = ({
   label,
   response,
+  isEdit,
+  form,
 }: {
   label: string;
   response: string;
+  isEdit?: boolean;
+  form?: any;
 }) => {
-  const renderWithLinks = (text: string) => {
-    return text.split(urlRegex).map((part, index) => {
-      if (part.match(urlRegex)) {
-        return (
-          <ExternalLink key={`${part}-${index}`} href={part}>
-            {part}
-          </ExternalLink>
-        );
-      }
-      return part;
-    });
-  };
+  if (isEdit) {
+    return (
+      <Box>
+        <InputLabel fw={600} mb={10}>
+          {label}
+        </InputLabel>
+        <Textarea
+          c="subtle"
+          className={'ws-pre-wrap'}
+          value={response}
+          size="sm"
+        />
+      </Box>
+    );
+  }
   return (
     <Box>
       <Text fw={600} mb={10}>
@@ -224,7 +300,27 @@ const ResponseBlock = ({
   );
 };
 
-const ResponseLink = ({ label, href }: { label: string; href: string }) => {
+const ResponseLink = ({
+  label,
+  href,
+  isEdit,
+}: {
+  label: string;
+  href: string;
+  isEdit?: boolean;
+}) => {
+  if (isEdit) {
+    return (
+      <Box>
+        <InputLabel fw={600} mb={10}>
+          {label}
+        </InputLabel>
+
+        <TextInput value={href} />
+      </Box>
+    );
+  }
+
   return (
     <Box>
       <Text fw={600} mb={10}>
