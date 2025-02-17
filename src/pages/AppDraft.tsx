@@ -53,6 +53,8 @@ export const AppDraft = () => {
 
   const userIsApplicant = address === draft?.userAddress;
 
+  console.log(form.values);
+
   useEffect(() => {
     if (draft) {
       form.setValues({
@@ -198,6 +200,15 @@ export const AppDraft = () => {
             )}
           </Box>
         </Flex>
+        {isEdit && (
+          <ResponseLink
+            label="Avatar Image URL"
+            href={draft.parsedJSON.imgUrl}
+            isEdit={isEdit}
+            id={'imgUrl'}
+            form={form}
+          />
+        )}
         <ResponseBlock
           label="Round Description"
           response={draft.parsedJSON.description}
