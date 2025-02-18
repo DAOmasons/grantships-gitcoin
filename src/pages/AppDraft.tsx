@@ -18,7 +18,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getAppDraft } from '../queries/getAppDrafts';
 import { ExternalLink } from '../components/typography';
 import { useTablet } from '../hooks/useBreakpoints';
@@ -54,13 +54,12 @@ export const AppDraft = () => {
   const [isEdit, setIsEdit] = useState(false);
 
   const { colors } = useMantineTheme();
+  const navigate = useNavigate();
   const { copy } = useClipboard();
   const isTablet = useTablet();
   const { tx } = useTx();
 
   const { form, formSchema, hasErrors } = useApplicationForm();
-
-  console.log('hasErrors', hasErrors);
 
   const userIsApplicant = address === draft?.userAddress;
 
@@ -165,6 +164,8 @@ export const AppDraft = () => {
       [tag, onChainJson, [1n, pinRes.IpfsHash]]
     );
 
+    const ogId = id?.split('-')[0];
+
     tx({
       writeContractParams: {
         abi: SayethAbi,
@@ -174,8 +175,7 @@ export const AppDraft = () => {
       },
       writeContractOptions: {
         onPollSuccess() {
-          refetch();
-          // navigate(`/view-draft/${id}`);
+          navigate(`/view-draft/${ogId}-${draft.version + 1}`);
         },
       },
     });
@@ -433,8 +433,13 @@ export const AppDraft = () => {
           form={form}
         />
         {isEdit && (
-          <Group justify="center">
-            <Button onClick={() => handleEdit()}>Edit Application</Button>
+          <Group justify="center" gap="lg">
+            <Button variant="secondary" onClick={() => setIsEdit(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => handleEdit()} disabled={hasErrors}>
+              Edit Application
+            </Button>
           </Group>
         )}
       </Stack>

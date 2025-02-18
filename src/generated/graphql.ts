@@ -30,10 +30,12 @@ export type AppDraft = {
   db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
   id: Scalars['String']['output'];
   ipfsHash: Scalars['String']['output'];
+  isHistory: Scalars['Boolean']['output'];
   json: Scalars['String']['output'];
   lastUpdated: Scalars['Int']['output'];
   tag: Scalars['String']['output'];
   userAddress: Scalars['String']['output'];
+  version: Scalars['Int']['output'];
 };
 
 /** Boolean expression to filter rows from the table "AppDraft". All fields are combined with a logical 'AND'. */
@@ -46,10 +48,12 @@ export type AppDraft_Bool_Exp = {
   db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
   ipfsHash?: InputMaybe<String_Comparison_Exp>;
+  isHistory?: InputMaybe<Boolean_Comparison_Exp>;
   json?: InputMaybe<String_Comparison_Exp>;
   lastUpdated?: InputMaybe<Int_Comparison_Exp>;
   tag?: InputMaybe<String_Comparison_Exp>;
   userAddress?: InputMaybe<String_Comparison_Exp>;
+  version?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** Ordering options when selecting data from "AppDraft". */
@@ -59,10 +63,12 @@ export type AppDraft_Order_By = {
   db_write_timestamp?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   ipfsHash?: InputMaybe<Order_By>;
+  isHistory?: InputMaybe<Order_By>;
   json?: InputMaybe<Order_By>;
   lastUpdated?: InputMaybe<Order_By>;
   tag?: InputMaybe<Order_By>;
   userAddress?: InputMaybe<Order_By>;
+  version?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "AppDraft" */
@@ -78,13 +84,17 @@ export enum AppDraft_Select_Column {
   /** column name */
   IpfsHash = 'ipfsHash',
   /** column name */
+  IsHistory = 'isHistory',
+  /** column name */
   Json = 'json',
   /** column name */
   LastUpdated = 'lastUpdated',
   /** column name */
   Tag = 'tag',
   /** column name */
-  UserAddress = 'userAddress'
+  UserAddress = 'userAddress',
+  /** column name */
+  Version = 'version'
 }
 
 /** Streaming cursor of the table "AppDraft" */
@@ -102,10 +112,12 @@ export type AppDraft_Stream_Cursor_Value_Input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   ipfsHash?: InputMaybe<Scalars['String']['input']>;
+  isHistory?: InputMaybe<Scalars['Boolean']['input']>;
   json?: InputMaybe<Scalars['String']['input']>;
   lastUpdated?: InputMaybe<Scalars['Int']['input']>;
   tag?: InputMaybe<Scalars['String']['input']>;
   userAddress?: InputMaybe<Scalars['String']['input']>;
+  version?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** columns and relationships of "AskHausContest" */
@@ -1058,6 +1070,86 @@ export type Factory_Stream_Cursor_Value_Input = {
   admins?: InputMaybe<Array<Scalars['String']['input']>>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** columns and relationships of "FeedItem" */
+export type FeedItem = {
+  __typename?: 'FeedItem';
+  contentType: Scalars['String']['output'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
+  id: Scalars['String']['output'];
+  ipfsHash: Scalars['String']['output'];
+  json: Scalars['String']['output'];
+  role: Scalars['Int']['output'];
+  topic: Scalars['String']['output'];
+  userAddress: Scalars['String']['output'];
+};
+
+/** Boolean expression to filter rows from the table "FeedItem". All fields are combined with a logical 'AND'. */
+export type FeedItem_Bool_Exp = {
+  _and?: InputMaybe<Array<FeedItem_Bool_Exp>>;
+  _not?: InputMaybe<FeedItem_Bool_Exp>;
+  _or?: InputMaybe<Array<FeedItem_Bool_Exp>>;
+  contentType?: InputMaybe<String_Comparison_Exp>;
+  db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
+  id?: InputMaybe<String_Comparison_Exp>;
+  ipfsHash?: InputMaybe<String_Comparison_Exp>;
+  json?: InputMaybe<String_Comparison_Exp>;
+  role?: InputMaybe<Int_Comparison_Exp>;
+  topic?: InputMaybe<String_Comparison_Exp>;
+  userAddress?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** Ordering options when selecting data from "FeedItem". */
+export type FeedItem_Order_By = {
+  contentType?: InputMaybe<Order_By>;
+  db_write_timestamp?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  ipfsHash?: InputMaybe<Order_By>;
+  json?: InputMaybe<Order_By>;
+  role?: InputMaybe<Order_By>;
+  topic?: InputMaybe<Order_By>;
+  userAddress?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "FeedItem" */
+export enum FeedItem_Select_Column {
+  /** column name */
+  ContentType = 'contentType',
+  /** column name */
+  DbWriteTimestamp = 'db_write_timestamp',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IpfsHash = 'ipfsHash',
+  /** column name */
+  Json = 'json',
+  /** column name */
+  Role = 'role',
+  /** column name */
+  Topic = 'topic',
+  /** column name */
+  UserAddress = 'userAddress'
+}
+
+/** Streaming cursor of the table "FeedItem" */
+export type FeedItem_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: FeedItem_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type FeedItem_Stream_Cursor_Value_Input = {
+  contentType?: InputMaybe<Scalars['String']['input']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash?: InputMaybe<Scalars['String']['input']>;
+  json?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<Scalars['Int']['input']>;
+  topic?: InputMaybe<Scalars['String']['input']>;
+  userAddress?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** columns and relationships of "GGApplication" */
@@ -3089,6 +3181,10 @@ export type Query_Root = {
   Factory: Array<Factory>;
   /** fetch data from the table: "Factory" using primary key columns */
   Factory_by_pk?: Maybe<Factory>;
+  /** fetch data from the table: "FeedItem" */
+  FeedItem: Array<FeedItem>;
+  /** fetch data from the table: "FeedItem" using primary key columns */
+  FeedItem_by_pk?: Maybe<FeedItem>;
   /** fetch data from the table: "GGApplication" */
   GGApplication: Array<GgApplication>;
   /** fetch data from the table: "GGApplicationRound" */
@@ -3284,6 +3380,20 @@ export type Query_RootFactoryArgs = {
 
 
 export type Query_RootFactory_By_PkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Query_RootFeedItemArgs = {
+  distinct_on?: InputMaybe<Array<FeedItem_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<FeedItem_Order_By>>;
+  where?: InputMaybe<FeedItem_Bool_Exp>;
+};
+
+
+export type Query_RootFeedItem_By_PkArgs = {
   id: Scalars['String']['input'];
 };
 
@@ -3766,6 +3876,12 @@ export type Subscription_Root = {
   Factory_by_pk?: Maybe<Factory>;
   /** fetch data from the table in a streaming manner: "Factory" */
   Factory_stream: Array<Factory>;
+  /** fetch data from the table: "FeedItem" */
+  FeedItem: Array<FeedItem>;
+  /** fetch data from the table: "FeedItem" using primary key columns */
+  FeedItem_by_pk?: Maybe<FeedItem>;
+  /** fetch data from the table in a streaming manner: "FeedItem" */
+  FeedItem_stream: Array<FeedItem>;
   /** fetch data from the table: "GGApplication" */
   GGApplication: Array<GgApplication>;
   /** fetch data from the table: "GGApplicationRound" */
@@ -4060,6 +4176,27 @@ export type Subscription_RootFactory_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Factory_Stream_Cursor_Input>>;
   where?: InputMaybe<Factory_Bool_Exp>;
+};
+
+
+export type Subscription_RootFeedItemArgs = {
+  distinct_on?: InputMaybe<Array<FeedItem_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<FeedItem_Order_By>>;
+  where?: InputMaybe<FeedItem_Bool_Exp>;
+};
+
+
+export type Subscription_RootFeedItem_By_PkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootFeedItem_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<FeedItem_Stream_Cursor_Input>>;
+  where?: InputMaybe<FeedItem_Bool_Exp>;
 };
 
 
@@ -4530,21 +4667,21 @@ export type Timestamptz_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
-export type DraftFragment = { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string };
+export type DraftFragment = { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean };
 
 export type ApplicationDraftsQueryVariables = Exact<{
   chainId: Scalars['Int']['input'];
 }>;
 
 
-export type ApplicationDraftsQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string }> };
+export type ApplicationDraftsQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean }> };
 
 export type ApplicationDraftQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type ApplicationDraftQuery = { __typename?: 'query_root', AppDraft_by_pk?: { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string } | null };
+export type ApplicationDraftQuery = { __typename?: 'query_root', AppDraft_by_pk?: { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean } | null };
 
 export type ApplicationDraftsByUserQueryVariables = Exact<{
   userAddress: Scalars['String']['input'];
@@ -4552,7 +4689,7 @@ export type ApplicationDraftsByUserQueryVariables = Exact<{
 }>;
 
 
-export type ApplicationDraftsByUserQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string }> };
+export type ApplicationDraftsByUserQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean }> };
 
 export type ApplicationsByUserExistsQueryVariables = Exact<{
   userAddress: Scalars['String']['input'];
@@ -4589,6 +4726,8 @@ export const DraftFragmentDoc = gql`
   contentProtocol
   json
   ipfsHash
+  version
+  isHistory
 }
     `;
 export const VoteFragmentDoc = gql`
@@ -4617,7 +4756,7 @@ export const ApplicationFragmentDoc = gql`
     ${VoteFragmentDoc}`;
 export const ApplicationDraftsDocument = gql`
     query applicationDrafts($chainId: Int!) {
-  AppDraft(where: {chainId: {_eq: $chainId}}) {
+  AppDraft(where: {chainId: {_eq: $chainId}, isHistory: {_eq: false}}) {
     ...Draft
   }
 }
@@ -4631,14 +4770,18 @@ export const ApplicationDraftDocument = gql`
     ${DraftFragmentDoc}`;
 export const ApplicationDraftsByUserDocument = gql`
     query applicationDraftsByUser($userAddress: String!, $chainId: Int!) {
-  AppDraft(where: {userAddress: {_eq: $userAddress}, chainId: {_eq: $chainId}}) {
+  AppDraft(
+    where: {userAddress: {_eq: $userAddress}, chainId: {_eq: $chainId}, isHistory: {_eq: false}}
+  ) {
     ...Draft
   }
 }
     ${DraftFragmentDoc}`;
 export const ApplicationsByUserExistsDocument = gql`
     query applicationsByUserExists($userAddress: String!, $chainId: Int!) {
-  AppDraft(where: {userAddress: {_eq: $userAddress}, chainId: {_eq: $chainId}}) {
+  AppDraft(
+    where: {userAddress: {_eq: $userAddress}, chainId: {_eq: $chainId}, isHistory: {_eq: false}}
+  ) {
     id
   }
 }

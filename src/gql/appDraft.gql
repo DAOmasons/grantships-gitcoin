@@ -6,10 +6,12 @@ fragment Draft on AppDraft {
   contentProtocol
   json
   ipfsHash
+  version
+  isHistory
 }
 
 query applicationDrafts($chainId: Int!) {
-  AppDraft(where: { chainId: { _eq: $chainId } }) {
+  AppDraft(where: { chainId: { _eq: $chainId }, isHistory: { _eq: false } }) {
     ...Draft
   }
 }
@@ -22,7 +24,11 @@ query applicationDraft($id: String!) {
 
 query applicationDraftsByUser($userAddress: String!, $chainId: Int!) {
   AppDraft(
-    where: { userAddress: { _eq: $userAddress }, chainId: { _eq: $chainId } }
+    where: {
+      userAddress: { _eq: $userAddress }
+      chainId: { _eq: $chainId }
+      isHistory: { _eq: false }
+    }
   ) {
     ...Draft
   }
@@ -30,7 +36,11 @@ query applicationDraftsByUser($userAddress: String!, $chainId: Int!) {
 
 query applicationsByUserExists($userAddress: String!, $chainId: Int!) {
   AppDraft(
-    where: { userAddress: { _eq: $userAddress }, chainId: { _eq: $chainId } }
+    where: {
+      userAddress: { _eq: $userAddress }
+      chainId: { _eq: $chainId }
+      isHistory: { _eq: false }
+    }
   ) {
     id
   }
