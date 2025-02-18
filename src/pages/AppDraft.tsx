@@ -44,7 +44,6 @@ export const AppDraft = () => {
     data: draft,
     error,
     isLoading,
-    refetch,
   } = useQuery({
     queryKey: ['app-draft', id],
     queryFn: () => getAppDraft(id as string),
@@ -176,6 +175,7 @@ export const AppDraft = () => {
       writeContractOptions: {
         onPollSuccess() {
           navigate(`/view-draft/${ogId}-${draft.version + 1}`);
+          setIsEdit(false);
         },
       },
     });
@@ -313,8 +313,7 @@ export const AppDraft = () => {
           id={'roundHistory'}
           form={form}
         />
-        <Divider color={colors.dark[6]} mt="lg" mb="xs" />
-        <Title fz="h3" order={3} mb="sm">
+        <Title fz="h4" order={3} mt="lg">
           Round Operator and Team
         </Title>
         <ResponseBlock
@@ -338,8 +337,7 @@ export const AppDraft = () => {
           id={'advisors'}
           form={form}
         />
-        <Divider color={colors.dark[6]} mt="lg" mb="xs" />
-        <Title fz="h3" order={3} mb="sm">
+        <Title fz="h4" order={3} mt="lg">
           Round Strategy
         </Title>
         <ResponseBlock
@@ -363,8 +361,7 @@ export const AppDraft = () => {
           id={'marketingPlanURL'}
           form={form}
         />
-        <Divider color={colors.dark[6]} mt="lg" mb="xs" />
-        <Title fz="h3" order={3} mb="sm">
+        <Title fz="h4" order={3} mt="lg">
           Impact & Intents
         </Title>
         <ResponseBlock
@@ -381,9 +378,8 @@ export const AppDraft = () => {
           id={'Impact Assessment Plan'}
           form={form}
         />
-        <Divider color={colors.dark[6]} mt="lg" mb="xs" />
 
-        <Title fz="h3" order={3} mb="sm">
+        <Title fz="h4" order={3} mt="lg">
           Community Engagement
         </Title>
         <ResponseBlock
@@ -407,8 +403,7 @@ export const AppDraft = () => {
           id={'Matching Pool Impact'}
           form={form}
         />
-        <Divider color={colors.dark[6]} mt="lg" mb="xs" />
-        <Title fz="h3" order={3} mb="sm">
+        <Title fz="h4" order={3} mt="lg">
           Conclusion
         </Title>
         <ResponseBlock
@@ -432,17 +427,18 @@ export const AppDraft = () => {
           id={'moreInfo'}
           form={form}
         />
-        {isEdit && (
-          <Group justify="center" gap="lg">
-            <Button variant="secondary" onClick={() => setIsEdit(false)}>
-              Cancel
-            </Button>
-            <Button onClick={() => handleEdit()} disabled={hasErrors}>
-              Edit Application
-            </Button>
-          </Group>
-        )}
       </Stack>
+      {isEdit && (
+        <Group justify="center" gap="lg">
+          <Button variant="secondary" onClick={() => setIsEdit(false)}>
+            Cancel
+          </Button>
+          <Button onClick={() => handleEdit()} disabled={hasErrors}>
+            Edit Application
+          </Button>
+        </Group>
+      )}
+      <Divider />
     </PageLayout>
   );
 };
@@ -521,7 +517,6 @@ const ResponseLink = ({
         <InputLabel fw={600} mb={10}>
           {label}
         </InputLabel>
-
         <TextInput value={href} {...form.getInputProps(id)} />
       </Box>
     );
@@ -538,3 +533,5 @@ const ResponseLink = ({
     </Box>
   );
 };
+
+const Feed = () => {};
