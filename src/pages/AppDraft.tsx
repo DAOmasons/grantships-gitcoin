@@ -429,7 +429,7 @@ export const AppDraft = () => {
         />
       </Stack>
       {isEdit && (
-        <Group justify="center" gap="lg">
+        <Group justify="center" gap="lg" mb="xl">
           <Button variant="secondary" onClick={() => setIsEdit(false)}>
             Cancel
           </Button>
@@ -438,7 +438,8 @@ export const AppDraft = () => {
           </Button>
         </Group>
       )}
-      <Divider />
+      <Divider mb="xl" />
+      <TopicFeed topicId="round" title="History & Comments" />
     </PageLayout>
   );
 };
@@ -534,4 +535,56 @@ const ResponseLink = ({
   );
 };
 
-const Feed = () => {};
+const testData = [{ userAddress: '' }];
+
+const TopicFeed = ({ topicId, title }: { topicId: string; title: string }) => {
+  // const {} = useQuery({})
+
+  return (
+    <Box>
+      <Title fz="h3" order={3} mb="xl">
+        {title}
+      </Title>
+      <Stack>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <>
+            <Box mx="xs">
+              <Group key={index} wrap="nowrap" align="center" mb="xs">
+                <Avatar />
+                <Group gap="xs">
+                  <Text fw={600}>0x2w3...3l4</Text>
+                  <Text c="subtle" fz="sm">
+                    ·
+                  </Text>
+                  <Text c="subtle" fz="sm">
+                    Jan 1, 2025
+                  </Text>
+                </Group>
+              </Group>
+              <Box ml={62}>
+                <Text c="subtle" className={'ws-pre-wrap'}>
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s, when an unknown
+                  printer took a galley of type and scrambled it to make a type
+                  specimen book. It has survived not only five centuries, but
+                  also the leap into electronic typesetting, remaining
+                  essentially unchanged. It was popularised in the 1960s with
+                  the release of Letraset sheets containing Lorem Ipsum
+                  passages, and more recently with desktop publishing software
+                  like Aldus PageMaker including versions of Lorem Ipsum.
+                </Text>
+                {/* <Group>
+                  <Text fz="sm" ml="auto">
+                    Jan 1, 2025
+                  </Text>
+                </Group> */}
+              </Box>
+            </Box>
+            <Divider my="sm" />
+          </>
+        ))}
+      </Stack>
+    </Box>
+  );
+};
