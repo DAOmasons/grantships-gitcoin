@@ -439,7 +439,7 @@ export const AppDraft = () => {
         </Group>
       )}
       <Divider mb="100" />
-      <TopicFeed topicId="round" title="History & Comments" />
+      {/* <TopicFeed topicId="round" title="History & Comments" />
       <Textarea
         placeholder="Write a comment..."
         mt="lg"
@@ -449,7 +449,7 @@ export const AppDraft = () => {
       />
       <Group justify="center" mt="lg">
         <Button>Post Comment</Button>
-      </Group>
+      </Group> */}
     </PageLayout>
   );
 };
