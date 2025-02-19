@@ -24,14 +24,13 @@ import {
   IconPhoto,
 } from '@tabler/icons-react';
 import { StepLayout } from '../layout/StepLayout';
-import { Bold, BoldItalic, ExternalLink } from '../components/typography';
+import { BoldItalic, ExternalLink } from '../components/typography';
 import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
 import { useTx } from '../contexts/useTx';
 import { ADDR } from '../constants/addresses';
 import SayethAbi from '../abi/Sayeth.json';
 import { generateRandomBytes32 } from '../utils/common';
 import { encodeAbiParameters, parseAbiParameters } from 'viem';
-import { ZER0_ADDRESS } from '../constants/setup';
 import { TAG } from '../constants/tags';
 import { useNavigate } from 'react-router-dom';
 import { useMobile, useTablet } from '../hooks/useBreakpoints';
