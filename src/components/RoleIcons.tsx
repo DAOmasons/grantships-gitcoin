@@ -5,6 +5,7 @@ import {
   IconRocket,
   IconShieldHalf,
 } from '@tabler/icons-react';
+import { Role } from '../constants/enum';
 
 const roleCopy = {
   ship: 'Ship Operator.',
@@ -42,4 +43,17 @@ export const ShipIcon = (props: IconProps) => {
       <IconRocket color={colors.purple[6]} stroke={1.2} size={24} {...props} />
     </Tooltip>
   );
+};
+
+export const RoleIcon = (props: IconProps & { iconRole: Role }) => {
+  if (Role.Admin === props.iconRole) {
+    return <AdminIcon {...props} />;
+  }
+  if (Role.Judge === props.iconRole) {
+    return <JudgeIcon {...props} />;
+  }
+  if (Role.Operator === props.iconRole) {
+    return <ShipIcon {...props} />;
+  }
+  return null;
 };
