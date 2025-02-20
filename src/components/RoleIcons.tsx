@@ -45,14 +45,17 @@ export const ShipIcon = (props: IconProps) => {
   );
 };
 
-export const RoleIcon = (props: IconProps & { iconRole: Role }) => {
-  if (Role.Admin === props.iconRole) {
+export const RoleIcon = ({
+  iconRole,
+  ...props
+}: IconProps & { iconRole: Role }) => {
+  if (Role.Admin === iconRole) {
     return <AdminIcon {...props} />;
   }
-  if (Role.Judge === props.iconRole) {
+  if (Role.Judge === iconRole) {
     return <JudgeIcon {...props} />;
   }
-  if (Role.Operator === props.iconRole) {
+  if (Role.Operator === iconRole) {
     return <ShipIcon {...props} />;
   }
   return null;

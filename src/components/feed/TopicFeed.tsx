@@ -1,20 +1,13 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  Group,
-  Stack,
-  Text,
-  Textarea,
-} from '@mantine/core';
+import { Box, Button, Card, Group, Stack, Text, Textarea } from '@mantine/core';
 import { IconGavel } from '@tabler/icons-react';
 import { Role } from '../../constants/enum';
 import { ReactNode } from 'react';
 import { truncateAddr } from '../../utils/common';
 import { ADDR } from '../../constants/addresses';
 import { AddressAvatar } from '../AddressAvatar';
-import { AdminIcon, JudgeIcon, RoleIcon, ShipIcon } from '../RoleIcons';
+import { RoleIcon } from '../RoleIcons';
+import { useQuery } from '@tanstack/react-query';
+import { getTopicFeed } from '../../queries/feed';
 
 export const TopicFeed = ({
   topicId,
@@ -23,7 +16,14 @@ export const TopicFeed = ({
   topicId: string;
   title: string;
 }) => {
-  // const {} = useQuery({})
+  console.log('topicId', topicId);
+  const { data } = useQuery({
+    queryKey: ['comment feed', topicId],
+    queryFn: () => getTopicFeed(topicId),
+    enabled: !!topicId,
+  });
+
+  console.log('data', data);
 
   return (
     <Box>

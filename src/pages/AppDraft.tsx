@@ -11,7 +11,6 @@ import {
   InputLabel,
   Stack,
   Text,
-  Textarea,
   TextInput,
   Title,
   Tooltip,
@@ -25,7 +24,7 @@ import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useEffect, useState } from 'react';
 import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
-import { IconPencil, IconStar } from '@tabler/icons-react';
+import { IconPencil } from '@tabler/icons-react';
 import { useAccount } from 'wagmi';
 import { pinJSONToIPFS } from '../utils/ipfs';
 import { TAG } from '../constants/tags';
@@ -183,6 +182,8 @@ export const AppDraft = () => {
       },
     });
   };
+
+  const topicId = draft?.id?.split('-')[0];
 
   return (
     <PageLayout title="GG Round Application">
@@ -442,7 +443,7 @@ export const AppDraft = () => {
         </Group>
       )}
       <Divider mb="lg" />
-      <TopicFeed topicId="round" title="History & Comments" />
+      <TopicFeed topicId={topicId} title="History & Comments" />
     </PageLayout>
   );
 };
