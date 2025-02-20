@@ -77,7 +77,7 @@ const resolveFeedData = async (item: FItemFragment) => {
 export const getTopicFeed = async (topicId: string) => {
   try {
     const res = await sdk.topicFeed({ topic: topicId });
-    console.log('res', res);
+
     if (!res.FeedItem) {
       console.error('Failed to fetch topic feed');
       throw new Error('Failed to fetch topic feed');
