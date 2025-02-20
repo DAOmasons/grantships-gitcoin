@@ -3,7 +3,6 @@ fragment fItem on FeedItem {
   createdAt
   topic
   userAddress
-  role
   postType
   json
 }

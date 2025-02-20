@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Card,
   Group,
   Stack,
@@ -8,35 +7,132 @@ import {
   Textarea,
   useMantineTheme,
 } from '@mantine/core';
-import { IconGavel, IconStar } from '@tabler/icons-react';
+import { IconStar } from '@tabler/icons-react';
 import { Role } from '../../constants/enum';
-import { ReactNode } from 'react';
-import { truncateAddr } from '../../utils/common';
-import { ADDR } from '../../constants/addresses';
-import { AddressAvatar } from '../AddressAvatar';
+import { ReactNode, useState } from 'react';
 import { RoleIcon } from '../RoleIcons';
 import { useQuery } from '@tanstack/react-query';
 import {
   FeedItemData,
   getTopicFeed,
   SystemNotice,
+  UserComment,
 } from '../../queries/feedQuery';
 import { TAG } from '../../constants/tags';
 import { secondsToLongDate } from '../../utils/time';
+import { useTx } from '../../contexts/useTx';
+import { useUserData } from '../../hooks/useUserData';
+import { ADDR } from '../../constants/addresses';
+import SayethAbi from '../../abi/Sayeth.json';
+import { useAccount } from 'wagmi';
+import { notifications } from '@mantine/notifications';
+import { commentSchema } from '../../schemas/feed';
+import { Address, encodeAbiParameters, parseAbiParameters } from 'viem';
+import { HATS } from '../../constants/setup';
+import { TxButton } from '../TxButton';
+import { AddressAvatar } from '../AddressAvatar';
 
-export const TopicFeed = ({
+export const ApplicationTopicFeed = ({
   topicId,
   title,
+  applicantAddress,
 }: {
   topicId: string;
   title: string;
+  applicantAddress: string;
 }) => {
-  console.log('topicId', topicId);
-  const { data: feedItems } = useQuery({
+  const [commentText, setCommentText] = useState('');
+  const { address } = useAccount();
+  const { userData } = useUserData();
+  const { data: feedItems, refetch } = useQuery({
     queryKey: ['comment feed', topicId],
     queryFn: () => getTopicFeed(topicId),
     enabled: !!topicId,
   });
+
+  const { tx } = useTx();
+
+  const isShipOperator = address === applicantAddress;
+
+  const handlePostComment = async () => {
+    const role = userData?.isAdmin
+      ? Role.Admin
+      : userData?.isJudge
+        ? Role.Judge
+        : isShipOperator
+          ? Role.Operator
+          : undefined;
+
+    if (!role) {
+      notifications.show({
+        title: 'Error',
+        message: 'You do not have permission to post comments',
+        color: 'red',
+      });
+      return;
+    }
+
+    const tag = `${TAG.APPLICATION_COMMENT}:${topicId}`;
+    const data = {
+      body: commentText,
+      roleType: role,
+    };
+
+    const valid = commentSchema.safeParse(data);
+
+    if (!valid.success) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid comment data',
+        color: 'red',
+      });
+      return;
+    }
+
+    let bytes;
+
+    if (role === Role.Admin) {
+      bytes = encodeAbiParameters(
+        parseAbiParameters('string, string, (uint256, string), uint256'),
+        [tag, JSON.stringify(data), [0n, ''], HATS.ADMIN]
+      );
+    }
+
+    if (role === Role.Judge) {
+      bytes = encodeAbiParameters(
+        parseAbiParameters('string, string, (uint256, string), uint256'),
+        [tag, JSON.stringify(data), [0n, ''], HATS.JUDGE]
+      );
+    }
+
+    if (role === Role.Operator) {
+      bytes = encodeAbiParameters(
+        parseAbiParameters('string, string, (uint256, string)'),
+        [tag, JSON.stringify(data), [0n, '']]
+      );
+    }
+
+    const referrer =
+      role === Role.Admin || role === Role.Judge
+        ? ADDR.HATS_REFERRER
+        : ADDR.REFERRER;
+
+    tx({
+      writeContractParams: {
+        functionName: 'sayeth',
+        address: ADDR.SAYETH,
+        abi: SayethAbi,
+        args: [referrer, bytes, false],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          refetch();
+        },
+      },
+    });
+  };
+
+  const canComment = userData?.isAdmin || userData?.isJudge;
 
   return (
     <Box>
@@ -48,16 +144,24 @@ export const TopicFeed = ({
           return <FeedFactory key={item.id} {...item} />;
         })}
       </Stack>
-      <Textarea
-        placeholder="Write a comment..."
-        mt="lg"
-        minRows={3}
-        maxRows={8}
-        autosize
-      />
-      <Group justify="center" mt="lg">
-        <Button>Post Comment</Button>
-      </Group>
+      {canComment && (
+        <>
+          <Textarea
+            placeholder="Write a comment..."
+            mt="lg"
+            minRows={3}
+            maxRows={8}
+            autosize
+            value={commentText}
+            onChange={(e) => setCommentText(e.currentTarget.value)}
+          />
+          <Group justify="center" mt="lg">
+            <TxButton onClick={() => handlePostComment()}>
+              Post Comment
+            </TxButton>
+          </Group>
+        </>
+      )}
     </Box>
   );
 };
@@ -112,4 +216,19 @@ export const FeedFactory = (item: FeedItemData) => {
       />
     );
   }
+  if (item.postType === TAG.APPLICATION_COMMENT) {
+    const comment = item as UserComment;
+    return (
+      <FeedItemShell
+        title={comment.title}
+        text={comment.text}
+        role={comment.roleType}
+        graphic={
+          <AddressAvatar address={comment.userAddress as Address} size={40} />
+        }
+        createdAt={comment.createdAt}
+      />
+    );
+  }
+  return null;
 };

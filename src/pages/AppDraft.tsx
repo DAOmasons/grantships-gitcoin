@@ -36,7 +36,7 @@ import {
   ResponseBlock,
   ResponseLink,
 } from '../components/application/ResponseBlock';
-import { TopicFeed } from '../components/feed/TopicFeed';
+import { ApplicationTopicFeed } from '../components/feed/TopicFeed';
 
 export const AppDraft = () => {
   const { id } = useParams();
@@ -443,7 +443,11 @@ export const AppDraft = () => {
         </Group>
       )}
       <Divider mb="lg" />
-      <TopicFeed topicId={topicId} title="History & Comments" />
+      <ApplicationTopicFeed
+        applicantAddress={draft.userAddress}
+        topicId={topicId}
+        title="History & Comments"
+      />
     </PageLayout>
   );
 };

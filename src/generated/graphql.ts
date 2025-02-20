@@ -1081,7 +1081,6 @@ export type FeedItem = {
   ipfsHash?: Maybe<Scalars['String']['output']>;
   json?: Maybe<Scalars['String']['output']>;
   postType: Scalars['String']['output'];
-  role: Scalars['Int']['output'];
   topic: Scalars['String']['output'];
   userAddress: Scalars['String']['output'];
 };
@@ -1097,7 +1096,6 @@ export type FeedItem_Bool_Exp = {
   ipfsHash?: InputMaybe<String_Comparison_Exp>;
   json?: InputMaybe<String_Comparison_Exp>;
   postType?: InputMaybe<String_Comparison_Exp>;
-  role?: InputMaybe<Int_Comparison_Exp>;
   topic?: InputMaybe<String_Comparison_Exp>;
   userAddress?: InputMaybe<String_Comparison_Exp>;
 };
@@ -1110,7 +1108,6 @@ export type FeedItem_Order_By = {
   ipfsHash?: InputMaybe<Order_By>;
   json?: InputMaybe<Order_By>;
   postType?: InputMaybe<Order_By>;
-  role?: InputMaybe<Order_By>;
   topic?: InputMaybe<Order_By>;
   userAddress?: InputMaybe<Order_By>;
 };
@@ -1129,8 +1126,6 @@ export enum FeedItem_Select_Column {
   Json = 'json',
   /** column name */
   PostType = 'postType',
-  /** column name */
-  Role = 'role',
   /** column name */
   Topic = 'topic',
   /** column name */
@@ -1153,7 +1148,6 @@ export type FeedItem_Stream_Cursor_Value_Input = {
   ipfsHash?: InputMaybe<Scalars['String']['input']>;
   json?: InputMaybe<Scalars['String']['input']>;
   postType?: InputMaybe<Scalars['String']['input']>;
-  role?: InputMaybe<Scalars['Int']['input']>;
   topic?: InputMaybe<Scalars['String']['input']>;
   userAddress?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4716,14 +4710,14 @@ export type GetApplicationRoundQueryVariables = Exact<{
 
 export type GetApplicationRoundQuery = { __typename?: 'query_root', GGApplicationRound_by_pk?: { __typename?: 'GGApplicationRound', id: string, createdAt: number, votesParams_id: string, choicesParams_id: string, postedBy: string, rubric: string, validRubric: boolean, applications: Array<{ __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string }> }> } | null };
 
-export type FItemFragment = { __typename?: 'FeedItem', id: string, createdAt: number, topic: string, userAddress: string, role: number, postType: string, json?: string | null };
+export type FItemFragment = { __typename?: 'FeedItem', id: string, createdAt: number, topic: string, userAddress: string, postType: string, json?: string | null };
 
 export type TopicFeedQueryVariables = Exact<{
   topic: Scalars['String']['input'];
 }>;
 
 
-export type TopicFeedQuery = { __typename?: 'query_root', FeedItem: Array<{ __typename?: 'FeedItem', id: string, createdAt: number, topic: string, userAddress: string, role: number, postType: string, json?: string | null }> };
+export type TopicFeedQuery = { __typename?: 'query_root', FeedItem: Array<{ __typename?: 'FeedItem', id: string, createdAt: number, topic: string, userAddress: string, postType: string, json?: string | null }> };
 
 export type GetRecentTransactionQueryVariables = Exact<{
   txHash: Scalars['String']['input'];
@@ -4775,7 +4769,6 @@ export const FItemFragmentDoc = gql`
   createdAt
   topic
   userAddress
-  role
   postType
   json
 }
