@@ -441,18 +441,8 @@ export const AppDraft = () => {
           </Button>
         </Group>
       )}
-      <Divider mb="100" />
+      <Divider mb="lg" />
       <TopicFeed topicId="round" title="History & Comments" />
-      <Textarea
-        placeholder="Write a comment..."
-        mt="lg"
-        minRows={3}
-        maxRows={8}
-        autosize
-      />
-      <Group justify="center" mt="lg">
-        <Button>Post Comment</Button>
-      </Group>
     </PageLayout>
   );
 };
