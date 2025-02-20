@@ -11,6 +11,10 @@ import {
 import { IconGavel } from '@tabler/icons-react';
 import { Role } from '../../constants/enum';
 import { ReactNode } from 'react';
+import { truncateAddr } from '../../utils/common';
+import { ADDR } from '../../constants/addresses';
+import { AddressAvatar } from '../AddressAvatar';
+import { AdminIcon, JudgeIcon, ShipIcon } from '../RoleIcons';
 
 export const TopicFeed = ({
   topicId,
@@ -29,11 +33,11 @@ export const TopicFeed = ({
       <Stack gap="lg" mb={72}>
         {Array.from({ length: 5 }).map((_, index) => (
           <FeedItemShell
-            title="test"
+            title={truncateAddr(ADDR.HATS)}
             text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
             
 It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-            graphic={<Avatar size={40} bg="blue" />}
+            graphic={<AddressAvatar size={40} bg="blue" address={ADDR.HATS} />}
           />
         ))}
       </Stack>
@@ -69,10 +73,10 @@ const FeedItemShell = ({
           <Box w={40} h={40}>
             {graphic}
           </Box>
-          <Text fz="lg" c="highlight">
+          <Text fz="lg" c="highlight" fw="600">
             {title}
           </Text>
-          <IconGavel />
+          <ShipIcon />
         </Group>
         <Text c="subtle" fz="sm">
           Jan 1, 2025
