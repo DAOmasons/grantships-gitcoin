@@ -1,5 +1,14 @@
-import { Box, Button, Card, Group, Stack, Text, Textarea } from '@mantine/core';
-import { IconGavel } from '@tabler/icons-react';
+import {
+  Box,
+  Button,
+  Card,
+  Group,
+  Stack,
+  Text,
+  Textarea,
+  useMantineTheme,
+} from '@mantine/core';
+import { IconGavel, IconStar } from '@tabler/icons-react';
 import { Role } from '../../constants/enum';
 import { ReactNode } from 'react';
 import { truncateAddr } from '../../utils/common';
@@ -7,7 +16,13 @@ import { ADDR } from '../../constants/addresses';
 import { AddressAvatar } from '../AddressAvatar';
 import { RoleIcon } from '../RoleIcons';
 import { useQuery } from '@tanstack/react-query';
-import { getTopicFeed } from '../../queries/feed';
+import {
+  FeedItemData,
+  getTopicFeed,
+  SystemNotice,
+} from '../../queries/feedQuery';
+import { TAG } from '../../constants/tags';
+import { secondsToLongDate } from '../../utils/time';
 
 export const TopicFeed = ({
   topicId,
@@ -17,13 +32,11 @@ export const TopicFeed = ({
   title: string;
 }) => {
   console.log('topicId', topicId);
-  const { data } = useQuery({
+  const { data: feedItems } = useQuery({
     queryKey: ['comment feed', topicId],
     queryFn: () => getTopicFeed(topicId),
     enabled: !!topicId,
   });
-
-  console.log('data', data);
 
   return (
     <Box>
@@ -31,16 +44,9 @@ export const TopicFeed = ({
         {title}
       </Text>
       <Stack gap="lg" mb={72}>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <FeedItemShell
-            title={truncateAddr(ADDR.HATS)}
-            role={Role.Admin}
-            text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
-            
-It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-            graphic={<AddressAvatar size={40} bg="blue" address={ADDR.HATS} />}
-          />
-        ))}
+        {feedItems?.map((item) => {
+          return <FeedFactory key={item.id} {...item} />;
+        })}
       </Stack>
       <Textarea
         placeholder="Write a comment..."
@@ -61,11 +67,13 @@ const FeedItemShell = ({
   text,
   role,
   graphic,
+  createdAt,
 }: {
   title: string;
   text: string;
   role?: Role;
   graphic: ReactNode;
+  createdAt: number;
 }) => {
   return (
     <Box>
@@ -80,7 +88,7 @@ const FeedItemShell = ({
           {role && <RoleIcon iconRole={role} />}
         </Group>
         <Text c="subtle" fz="sm">
-          Jan 1, 2025
+          {secondsToLongDate(createdAt)}
         </Text>
       </Group>
       <Card variant="comment">
@@ -88,4 +96,20 @@ const FeedItemShell = ({
       </Card>
     </Box>
   );
+};
+
+export const FeedFactory = (item: FeedItemData) => {
+  const { colors } = useMantineTheme();
+  if (item.postType === TAG.APPLICATION_POST) {
+    const notice = item as SystemNotice;
+
+    return (
+      <FeedItemShell
+        title={notice.title}
+        text={notice.text}
+        graphic={<IconStar color={colors.purple[6]} stroke={1.2} size={40} />}
+        createdAt={notice.createdAt}
+      />
+    );
+  }
 };
