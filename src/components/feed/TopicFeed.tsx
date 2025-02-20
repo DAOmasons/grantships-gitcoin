@@ -96,26 +96,34 @@ export const ApplicationTopicFeed = ({
         parseAbiParameters('string, string, (uint256, string), uint256'),
         [tag, JSON.stringify(data), [0n, ''], HATS.ADMIN]
       );
-    }
-
-    if (role === Role.Judge) {
+    } else if (role === Role.Judge) {
       bytes = encodeAbiParameters(
         parseAbiParameters('string, string, (uint256, string), uint256'),
         [tag, JSON.stringify(data), [0n, ''], HATS.JUDGE]
       );
-    }
-
-    if (role === Role.Operator) {
+    } else if (role === Role.Operator) {
       bytes = encodeAbiParameters(
         parseAbiParameters('string, string, (uint256, string)'),
-        [tag, JSON.stringify(data), [0n, '']]
+        [tag, JSON.stringify(data), [999999999n, 'this is empty']]
       );
+    } else {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid role',
+        color: 'red',
+      });
+      return;
     }
 
     const referrer =
       role === Role.Admin || role === Role.Judge
         ? ADDR.HATS_REFERRER
         : ADDR.REFERRER;
+
+    console.log('bytes', bytes);
+
+    console.log('tag', tag);
+    console.log('referrer', referrer);
 
     tx({
       writeContractParams: {
@@ -127,12 +135,13 @@ export const ApplicationTopicFeed = ({
       writeContractOptions: {
         onPollSuccess() {
           refetch();
+          setCommentText('');
         },
       },
     });
   };
 
-  const canComment = userData?.isAdmin || userData?.isJudge;
+  const canComment = userData?.isAdmin || userData?.isJudge || isShipOperator;
 
   return (
     <Box>
