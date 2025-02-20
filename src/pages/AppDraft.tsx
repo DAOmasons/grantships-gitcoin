@@ -11,7 +11,6 @@ import {
   InputLabel,
   Stack,
   Text,
-  Textarea,
   TextInput,
   Title,
   Tooltip,
@@ -20,14 +19,12 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAppDraft } from '../queries/getAppDrafts';
-import { ExternalLink } from '../components/typography';
 import { useTablet } from '../hooks/useBreakpoints';
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { urlRegex } from '../utils/common';
 import { useEffect, useState } from 'react';
 import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
-import { IconPencil, IconStar } from '@tabler/icons-react';
+import { IconPencil } from '@tabler/icons-react';
 import { useAccount } from 'wagmi';
 import { pinJSONToIPFS } from '../utils/ipfs';
 import { TAG } from '../constants/tags';
@@ -35,6 +32,11 @@ import { encodeAbiParameters, parseAbiParameters } from 'viem';
 import { useTx } from '../contexts/useTx';
 import SayethAbi from '../abi/Sayeth.json';
 import { ADDR } from '../constants/addresses';
+import {
+  ResponseBlock,
+  ResponseLink,
+} from '../components/application/ResponseBlock';
+import { ApplicationTopicFeed } from '../components/feed/TopicFeed';
 
 export const AppDraft = () => {
   const { id } = useParams();
@@ -180,6 +182,8 @@ export const AppDraft = () => {
       },
     });
   };
+
+  const topicId = draft?.id?.split('-')[0];
 
   return (
     <PageLayout title="GG Round Application">
@@ -438,224 +442,12 @@ export const AppDraft = () => {
           </Button>
         </Group>
       )}
-      <Divider mb="100" />
-      {/* <TopicFeed topicId="round" title="History & Comments" />
-      <Textarea
-        placeholder="Write a comment..."
-        mt="lg"
-        minRows={3}
-        maxRows={8}
-        autosize
+      <Divider mb="lg" />
+      <ApplicationTopicFeed
+        applicantAddress={draft.userAddress}
+        topicId={topicId}
+        title="History & Comments"
       />
-      <Group justify="center" mt="lg">
-        <Button>Post Comment</Button>
-      </Group> */}
     </PageLayout>
-  );
-};
-const renderWithLinks = (text: string) => {
-  return text.split(urlRegex).map((part, index) => {
-    if (part.match(urlRegex)) {
-      return (
-        <ExternalLink key={`${part}-${index}`} href={part}>
-          {part}
-        </ExternalLink>
-      );
-    }
-    return part;
-  });
-};
-
-const ResponseBlock = ({
-  label,
-  response,
-  isEdit,
-  id,
-  form,
-}: {
-  label: string;
-  response: string;
-  isEdit?: boolean;
-  id: string;
-  form: any;
-}) => {
-  if (isEdit) {
-    return (
-      <Box>
-        <InputLabel fw={600} mb={10}>
-          {label}
-        </InputLabel>
-        <Textarea
-          c="subtle"
-          className={'ws-pre-wrap'}
-          value={response}
-          size="sm"
-          {...form.getInputProps(id)}
-        />
-      </Box>
-    );
-  }
-  return (
-    <Box>
-      <Text fw={600} mb={10}>
-        {label}
-      </Text>
-      <Card variant="inner">
-        <Text c="subtle" className={'ws-pre-wrap'}>
-          {renderWithLinks(response)}
-        </Text>
-      </Card>
-    </Box>
-  );
-};
-
-const ResponseLink = ({
-  label,
-  href,
-  isEdit,
-  id,
-  form,
-}: {
-  label: string;
-  href: string;
-  isEdit?: boolean;
-  id: string;
-  form;
-}) => {
-  if (isEdit) {
-    return (
-      <Box>
-        <InputLabel fw={600} mb={10}>
-          {label}
-        </InputLabel>
-        <TextInput value={href} {...form.getInputProps(id)} />
-      </Box>
-    );
-  }
-
-  return (
-    <Box>
-      <Text fw={600} mb={10}>
-        {label}
-      </Text>
-      <Card variant="inner">
-        <ExternalLink href={href}>{href}</ExternalLink>
-      </Card>
-    </Box>
-  );
-};
-
-const TopicFeed = ({ topicId, title }: { topicId: string; title: string }) => {
-  // const {} = useQuery({})
-
-  return (
-    <Box>
-      <Title fz="h3" order={3} mb="xl">
-        {title}
-      </Title>
-      <Stack>
-        <Edited />
-        <Divider my="sm" />
-        <Comment />
-        <Divider my="sm" />
-        <Comment />
-        <Divider my="sm" />
-        <Comment />
-        <Divider my="sm" />
-        <Comment />
-        <Divider my="sm" />
-        <Created />
-        <Divider my="sm" />
-      </Stack>
-    </Box>
-  );
-};
-
-const Edited = () => {
-  const { colors } = useMantineTheme();
-  return (
-    <Box>
-      <Box mx="xs">
-        <Group wrap="nowrap" align="center" mb="xs">
-          <IconPencil stroke={1.2} size={40} color={colors.purple[6]} />
-          <Group gap="xs">
-            <Text fw={600}>Application Edited</Text>
-            <Text c="subtle" fz="sm">
-              ·
-            </Text>
-            <Text c="subtle" fz="sm">
-              Jan 1, 2025
-            </Text>
-          </Group>
-        </Group>
-        <Box ml={62}>
-          <Text c="subtle" className={'ws-pre-wrap'}>
-            Application edited by 0x2w3...3l4. To view the previous version of
-            this application, click here.
-          </Text>
-        </Box>
-      </Box>
-    </Box>
-  );
-};
-
-const Created = () => {
-  const { colors } = useMantineTheme();
-  return (
-    <Box>
-      <Box mx="xs">
-        <Group wrap="nowrap" align="center" mb="xs">
-          <IconStar size={40} color={colors.purple[6]} />
-          <Group gap="xs">
-            <Text fw={600}>Application Created</Text>
-            <Text c="subtle" fz="sm">
-              ·
-            </Text>
-            <Text c="subtle" fz="sm">
-              Jan 1, 2025
-            </Text>
-          </Group>
-        </Group>
-        {/* <Box ml={62}>
-          <Text c="subtle" className={'ws-pre-wrap'}>
-            Application created by 0x2w3...3l4
-          </Text>
-        </Box> */}
-      </Box>
-    </Box>
-  );
-};
-
-const Comment = () => {
-  return (
-    <Box>
-      <Box mx="xs">
-        <Group wrap="nowrap" align="center" mb="xs">
-          <Avatar size={40} bg="blue" />
-          <Group gap="xs">
-            <Text fw={600}>0x2w3...3l4</Text>
-            <Text c="subtle" fz="sm">
-              ·
-            </Text>
-            <Text c="subtle" fz="sm">
-              Jan 1, 2025
-            </Text>
-          </Group>
-        </Group>
-        <Box ml={64}>
-          <Text c="subtle" className={'ws-pre-wrap'}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </Text>
-        </Box>
-      </Box>
-    </Box>
   );
 };

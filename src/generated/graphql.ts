@@ -1075,12 +1075,12 @@ export type Factory_Stream_Cursor_Value_Input = {
 /** columns and relationships of "FeedItem" */
 export type FeedItem = {
   __typename?: 'FeedItem';
-  contentType: Scalars['String']['output'];
+  createdAt: Scalars['Int']['output'];
   db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
   id: Scalars['String']['output'];
-  ipfsHash: Scalars['String']['output'];
-  json: Scalars['String']['output'];
-  role: Scalars['Int']['output'];
+  ipfsHash?: Maybe<Scalars['String']['output']>;
+  json?: Maybe<Scalars['String']['output']>;
+  postType: Scalars['String']['output'];
   topic: Scalars['String']['output'];
   userAddress: Scalars['String']['output'];
 };
@@ -1090,24 +1090,24 @@ export type FeedItem_Bool_Exp = {
   _and?: InputMaybe<Array<FeedItem_Bool_Exp>>;
   _not?: InputMaybe<FeedItem_Bool_Exp>;
   _or?: InputMaybe<Array<FeedItem_Bool_Exp>>;
-  contentType?: InputMaybe<String_Comparison_Exp>;
+  createdAt?: InputMaybe<Int_Comparison_Exp>;
   db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
   ipfsHash?: InputMaybe<String_Comparison_Exp>;
   json?: InputMaybe<String_Comparison_Exp>;
-  role?: InputMaybe<Int_Comparison_Exp>;
+  postType?: InputMaybe<String_Comparison_Exp>;
   topic?: InputMaybe<String_Comparison_Exp>;
   userAddress?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** Ordering options when selecting data from "FeedItem". */
 export type FeedItem_Order_By = {
-  contentType?: InputMaybe<Order_By>;
+  createdAt?: InputMaybe<Order_By>;
   db_write_timestamp?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   ipfsHash?: InputMaybe<Order_By>;
   json?: InputMaybe<Order_By>;
-  role?: InputMaybe<Order_By>;
+  postType?: InputMaybe<Order_By>;
   topic?: InputMaybe<Order_By>;
   userAddress?: InputMaybe<Order_By>;
 };
@@ -1115,7 +1115,7 @@ export type FeedItem_Order_By = {
 /** select columns of table "FeedItem" */
 export enum FeedItem_Select_Column {
   /** column name */
-  ContentType = 'contentType',
+  CreatedAt = 'createdAt',
   /** column name */
   DbWriteTimestamp = 'db_write_timestamp',
   /** column name */
@@ -1125,7 +1125,7 @@ export enum FeedItem_Select_Column {
   /** column name */
   Json = 'json',
   /** column name */
-  Role = 'role',
+  PostType = 'postType',
   /** column name */
   Topic = 'topic',
   /** column name */
@@ -1142,12 +1142,12 @@ export type FeedItem_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type FeedItem_Stream_Cursor_Value_Input = {
-  contentType?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Int']['input']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   ipfsHash?: InputMaybe<Scalars['String']['input']>;
   json?: InputMaybe<Scalars['String']['input']>;
-  role?: InputMaybe<Scalars['Int']['input']>;
+  postType?: InputMaybe<Scalars['String']['input']>;
   topic?: InputMaybe<Scalars['String']['input']>;
   userAddress?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4710,6 +4710,15 @@ export type GetApplicationRoundQueryVariables = Exact<{
 
 export type GetApplicationRoundQuery = { __typename?: 'query_root', GGApplicationRound_by_pk?: { __typename?: 'GGApplicationRound', id: string, createdAt: number, votesParams_id: string, choicesParams_id: string, postedBy: string, rubric: string, validRubric: boolean, applications: Array<{ __typename?: 'GGApplication', id: string, registrar: string, application: string, validApplication: boolean, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string }> }> } | null };
 
+export type FItemFragment = { __typename?: 'FeedItem', id: string, createdAt: number, topic: string, userAddress: string, postType: string, json?: string | null };
+
+export type TopicFeedQueryVariables = Exact<{
+  topic: Scalars['String']['input'];
+}>;
+
+
+export type TopicFeedQuery = { __typename?: 'query_root', FeedItem: Array<{ __typename?: 'FeedItem', id: string, createdAt: number, topic: string, userAddress: string, postType: string, json?: string | null }> };
+
 export type GetRecentTransactionQueryVariables = Exact<{
   txHash: Scalars['String']['input'];
 }>;
@@ -4754,6 +4763,16 @@ export const ApplicationFragmentDoc = gql`
   }
 }
     ${VoteFragmentDoc}`;
+export const FItemFragmentDoc = gql`
+    fragment fItem on FeedItem {
+  id
+  createdAt
+  topic
+  userAddress
+  postType
+  json
+}
+    `;
 export const ApplicationDraftsDocument = gql`
     query applicationDrafts($chainId: Int!) {
   AppDraft(where: {chainId: {_eq: $chainId}, isHistory: {_eq: false}}) {
@@ -4802,6 +4821,13 @@ export const GetApplicationRoundDocument = gql`
   }
 }
     ${ApplicationFragmentDoc}`;
+export const TopicFeedDocument = gql`
+    query topicFeed($topic: String!) {
+  FeedItem(where: {topic: {_eq: $topic}}, order_by: {createdAt: desc}) {
+    ...fItem
+  }
+}
+    ${FItemFragmentDoc}`;
 export const GetRecentTransactionDocument = gql`
     query getRecentTransaction($txHash: String!) {
   TX_by_pk(id: $txHash) {
@@ -4831,6 +4857,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getApplicationRound(variables: GetApplicationRoundQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetApplicationRoundQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetApplicationRoundQuery>(GetApplicationRoundDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getApplicationRound', 'query', variables);
+    },
+    topicFeed(variables: TopicFeedQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<TopicFeedQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<TopicFeedQuery>(TopicFeedDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'topicFeed', 'query', variables);
     },
     getRecentTransaction(variables: GetRecentTransactionQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetRecentTransactionQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetRecentTransactionQuery>(GetRecentTransactionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getRecentTransaction', 'query', variables);

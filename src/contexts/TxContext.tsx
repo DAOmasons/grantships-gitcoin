@@ -216,7 +216,7 @@ export const TxProvider = ({ children }: { children: React.ReactNode }) => {
       return (
         <SuccessState
           title="Transaction Successful"
-          description="Thank you for voting!"
+          description="Your transaction is complete! Close window to continue."
           successButton={{ label: 'Close', onClick: handleClose }}
         />
       );

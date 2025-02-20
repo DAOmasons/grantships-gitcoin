@@ -1,0 +1,14 @@
+fragment fItem on FeedItem {
+  id
+  createdAt
+  topic
+  userAddress
+  postType
+  json
+}
+
+query topicFeed($topic: String!) {
+  FeedItem(where: { topic: { _eq: $topic } }, order_by: { createdAt: desc }) {
+    ...fItem
+  }
+}

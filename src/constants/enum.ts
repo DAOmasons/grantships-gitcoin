@@ -6,3 +6,11 @@ export enum ContestStatus {
   Finalized,
   Executed,
 }
+
+export enum Role {
+  None,
+  System,
+  Operator,
+  Judge,
+  Admin,
+}
