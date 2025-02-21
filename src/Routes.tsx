@@ -12,6 +12,7 @@ import { SubmitApplicationAlt2 } from './pages/SubmitApplicationAlt2';
 import { Applications } from './pages/Applications';
 import { AppDraft } from './pages/AppDraft';
 import { MyApplications } from './pages/MyApplications';
+import { About } from './pages/About';
 
 export const ClientRoutes = () => {
   return (
@@ -19,6 +20,7 @@ export const ClientRoutes = () => {
       <Route path="/reviews" element={<Reviews />} />
       <Route path="/judge-dashboard" element={<JudgeDashboard />} />
       <Route path="/ships" element={<Ships />} />
+      <Route path="/about" element={<About />} />
       <Route path="/applications" element={<Applications />} />
       <Route path="/elections" element={<Elections />} />
       <Route path="/selections" element={<Selections />} />

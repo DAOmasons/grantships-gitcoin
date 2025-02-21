@@ -120,11 +120,6 @@ export const ApplicationTopicFeed = ({
         ? ADDR.HATS_REFERRER
         : ADDR.REFERRER;
 
-    console.log('bytes', bytes);
-
-    console.log('tag', tag);
-    console.log('referrer', referrer);
-
     tx({
       writeContractParams: {
         functionName: 'sayeth',
