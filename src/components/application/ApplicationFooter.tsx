@@ -1,4 +1,12 @@
-import { Box, Group, Stack, Text, Textarea } from '@mantine/core';
+import {
+  ActionIcon,
+  Box,
+  Button,
+  Group,
+  Stack,
+  Text,
+  Textarea,
+} from '@mantine/core';
 import { Role } from '../../constants/enum';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -15,6 +23,7 @@ import { encodeAbiParameters, parseAbiParameters } from 'viem';
 import { HATS } from '../../constants/setup';
 import { TxButton } from '../TxButton';
 import { FeedFactory } from '../feed/FeedFactory';
+import { IconCheck, IconMessage, IconX } from '@tabler/icons-react';
 
 export const ApplicationFooter = ({
   topicId,
@@ -118,8 +127,6 @@ export const ApplicationFooter = ({
     });
   };
 
-  const canComment = userData?.isAdmin || userData?.isJudge || isShipOperator;
-
   return (
     <Box>
       <Text fz="lg" fw="600" c="highlight" mb="xl">
@@ -130,7 +137,14 @@ export const ApplicationFooter = ({
           return <FeedFactory key={item.id} {...item} />;
         })}
       </Stack>
-      {canComment && (
+      {userData?.isAdmin && (
+        <AdminSwitcher
+          commentText={commentText}
+          setCommentText={setCommentText}
+          handlePostComment={handlePostComment}
+        />
+      )}
+      {(isShipOperator || userData?.isJudge) && (
         <>
           <Textarea
             placeholder="Write a comment..."
@@ -149,5 +163,53 @@ export const ApplicationFooter = ({
         </>
       )}
     </Box>
+  );
+};
+
+const AdminSwitcher = ({
+  commentText,
+  setCommentText,
+  handlePostComment,
+}: {
+  commentText: string;
+  setCommentText: (e: string) => void;
+  handlePostComment: () => void;
+}) => {
+  const [isComment, setIsComment] = useState(false);
+
+  if (isComment) {
+    return (
+      <>
+        <Textarea
+          placeholder="Write a comment..."
+          mt="lg"
+          minRows={3}
+          maxRows={8}
+          autosize
+          value={commentText}
+          onChange={(e) => setCommentText(e.currentTarget.value)}
+        />
+        <Group justify="center" mt="lg">
+          <Button variant="secondary" onClick={() => setIsComment(false)}>
+            Cancel
+          </Button>
+          <TxButton onClick={() => handlePostComment()}>Post Comment</TxButton>
+        </Group>
+      </>
+    );
+  }
+
+  return (
+    <Group justify="center" mt="lg">
+      <ActionIcon onClick={() => setIsComment(true)}>
+        <IconMessage />
+      </ActionIcon>
+      <ActionIcon>
+        <IconCheck />
+      </ActionIcon>
+      <ActionIcon>
+        <IconX />
+      </ActionIcon>
+    </Group>
   );
 };

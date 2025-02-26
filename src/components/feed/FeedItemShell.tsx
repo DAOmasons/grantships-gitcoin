@@ -18,24 +18,32 @@ export const FeedItemShell = ({
   createdAt: number;
 }) => {
   return (
-    <Box>
+    <Card variant="comment">
       <Group mb="sm" justify="space-between">
         <Group gap="sm">
-          <Box w={40} h={40}>
+          <Box w={48} h={48}>
             {graphic}
           </Box>
-          <Text fz="lg" c="highlight" fw="600">
-            {title}
-          </Text>
-          {role && <RoleIcon iconRole={role} />}
+          <Box>
+            <Group gap={8} align="center">
+              <Text fz="lg" c="highlight" fw="600">
+                {title}
+              </Text>
+              {role && (
+                <RoleIcon
+                  iconRole={role}
+                  size={20}
+                  style={{ transform: 'translateY(-2px)' }}
+                />
+              )}
+            </Group>
+            <Text c="subtle" fz="sm">
+              {secondsToLongDate(createdAt)}
+            </Text>
+          </Box>
         </Group>
-        <Text c="subtle" fz="sm">
-          {secondsToLongDate(createdAt)}
-        </Text>
       </Group>
-      <Card variant="comment">
-        <Text className="ws-pre-wrap">{text}</Text>
-      </Card>
-    </Box>
+      <Text className="ws-pre-wrap">{text}</Text>
+    </Card>
   );
 };

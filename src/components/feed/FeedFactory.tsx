@@ -1,11 +1,11 @@
-import { useMantineTheme } from '@mantine/core';
+import { Avatar, useMantineTheme } from '@mantine/core';
 import {
   FeedItemData,
   SystemNotice,
   UserComment,
 } from '../../queries/feedQuery';
 import { FeedItemShell } from './FeedItemShell';
-import { IconStar } from '@tabler/icons-react';
+import { IconPlus, IconStar } from '@tabler/icons-react';
 import { TAG } from '../../constants/tags';
 import { AddressAvatar } from '../AddressAvatar';
 import { Address } from 'viem';
@@ -19,7 +19,11 @@ export const FeedFactory = (item: FeedItemData) => {
       <FeedItemShell
         title={notice.title}
         text={notice.text}
-        graphic={<IconStar color={colors.purple[6]} stroke={1.2} size={40} />}
+        graphic={
+          <Avatar size={48}>
+            <IconPlus color={colors.purple[6]} stroke={1.5} />{' '}
+          </Avatar>
+        }
         createdAt={notice.createdAt}
       />
     );
@@ -33,7 +37,7 @@ export const FeedFactory = (item: FeedItemData) => {
         text={comment.text}
         role={comment.roleType}
         graphic={
-          <AddressAvatar address={comment.userAddress as Address} size={40} />
+          <AddressAvatar address={comment.userAddress as Address} size={48} />
         }
         createdAt={comment.createdAt}
       />
