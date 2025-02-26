@@ -36,7 +36,7 @@ import {
   ResponseBlock,
   ResponseLink,
 } from '../components/application/ResponseBlock';
-import { ApplicationTopicFeed } from '../components/feed/TopicFeed';
+import { ApplicationFooter } from '../components/application/ApplicationFooter';
 
 export const AppDraft = () => {
   const { id } = useParams();
@@ -443,10 +443,9 @@ export const AppDraft = () => {
         </Group>
       )}
       <Divider mb="lg" />
-      <ApplicationTopicFeed
+      <ApplicationFooter
         applicantAddress={draft.userAddress}
         topicId={topicId}
-        title="History & Comments"
       />
     </PageLayout>
   );
