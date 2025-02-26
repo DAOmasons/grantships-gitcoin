@@ -63,6 +63,8 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
     queryFn: () => getRounds(),
   });
 
+  console.log('applicationRound', applicationRound);
+
   const currentStage = 1;
 
   const NUM_JUDGES = 5;

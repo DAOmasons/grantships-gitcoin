@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router-dom';
 import { useChews } from '../hooks/useChews';
 import { useMobile, useTablet } from '../hooks/useBreakpoints';
 import { useMediaQuery } from '@mantine/hooks';
+import { deployRubricVoting } from '../setupScripts/chews';
 
 export const Home = () => {
   const theme = useMantineTheme();
@@ -86,6 +87,7 @@ export const Home = () => {
           </Box>
         </Flex>
       </Container>
+      <Button onClick={deployRubricVoting}>Fire!</Button>
       <InnerContainer>
         <Card
           variant="kelp-outline"

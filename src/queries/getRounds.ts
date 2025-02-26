@@ -27,7 +27,7 @@ export type AppRound = Omit<GgApplicationRound, 'applications' | 'rubric'> & {
 
 export const getRounds = async (): Promise<AppRound | undefined> => {
   try {
-    const res = await sdk.getApplicationRound({ id: ADDR.APP_ROUND });
+    const res = await sdk.getApplicationRound({ id: ADDR.RUBRIC_ROUND });
 
     if (!res.GGApplicationRound_by_pk) {
       throw new Error('Round not found in the database');

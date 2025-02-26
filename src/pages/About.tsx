@@ -14,7 +14,6 @@ import {
   IconAlarm,
   IconBatteryCharging,
   IconClearAll,
-  IconRefresh,
   IconReportAnalytics,
   IconRotateClockwise,
   IconTrendingUp,
@@ -212,7 +211,7 @@ export const About = () => {
           </Stack>
         </Group>
       </Group>
-      <Title order={3} fz="h3" mt={250} mb="xl">
+      <Title order={3} fz="h3" mt={280} mb="xl">
         Overarching Goals
       </Title>
       <Stack gap={48}>
@@ -280,7 +279,7 @@ export const About = () => {
         </Flex>
         <Flex gap={48}>
           <Card w="50%">
-            <Group justify="space-between">
+            <Group justify="space-between" mb="md">
               <Text fz={22} c={colors.purple[6]}>
                 Rubric and <br /> Metric Voting
               </Text>
@@ -290,10 +289,17 @@ export const About = () => {
                 stroke="1.2"
               />
             </Group>
+            <Text style={{ letterSpacing: -0.4 }}>
+              This new voting system is methodical and impartial. Every
+              community round should be judged according to its merits and
+              according to the rubric. For this reason, judges will review
+              rounds based on the rubric, and the app will automatically assign
+              their voting scores.
+            </Text>
           </Card>
           <Card w="50%">
             <Group justify="space-between">
-              <Text fz={22} c={colors.purple[6]}>
+              <Text fz={22} c={colors.purple[6]} mb="md">
                 Batteries <br /> Included
               </Text>
               <IconBatteryCharging
@@ -302,6 +308,12 @@ export const About = () => {
                 stroke="1.2"
               />
             </Group>
+            <Text style={{ letterSpacing: -0.4 }}>
+              The application should present a clear next action that helps each
+              user move the process forward. These actions will be determined by
+              a synchronized timeline. This simplifies the experience for each
+              user and drastically reduces governance overhead.
+            </Text>
           </Card>
         </Flex>
       </Stack>
