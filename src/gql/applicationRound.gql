@@ -24,6 +24,9 @@ query getApplicationRound($id: String!) {
   GGApplicationRound_by_pk(id: $id) {
     id
     createdAt
+    round {
+      contestStatus
+    }
     votesParams_id
     choicesParams_id
     postedBy

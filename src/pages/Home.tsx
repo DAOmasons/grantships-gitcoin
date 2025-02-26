@@ -87,7 +87,7 @@ export const Home = () => {
           </Box>
         </Flex>
       </Container>
-      <Button onClick={deployRubricVoting}>Fire!</Button>
+      {/* <Button onClick={deployRubricVoting}>Fire!</Button> */}
       <InnerContainer>
         <Card
           variant="kelp-outline"
