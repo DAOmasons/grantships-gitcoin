@@ -1,8 +1,8 @@
 import { ADDR } from '../constants/addresses';
-import { RoundApplicationContent } from '../constants/dummyApplications';
 import { Rubric } from '../constants/rubric';
 import {
   ApplicationFragment,
+  DraftFragment,
   GgApplicationRound,
   GgApplicationVote,
 } from '../generated/graphql';
@@ -16,7 +16,7 @@ export type ResolvedVote = GgApplicationVote & {
 };
 
 export type ResolvedApplication = Omit<ApplicationFragment, 'votes'> & {
-  copy: RoundApplicationContent;
+  application: DraftFragment & { name: string; imgUrl: string };
   votes: ResolvedVote[];
 };
 
@@ -29,7 +29,6 @@ export const getRounds = async (): Promise<AppRound | undefined> => {
   try {
     const res = await sdk.getApplicationRound({ id: ADDR.RUBRIC_ROUND });
 
-    console.log('res', res);
     if (!res.GGApplicationRound_by_pk) {
       throw new Error('Round not found in the database');
     }
@@ -39,24 +38,27 @@ export const getRounds = async (): Promise<AppRound | undefined> => {
     const resolved = {
       ...data,
       rubric: JSON.parse(data.rubric as string) as Rubric,
-      applications: data.applications
-        .map((app) => ({
+      applications: data.applications.map((app) => {
+        const json = JSON.parse(app.application?.json as string);
+        console.log('json', json);
+        return {
           ...app,
-          copy: JSON.parse(app.application as string),
+          application: {
+            ...app.application,
+            name: json.name,
+            imgUrl: json.imgUrl,
+          },
           votes: app.votes.map(
             (vote) =>
               ({ ...vote, review: JSON.parse(vote.feedback) }) as ResolvedVote
           ),
-        }))
-        .filter(
-          (app) =>
-            app.id !==
-            'choice-0x850cb4905526aed514f256ebc7ba01790295704f7652d22f87ef91a67507e2a0'
-        ),
+        };
+      }),
     } as AppRound;
 
     return resolved;
   } catch (error) {
+    console.error(error);
     throw new Error('Failed to fetch application round');
   }
 };

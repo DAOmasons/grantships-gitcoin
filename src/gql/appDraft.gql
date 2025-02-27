@@ -8,6 +8,7 @@ fragment Draft on AppDraft {
   ipfsHash
   version
   isHistory
+  approvedRounds
 }
 
 query applicationDrafts($chainId: Int!) {

@@ -169,12 +169,10 @@ export const ApplicationFooter = ({
 
     const choiceData = encodeAbiParameters(
       parseAbiParameters('bytes, (uint256, string)'),
-      [applicantAddress, [1n, contentHash]]
+      [applicantAddress, [999999n, contentHash]]
     );
 
     const topicIdRoot = topicId.split('-')[0];
-
-    console.log('topicIdRoot', topicIdRoot);
 
     tx({
       writeContractParams: {

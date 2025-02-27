@@ -9,8 +9,9 @@ fragment Vote on GGApplicationVote {
 fragment Application on GGApplication {
   id
   registrar
-  application
-  validApplication
+  application {
+    ...Draft
+  }
   amountReviewed
   postedBy
   lastUpdated
