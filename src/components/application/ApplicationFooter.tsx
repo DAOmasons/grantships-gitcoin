@@ -6,6 +6,7 @@ import {
   Stack,
   Text,
   Textarea,
+  Tooltip,
 } from '@mantine/core';
 import { Role } from '../../constants/enum';
 import { useState } from 'react';
@@ -24,6 +25,7 @@ import { HATS } from '../../constants/setup';
 import { TxButton } from '../TxButton';
 import { FeedFactory } from '../feed/FeedFactory';
 import { IconCheck, IconMessage, IconX } from '@tabler/icons-react';
+import { AdminSwitcher } from './AdminSwitcher';
 
 export const ApplicationFooter = ({
   topicId,
@@ -33,6 +35,7 @@ export const ApplicationFooter = ({
   applicantAddress: string;
 }) => {
   const [commentText, setCommentText] = useState('');
+  const [isAdminComment, setIsAdminComment] = useState(false);
   const { address } = useAccount();
   const { userData } = useUserData();
   const { data: feedItems, refetch } = useQuery({
@@ -122,10 +125,15 @@ export const ApplicationFooter = ({
         onPollSuccess() {
           refetch();
           setCommentText('');
+          setIsAdminComment(false);
         },
       },
     });
   };
+
+  const approveApplication = async () => {};
+
+  const rejectApplication = async () => {};
 
   return (
     <Box>
@@ -142,6 +150,8 @@ export const ApplicationFooter = ({
           commentText={commentText}
           setCommentText={setCommentText}
           handlePostComment={handlePostComment}
+          isComment={isAdminComment}
+          setIsComment={setIsAdminComment}
         />
       )}
       {(isShipOperator || userData?.isJudge) && (
@@ -163,53 +173,5 @@ export const ApplicationFooter = ({
         </>
       )}
     </Box>
-  );
-};
-
-const AdminSwitcher = ({
-  commentText,
-  setCommentText,
-  handlePostComment,
-}: {
-  commentText: string;
-  setCommentText: (e: string) => void;
-  handlePostComment: () => void;
-}) => {
-  const [isComment, setIsComment] = useState(false);
-
-  if (isComment) {
-    return (
-      <>
-        <Textarea
-          placeholder="Write a comment..."
-          mt="lg"
-          minRows={3}
-          maxRows={8}
-          autosize
-          value={commentText}
-          onChange={(e) => setCommentText(e.currentTarget.value)}
-        />
-        <Group justify="center" mt="lg">
-          <Button variant="secondary" onClick={() => setIsComment(false)}>
-            Cancel
-          </Button>
-          <TxButton onClick={() => handlePostComment()}>Post Comment</TxButton>
-        </Group>
-      </>
-    );
-  }
-
-  return (
-    <Group justify="center" mt="lg">
-      <ActionIcon onClick={() => setIsComment(true)}>
-        <IconMessage />
-      </ActionIcon>
-      <ActionIcon>
-        <IconCheck />
-      </ActionIcon>
-      <ActionIcon>
-        <IconX />
-      </ActionIcon>
-    </Group>
   );
 };

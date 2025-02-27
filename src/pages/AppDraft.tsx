@@ -197,7 +197,7 @@ export const AppDraft = () => {
       </Group>
       <Stack gap="lg" mb={100}>
         <Group mb="sm" justify="space-between">
-          <Title fz="h3" order={3}>
+          <Title order={3} fz={32} fw={600}>
             Round Info
           </Title>
           {userIsApplicant ? (
@@ -232,7 +232,6 @@ export const AppDraft = () => {
                 <Text fw={600} mb={10}>
                   Name
                 </Text>
-
                 <Card variant="inner">
                   <Text c="subtle" lineClamp={1}>
                     {draft?.parsedJSON.name}
@@ -317,7 +316,7 @@ export const AppDraft = () => {
           id={'roundHistory'}
           form={form}
         />
-        <Title fz="h4" order={3} mt="lg">
+        <Title fz={32} fw={600} order={3} mt={32}>
           Round Operator and Team
         </Title>
         <ResponseBlock
@@ -341,7 +340,7 @@ export const AppDraft = () => {
           id={'advisors'}
           form={form}
         />
-        <Title fz="h4" order={3} mt="lg">
+        <Title fz={32} fw={600} order={3} mt={32}>
           Round Strategy
         </Title>
         <ResponseBlock
@@ -365,7 +364,7 @@ export const AppDraft = () => {
           id={'marketingPlanURL'}
           form={form}
         />
-        <Title fz="h4" order={3} mt="lg">
+        <Title fz={32} fw={600} order={3} mt={32}>
           Impact & Intents
         </Title>
         <ResponseBlock
@@ -383,7 +382,7 @@ export const AppDraft = () => {
           form={form}
         />
 
-        <Title fz="h4" order={3} mt="lg">
+        <Title fz={32} fw={600} order={3} mt={32}>
           Community Engagement
         </Title>
         <ResponseBlock
@@ -407,7 +406,7 @@ export const AppDraft = () => {
           id={'Matching Pool Impact'}
           form={form}
         />
-        <Title fz="h4" order={3} mt="lg">
+        <Title fz={32} fw={600} order={3} mt={32}>
           Conclusion
         </Title>
         <ResponseBlock
