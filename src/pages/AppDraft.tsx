@@ -24,7 +24,7 @@ import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useEffect, useState } from 'react';
 import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
-import { IconPencil } from '@tabler/icons-react';
+import { IconPencil, IconPencilMinus } from '@tabler/icons-react';
 import { useAccount } from 'wagmi';
 import { pinJSONToIPFS } from '../utils/ipfs';
 import { TAG } from '../constants/tags';
@@ -196,25 +196,30 @@ export const AppDraft = () => {
         />
       </Group>
       <Stack gap="lg" mb={100}>
-        <Group mb="sm" justify="space-between">
+        <Box>
+          <Group mb="sm" justify="end">
+            {userIsApplicant ? (
+              <Button onClick={() => setIsEdit(!isEdit)} variant="action">
+                <Group gap={8}>
+                  <IconPencilMinus />
+                  Edit
+                </Group>
+              </Button>
+            ) : (
+              <Tooltip label="Only applicant address wallet can edit this application">
+                <Group gap={8} style={{ cursor: 'not-allowed' }} p={4}>
+                  <IconPencilMinus color={colors.dark[4]} />
+                  <Text c={colors.dark[4]} fw={600} fz={'sm'}>
+                    Edit
+                  </Text>
+                </Group>
+              </Tooltip>
+            )}
+          </Group>
           <Title order={3} fz={32} fw={600}>
             Round Info
           </Title>
-          {userIsApplicant ? (
-            <ActionIcon onClick={() => setIsEdit(!isEdit)}>
-              <IconPencil />
-            </ActionIcon>
-          ) : (
-            <Tooltip label="Only applicant address wallet can edit this application">
-              <IconPencil
-                color={colors.dark[5]}
-                style={{
-                  cursor: 'not-allowed',
-                }}
-              />
-            </Tooltip>
-          )}
-        </Group>
+        </Box>
         <Flex wrap="nowrap" gap="sm" direction={isTablet ? 'column' : 'row'}>
           <Box w={isTablet ? '100%' : '50%'}>
             {isEdit ? (
