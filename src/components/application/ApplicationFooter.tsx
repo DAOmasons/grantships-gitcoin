@@ -1,14 +1,5 @@
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Group,
-  Stack,
-  Text,
-  Textarea,
-  Tooltip,
-} from '@mantine/core';
-import { Role } from '../../constants/enum';
+import { Box, Group, Stack, Text, Textarea } from '@mantine/core';
+import { ContestStatus, Role } from '../../constants/enum';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getTopicFeed } from '../../queries/feedQuery';
@@ -17,25 +8,29 @@ import { useTx } from '../../contexts/useTx';
 import { useUserData } from '../../hooks/useUserData';
 import { ADDR } from '../../constants/addresses';
 import SayethAbi from '../../abi/Sayeth.json';
+import HalChoicesABI from '../../abi/HALChoices.json';
 import { useAccount } from 'wagmi';
 import { notifications } from '@mantine/notifications';
 import { commentSchema } from '../../schemas/feed';
-import { encodeAbiParameters, parseAbiParameters } from 'viem';
+import { encodeAbiParameters, isAddress, parseAbiParameters } from 'viem';
 import { HATS } from '../../constants/setup';
 import { TxButton } from '../TxButton';
 import { FeedFactory } from '../feed/FeedFactory';
-import { IconCheck, IconMessage, IconX } from '@tabler/icons-react';
 import { AdminSwitcher } from './AdminSwitcher';
+import { useChews } from '../../hooks/useChews';
 
 export const ApplicationFooter = ({
   topicId,
   applicantAddress,
+  contentHash,
 }: {
   topicId: string;
   applicantAddress: string;
+  contentHash: string;
 }) => {
   const [commentText, setCommentText] = useState('');
   const [isAdminComment, setIsAdminComment] = useState(false);
+  const { applicationRound } = useChews();
   const { address } = useAccount();
   const { userData } = useUserData();
   const { data: feedItems, refetch } = useQuery({
@@ -131,9 +126,74 @@ export const ApplicationFooter = ({
     });
   };
 
-  const approveApplication = async () => {};
+  const approveApplication = async () => {
+    const choicesAddress = applicationRound?.choicesParams_id;
 
-  const rejectApplication = async () => {};
+    if (!applicationRound || !choicesAddress) {
+      notifications.show({
+        title: 'Error',
+        message: 'Rubric voting round not found',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (
+      Number(applicationRound.round?.contestStatus) !== ContestStatus.Populating
+    ) {
+      notifications.show({
+        title: 'Error',
+        message: 'Rubric voting round is not in Populating state',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!isAddress(applicantAddress)) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid applicant address',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!isAddress(choicesAddress)) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid choices address',
+        color: 'red',
+      });
+      return;
+    }
+
+    const choiceData = encodeAbiParameters(
+      parseAbiParameters('bytes, (uint256, string)'),
+      [applicantAddress, [1n, contentHash]]
+    );
+
+    const topicIdRoot = topicId.split('-')[0];
+
+    console.log('topicIdRoot', topicIdRoot);
+
+    tx({
+      writeContractParams: {
+        address: choicesAddress,
+        functionName: 'registerChoice',
+        abi: HalChoicesABI,
+        args: [topicIdRoot, choiceData],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          notifications.show({
+            title: 'Success',
+            message: 'Application approved',
+            color: 'green',
+          });
+        },
+      },
+    });
+  };
 
   return (
     <Box>
@@ -152,6 +212,7 @@ export const ApplicationFooter = ({
           handlePostComment={handlePostComment}
           isComment={isAdminComment}
           setIsComment={setIsAdminComment}
+          handleApprove={approveApplication}
         />
       )}
       {(isShipOperator || userData?.isJudge) && (

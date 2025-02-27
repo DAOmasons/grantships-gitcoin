@@ -1,6 +1,5 @@
 import { PageLayout } from '../layout/Page';
 import {
-  ActionIcon,
   Avatar,
   Box,
   Button,
@@ -24,7 +23,7 @@ import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useEffect, useState } from 'react';
 import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
-import { IconPencil, IconPencilMinus } from '@tabler/icons-react';
+import { IconPencilMinus } from '@tabler/icons-react';
 import { useAccount } from 'wagmi';
 import { pinJSONToIPFS } from '../utils/ipfs';
 import { TAG } from '../constants/tags';
@@ -208,8 +207,8 @@ export const AppDraft = () => {
             ) : (
               <Tooltip label="Only applicant address wallet can edit this application">
                 <Group gap={8} style={{ cursor: 'not-allowed' }} p={4}>
-                  <IconPencilMinus color={colors.dark[4]} />
-                  <Text c={colors.dark[4]} fw={600} fz={'sm'}>
+                  <IconPencilMinus color={colors.dark[5]} />
+                  <Text c={colors.dark[5]} fw={600} fz={'sm'}>
                     Edit
                   </Text>
                 </Group>
@@ -450,6 +449,7 @@ export const AppDraft = () => {
       <ApplicationFooter
         applicantAddress={draft.userAddress}
         topicId={topicId}
+        contentHash={draft.ipfsHash}
       />
     </PageLayout>
   );

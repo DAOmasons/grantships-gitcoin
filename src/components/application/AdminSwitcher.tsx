@@ -6,12 +6,14 @@ export const AdminSwitcher = ({
   commentText,
   setCommentText,
   handlePostComment,
+  handleApprove,
   isComment,
   setIsComment,
 }: {
   commentText: string;
   setCommentText: (e: string) => void;
   handlePostComment: () => void;
+  handleApprove: () => void;
   isComment: boolean;
   setIsComment: (e: boolean) => void;
 }) => {
@@ -45,7 +47,7 @@ export const AdminSwitcher = ({
         </ActionIcon>
       </Tooltip>
       <Tooltip label="Approve Application for Upcoming Round">
-        <ActionIcon>
+        <ActionIcon onClick={() => handleApprove()}>
           <IconCheck />
         </ActionIcon>
       </Tooltip>
