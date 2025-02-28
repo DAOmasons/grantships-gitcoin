@@ -23,10 +23,12 @@ export const ApplicationFooter = ({
   topicId,
   applicantAddress,
   contentHash,
+  isApproved,
 }: {
   topicId: string;
   applicantAddress: string;
   contentHash: string;
+  isApproved: boolean;
 }) => {
   const [commentText, setCommentText] = useState('');
   const [isAdminComment, setIsAdminComment] = useState(false);
@@ -188,6 +190,8 @@ export const ApplicationFooter = ({
             message: 'Application approved',
             color: 'green',
           });
+
+          refetch();
         },
       },
     });
@@ -211,6 +215,7 @@ export const ApplicationFooter = ({
           isComment={isAdminComment}
           setIsComment={setIsAdminComment}
           handleApprove={approveApplication}
+          isApproved={isApproved}
         />
       )}
       {(isShipOperator || userData?.isJudge) && (

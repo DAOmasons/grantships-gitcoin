@@ -23,10 +23,10 @@ import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useEffect, useState } from 'react';
 import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
-import { IconPencilMinus } from '@tabler/icons-react';
+import { IconCheck, IconPencilMinus } from '@tabler/icons-react';
 import { useAccount } from 'wagmi';
 import { pinJSONToIPFS } from '../utils/ipfs';
-import { TAG } from '../constants/tags';
+import { CURRENT_ROUND, TAG } from '../constants/tags';
 import { encodeAbiParameters, parseAbiParameters } from 'viem';
 import { useTx } from '../contexts/useTx';
 import SayethAbi from '../abi/Sayeth.json';
@@ -62,6 +62,8 @@ export const AppDraft = () => {
   const { form, formSchema, hasErrors } = useApplicationForm();
 
   const userIsApplicant = address === draft?.userAddress;
+
+  const isApproved = !!draft?.approvedRounds?.includes(CURRENT_ROUND);
 
   useEffect(() => {
     if (draft) {
@@ -106,8 +108,6 @@ export const AppDraft = () => {
       });
     }
   }, [draft]);
-
-  console.log('draft', draft);
 
   if (isLoading) {
     return (
@@ -217,9 +217,14 @@ export const AppDraft = () => {
               </Tooltip>
             )}
           </Group>
-          <Title order={3} fz={32} fw={600}>
-            Round Info
-          </Title>
+          <Group gap={8}>
+            <Title order={3} fz={32} fw={600}>
+              Round Info
+            </Title>
+            <Tooltip label="Admins had approved this application for Judge Voting in GG23">
+              <IconCheck color={colors.kelp[6]} />
+            </Tooltip>
+          </Group>
         </Box>
         <Flex wrap="nowrap" gap="sm" direction={isTablet ? 'column' : 'row'}>
           <Box w={isTablet ? '100%' : '50%'}>
@@ -452,6 +457,7 @@ export const AppDraft = () => {
         applicantAddress={draft.userAddress}
         topicId={topicId}
         contentHash={draft.ipfsHash}
+        isApproved={isApproved}
       />
     </PageLayout>
   );

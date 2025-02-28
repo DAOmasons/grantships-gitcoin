@@ -5,12 +5,7 @@ import {
   UserComment,
 } from '../../queries/feedQuery';
 import { FeedItemShell } from './FeedItemShell';
-import {
-  IconCheck,
-  IconPencilMinus,
-  IconPlus,
-  IconStar,
-} from '@tabler/icons-react';
+import { IconCheck, IconPencilMinus, IconPlus } from '@tabler/icons-react';
 import { TAG } from '../../constants/tags';
 import { AddressAvatar } from '../AddressAvatar';
 import { Address } from 'viem';
