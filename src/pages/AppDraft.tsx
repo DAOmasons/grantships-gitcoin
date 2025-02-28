@@ -199,15 +199,14 @@ export const AppDraft = () => {
       <Stack gap="lg" mb={100}>
         <Box>
           <Group mb="sm" justify="end">
-            {userIsApplicant ? (
-              <Button onClick={() => setIsEdit(!isEdit)} variant="action">
-                <Group gap={8}>
-                  <IconPencilMinus />
-                  Edit
-                </Group>
-              </Button>
-            ) : (
-              <Tooltip label="Only applicant address wallet can edit this application">
+            {!userIsApplicant || isApproved ? (
+              <Tooltip
+                label={
+                  isApproved
+                    ? 'Cannot edit draft after approval'
+                    : 'Only applicant address wallet can edit this application'
+                }
+              >
                 <Group gap={8} style={{ cursor: 'not-allowed' }} p={4}>
                   <IconPencilMinus color={colors.dark[5]} />
                   <Text c={colors.dark[5]} fw={600} fz={'sm'}>
@@ -215,6 +214,13 @@ export const AppDraft = () => {
                   </Text>
                 </Group>
               </Tooltip>
+            ) : (
+              <Button onClick={() => setIsEdit(!isEdit)} variant="action">
+                <Group gap={8}>
+                  <IconPencilMinus />
+                  Edit
+                </Group>
+              </Button>
             )}
           </Group>
           <Group gap={8}>
