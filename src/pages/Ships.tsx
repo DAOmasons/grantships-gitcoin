@@ -82,7 +82,7 @@ export const Ships = () => {
               key={app.id}
               justify="space-between"
               className={fxClasses.hoverCard}
-              onClick={() => navigate(`/view-application/${app.id}`)}
+              onClick={() => navigate(`/ship/${app.id}`)}
             >
               <Group>
                 <Box pos="relative">
