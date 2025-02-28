@@ -107,6 +107,8 @@ export const AppDraft = () => {
     }
   }, [draft]);
 
+  console.log('draft', draft);
+
   if (isLoading) {
     return (
       <PageLayout title="GG Round Application">
