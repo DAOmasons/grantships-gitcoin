@@ -5,7 +5,7 @@ import {
   UserComment,
 } from '../../queries/feedQuery';
 import { FeedItemShell } from './FeedItemShell';
-import { IconPlus, IconStar } from '@tabler/icons-react';
+import { IconCheck, IconPlus, IconStar } from '@tabler/icons-react';
 import { TAG } from '../../constants/tags';
 import { AddressAvatar } from '../AddressAvatar';
 import { Address } from 'viem';
@@ -40,6 +40,22 @@ export const FeedFactory = (item: FeedItemData) => {
           <AddressAvatar address={comment.userAddress as Address} size={48} />
         }
         createdAt={comment.createdAt}
+      />
+    );
+  }
+
+  if (item.postType === TAG.APPLICATION_APPROVE) {
+    const notice = item as SystemNotice;
+    return (
+      <FeedItemShell
+        title={notice.title}
+        text={`${notice.text}`}
+        graphic={
+          <Avatar size={48}>
+            <IconCheck color={colors.kelp[6]} stroke={1.5} />
+          </Avatar>
+        }
+        createdAt={notice.createdAt}
       />
     );
   }

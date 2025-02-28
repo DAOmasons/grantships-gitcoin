@@ -40,7 +40,7 @@ export const getRounds = async (): Promise<AppRound | undefined> => {
       rubric: JSON.parse(data.rubric as string) as Rubric,
       applications: data.applications.map((app) => {
         const json = JSON.parse(app.application?.json as string);
-        console.log('json', json);
+
         return {
           ...app,
           application: {
