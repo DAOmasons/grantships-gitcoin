@@ -5,6 +5,7 @@ import cardClasses from './style/card.module.css';
 import stepperClasses from './style/stepper.module.css';
 import formClasses from './style/form.module.css';
 import accordionClasses from './style/accordion.module.css';
+import tabClasses from './style/tabs.module.css';
 import { darkTheme } from '@rainbow-me/rainbowkit';
 import { Theme as RainbowKitTheme } from '@rainbow-me/rainbowkit';
 
@@ -170,6 +171,14 @@ export const theme = createTheme({
     Modal: {
       classNames: {
         content: cardClasses.modalContent,
+      },
+    },
+    Tabs: {
+      classNames: {
+        root: tabClasses.root,
+        tab: tabClasses.tab,
+        list: tabClasses.list,
+        section: tabClasses.section,
       },
     },
   },

@@ -46,10 +46,10 @@ export const JudgeDashboard = () => {
 
             return (
               <Group key={`${app.registrar}-${index}`} px={32} py={16} mb={8}>
-                <Avatar src={app.copy.imgUrl} size={56} />
+                <Avatar src={app.application.imgUrl} size={56} />
                 <Box component={Link} to={`/view-application/${app.id}`}>
                   <Text fw={600} mb={4}>
-                    {app.copy.roundName}
+                    {app.application.name}
                   </Text>
                   <Text c={'subtle'}>Last Updated Jan 1, 2025 </Text>
                 </Box>

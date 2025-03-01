@@ -13,12 +13,14 @@ import { AppDraft } from './pages/AppDraft';
 import { MyApplications } from './pages/MyApplications';
 import { About } from './pages/About';
 import { Ship } from './pages/Ship';
+import { AdminDashboard } from './pages/AdminDashboard';
 
 export const ClientRoutes = () => {
   return (
     <Routes>
       <Route path="/reviews" element={<Reviews />} />
       <Route path="/judge-dashboard" element={<JudgeDashboard />} />
+      <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/ships" element={<Ships />} />
       <Route path="/ship/:id" element={<Ship />} />
       <Route path="/about" element={<About />} />

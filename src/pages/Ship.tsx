@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { PageLayout } from '../layout/Page';
 import {
@@ -18,7 +18,7 @@ import {
 import { useChews } from '../hooks/useChews';
 import { useQuery } from '@tanstack/react-query';
 import { getApplicationMetadata } from '../queries/getMetadata';
-import { AdminIcon, JudgeIcon, ShipIcon } from '../components/RoleIcons';
+import { JudgeIcon, ShipIcon } from '../components/RoleIcons';
 import { IconArrowRight, IconInfoCircle } from '@tabler/icons-react';
 import { formatEther } from 'viem';
 import { useBreakpoints } from '../hooks/useBreakpoints';
@@ -73,7 +73,7 @@ export const Ship = () => {
       <Stack gap="lg">
         <Box>
           <Group mb="sm" gap="xxs">
-            <Title order={3} fz={32} fw={600}>
+            <Title order={3} fz="h3">
               {ship.application.name}
             </Title>
             <ShipIcon size={26} />
