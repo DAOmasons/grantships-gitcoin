@@ -11,7 +11,6 @@ import { useChews } from '../hooks/useChews';
 import { PageLayout } from '../layout/Page';
 import { Question } from '../constants/rubric';
 import { useParams } from 'react-router-dom';
-import { ResolvedApplication, ResolvedVote } from '../queries/getRounds';
 import { useQuery } from '@tanstack/react-query';
 import {
   ApplicationMetadata,
@@ -139,8 +138,6 @@ const ReviewQuestion = ({
   question: Question;
 }) => {
   const applicantResponse = applicationMetadata[question.title];
-  console.log('applicantResponse', applicantResponse);
-
   const judgeScore = reviewMetadata.scores[question.title];
 
   return (

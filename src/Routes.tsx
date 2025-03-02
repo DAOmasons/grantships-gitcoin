@@ -3,7 +3,7 @@ import { Home } from './pages/Home';
 import { Selections } from './pages/Selections';
 import { Elections } from './pages/Elections';
 import { Ships } from './pages/Ships';
-import { Reviews } from './pages/Reviews';
+// import { Reviews } from './pages/Reviews';
 import { JudgeDashboard } from './pages/JudgeDashboard';
 import { VoteApplication } from './pages/VoteApplication';
 import { Review } from './pages/ReviewApplication';
@@ -18,7 +18,6 @@ import { AdminDashboard } from './pages/AdminDashboard';
 export const ClientRoutes = () => {
   return (
     <Routes>
-      <Route path="/reviews" element={<Reviews />} />
       <Route path="/judge-dashboard" element={<JudgeDashboard />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/ships" element={<Ships />} />

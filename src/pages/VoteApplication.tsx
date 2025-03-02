@@ -168,7 +168,6 @@ export const VoteApplication = () => {
                 index={index}
                 totalSteps={RUBRIC_COPY.sections.length}
                 appCopy={metadata as ApplicationMetadata}
-                registrar={registrar}
                 handleVote={handleVote}
                 roundName={appCopy.name}
               />

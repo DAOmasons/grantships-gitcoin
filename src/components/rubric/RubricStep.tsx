@@ -25,7 +25,6 @@ export const RubricStep = ({
   setStep,
   totalSteps,
   appCopy,
-  registrar,
   handleVote,
 }: {
   section: RubricSection;
@@ -40,7 +39,6 @@ export const RubricStep = ({
   setStep: (step: number) => void;
   totalSteps?: number;
   appCopy: ApplicationMetadata;
-  registrar?: string;
   handleVote: () => void;
 }) => {
   const allQuestionsAnswered = section.questions.every(
@@ -69,7 +67,6 @@ export const RubricStep = ({
             key={question.title}
             setScores={setScores}
             appCopy={appCopy}
-            registrar={registrar}
             roundName={roundName}
           />
         ))}
