@@ -1,7 +1,12 @@
+import { z } from 'zod';
 import { submitApplicationSchema } from '../schemas/submitApplicationSchema';
 import { getIpfsJson } from '../utils/ipfs';
 
-export const getApplicationMetadata = async (ipfsHash: string) => {
+export type ApplicationMetadata = z.infer<typeof submitApplicationSchema>;
+
+export const getApplicationMetadata = async (
+  ipfsHash: string
+): Promise<ApplicationMetadata> => {
   try {
     const offchainJson = await getIpfsJson(ipfsHash);
 
@@ -15,7 +20,7 @@ export const getApplicationMetadata = async (ipfsHash: string) => {
       throw new Error('Invalid metadata');
     }
 
-    return validated.data;
+    return validated.data as ApplicationMetadata;
   } catch (error) {
     console.error(error);
 

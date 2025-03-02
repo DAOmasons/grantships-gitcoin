@@ -8,12 +8,13 @@ import {
   Textarea,
   Title,
 } from '@mantine/core';
-import { RoundApplicationContent } from '../../constants/dummyApplications';
 import { RubricSection } from '../../constants/rubric';
 import { RubricQuestion } from './RubricQuestion';
+import { ApplicationMetadata } from '../../queries/getMetadata';
 
 export const RubricStep = ({
   section,
+  roundName,
   scores,
   setScores,
   imgUrl,
@@ -28,6 +29,7 @@ export const RubricStep = ({
   handleVote,
 }: {
   section: RubricSection;
+  roundName: string;
   scores: Record<string, number>;
   setScores: (key: string, value: number) => void;
   setFeedback: (key: string, value: string) => void;
@@ -37,7 +39,7 @@ export const RubricStep = ({
   index: number;
   setStep: (step: number) => void;
   totalSteps?: number;
-  appCopy: RoundApplicationContent;
+  appCopy: ApplicationMetadata;
   registrar?: string;
   handleVote: () => void;
 }) => {
@@ -68,6 +70,7 @@ export const RubricStep = ({
             setScores={setScores}
             appCopy={appCopy}
             registrar={registrar}
+            roundName={roundName}
           />
         ))}
       </Box>

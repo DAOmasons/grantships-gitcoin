@@ -4,8 +4,9 @@ import { PageLayout } from '../layout/Page';
 import { useChews } from '../hooks/useChews';
 import { Link } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { InfoBanner } from '../components/InfoBanner';
 import { useBreakpoints } from '../hooks/useBreakpoints';
+import { ContestStatus } from '../constants/enum';
+import { secondsToLongDate } from '../utils/time';
 
 export const JudgeDashboard = () => {
   const { applicationRound, isLoadingAppRound } = useChews();
@@ -13,6 +14,9 @@ export const JudgeDashboard = () => {
   const { isMobile, isTablet } = useBreakpoints();
 
   const step = applicationRound ? applicationRound.round?.contestStatus : 0;
+
+  const canJudgesVote =
+    Number(applicationRound?.round?.contestStatus) === ContestStatus.Voting;
 
   return (
     <PageLayout title="Judge Dashboard">
@@ -45,11 +49,13 @@ export const JudgeDashboard = () => {
             return (
               <Group key={`${app.registrar}-${index}`} px={32} py={16} mb={8}>
                 <Avatar src={app.application.imgUrl} size={56} bg="white" />
-                <Box component={Link} to={`/view-draft/${app.id}`}>
+                <Box component={Link} to={`/ship/${app.id}`}>
                   <Text fw={600} mb={4}>
                     {app.application.name}
                   </Text>
-                  <Text c={'subtle'}>Last Updated Jan 1, 2025 </Text>
+                  <Text c={'subtle'}>
+                    {secondsToLongDate(app.application.lastUpdated)}
+                  </Text>
                 </Box>
                 <Stack
                   ml={isTablet ? 0 : 'auto'}
@@ -60,6 +66,7 @@ export const JudgeDashboard = () => {
                     size="xs"
                     variant={hasUserVoted ? 'secondary' : undefined}
                     component={Link}
+                    disabled={!hasUserVoted && !canJudgesVote}
                     to={
                       hasUserVoted
                         ? `/view-application/${app.id}`

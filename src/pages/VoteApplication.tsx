@@ -16,6 +16,11 @@ import {
 import ContestAbi from '../abi/Contest.json';
 import { useAccount } from 'wagmi';
 import { IconCheck } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
+import {
+  ApplicationMetadata,
+  getApplicationMetadata,
+} from '../queries/getMetadata';
 
 export const VoteApplication = () => {
   const { id } = useParams();
@@ -29,26 +34,26 @@ export const VoteApplication = () => {
 
   const { applicationRound, isLoadingAppRound, refetchAppRound } = useChews();
 
-  const currentApplication = applicationRound?.applications.find(
-    (app) => app.id === id
-  );
+  const ship = applicationRound?.applications.find((app) => app.id === id);
 
-  const hasUserVoted = currentApplication?.votes.some(
-    (vote) => vote.reviewer === address
-  );
+  const { data: metadata, isLoading: isLoadingMetadata } = useQuery({
+    queryKey: ['metadata', ship?.application.ipfsHash],
+    queryFn: () => getApplicationMetadata(ship?.application.ipfsHash as string),
+    enabled: !!ship?.application.ipfsHash,
+  });
 
-  const appCopy = currentApplication?.copy;
+  const hasUserVoted = ship?.votes.some((vote) => vote.reviewer === address);
+
+  const appCopy = ship?.application;
 
   useEffect(() => {
     if (hasUserVoted) {
-      const userVote = currentApplication?.votes.find(
-        (vote) => vote.reviewer === address
-      );
+      const userVote = ship?.votes.find((vote) => vote.reviewer === address);
       navigate(`/review/${userVote?.id}`);
     }
   }, [hasUserVoted]);
 
-  const registrar = currentApplication?.registrar;
+  const registrar = ship?.registrar;
 
   if (isLoadingAppRound) {
     return null;
@@ -115,7 +120,7 @@ export const VoteApplication = () => {
   return (
     <PageLayout title="Application Vote">
       <Stepper active={step}>
-        {applicationRound?.rubric?.sections.map((section, index) => {
+        {RUBRIC_COPY.sections.map((section, index) => {
           return (
             <Stepper.Step
               key={index}
@@ -133,9 +138,10 @@ export const VoteApplication = () => {
                 setStep={setStep}
                 index={index}
                 totalSteps={RUBRIC_COPY.sections.length}
-                appCopy={appCopy as RoundApplicationContent}
+                appCopy={metadata as ApplicationMetadata}
                 registrar={registrar}
                 handleVote={handleVote}
+                roundName={appCopy.name}
               />
             </Stepper.Step>
           );

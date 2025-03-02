@@ -1,7 +1,6 @@
 import { Box, Group, Stack, Text, Title } from '@mantine/core';
 import { useChews } from '../../hooks/useChews';
 import { IconArrowRight } from '@tabler/icons-react';
-import { Bold } from '../typography';
 import { TxButton } from '../TxButton';
 import { InfoBanner } from '../InfoBanner';
 import { useUserData } from '../../hooks/useUserData';
