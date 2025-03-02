@@ -11,7 +11,6 @@ import {
 } from '@mantine/core';
 import { Question } from '../../constants/rubric';
 import { useDisclosure } from '@mantine/hooks';
-import { useMemo } from 'react';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import { ApplicationMetadata } from '../../queries/getMetadata';
 

@@ -83,8 +83,6 @@ export const VoteApplication = () => {
       feedback,
     });
 
-    const choiceId = id?.split('-')[1];
-
     if (!applicationRound?.id) {
       console.error('applicationRound not found');
       return;
@@ -99,7 +97,7 @@ export const VoteApplication = () => {
         address: applicationRound.id as Address,
         abi: ContestAbi,
         functionName: 'vote',
-        args: [choiceId, amount, bytes],
+        args: [id, amount, bytes],
       },
       writeContractOptions: {
         onPollSuccess() {
@@ -116,6 +114,10 @@ export const VoteApplication = () => {
   const handleChangeFeedback = (key: string, value: string) => {
     setFeedback({ ...feedback, [key]: value });
   };
+
+  if (isLoadingMetadata) {
+    return null;
+  }
 
   return (
     <PageLayout title="Application Vote">
