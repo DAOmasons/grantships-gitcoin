@@ -21,7 +21,6 @@ export const RubricQuestion = ({
   imgUrl,
   appCopy,
   roundName,
-  registrar,
 }: {
   scores: Record<string, number>;
   question: Question;
@@ -29,7 +28,6 @@ export const RubricQuestion = ({
   setScores: (key: string, value: number) => void;
   appCopy: ApplicationMetadata;
   roundName: string;
-  registrar?: string;
 }) => {
   const { colors } = useMantineTheme();
   const [opened, { toggle }] = useDisclosure(false);

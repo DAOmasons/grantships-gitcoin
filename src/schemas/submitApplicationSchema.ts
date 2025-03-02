@@ -44,3 +44,22 @@ export const submitApplicationSchema = z.object({
   // Additional fields from your original schema
   autoEnroll: z.boolean(),
 });
+
+export const judgeResponseSchema = z.object({
+  scores: z.object({
+    'Identified Round Operator': z.number(),
+    'Team Members': z.number(),
+    'Mission Alignment': z.number(),
+    'Impact Assessment Plan': z.number(),
+    'Community Size and Engagement': z.number(),
+    'Matching Pool Impact': z.number(),
+  }),
+  feedback: z.object({
+    'Identified Round Operator': z.string(),
+    'Team Members': z.string(),
+    'Mission Alignment': z.string(),
+    'Impact Assessment Plan': z.string(),
+    'Community Size and Engagement': z.string(),
+    'Matching Pool Impact': z.string(),
+  }),
+});

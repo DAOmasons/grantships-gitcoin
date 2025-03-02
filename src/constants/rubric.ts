@@ -142,7 +142,7 @@ export const RUBRIC_COPY: Rubric = {
     },
     {
       sectionName: 'Community and Impact',
-      sectionLabel: 'Community and Impact',
+      sectionLabel: 'Community',
       sectionTotal: 10,
       sectionDescription: 'Select one choice for each vote (0-10 points)',
       questions: [

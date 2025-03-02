@@ -4,7 +4,6 @@ import { Stepper, Text, useMantineTheme } from '@mantine/core';
 import { RUBRIC_COPY } from '../constants/rubric';
 import { useChews } from '../hooks/useChews';
 import { useNavigate, useParams } from 'react-router-dom';
-import { RoundApplicationContent } from '../constants/dummyApplications';
 import { RubricStep } from '../components/rubric/RubricStep';
 import { useTx } from '../contexts/useTx';
 import {
@@ -21,6 +20,8 @@ import {
   ApplicationMetadata,
   getApplicationMetadata,
 } from '../queries/getMetadata';
+import { judgeResponseSchema } from '../schemas/submitApplicationSchema';
+import { notifications } from '@mantine/notifications';
 
 export const VoteApplication = () => {
   const { id } = useParams();
@@ -78,18 +79,33 @@ export const VoteApplication = () => {
     const amount =
       parseEther(((totalScore / maxScore) * 100).toString()) / 100n;
 
-    const metadata = JSON.stringify({
+    const metadata = {
       scores,
       feedback,
-    });
+    };
+
+    const validated = judgeResponseSchema.safeParse(metadata);
+
+    if (!validated.success) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid feedback data',
+        color: 'red',
+      });
+      return;
+    }
 
     if (!applicationRound?.id) {
-      console.error('applicationRound not found');
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid application round',
+        color: 'red',
+      });
       return;
     }
 
     const bytes = encodeAbiParameters(parseAbiParameters('(uint256, string)'), [
-      [6969420n, metadata],
+      [1n, JSON.stringify(metadata)],
     ]);
 
     tx({
