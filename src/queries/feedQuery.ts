@@ -43,6 +43,44 @@ const resolveAppPost = (feedItem: FItemFragment): SystemNotice => {
   };
 };
 
+const resolveEditPost = (feedItem: FItemFragment): SystemNotice => {
+  if (!feedItem.json) {
+    throw new Error('Invalid system notice data');
+  }
+  const valid = systemNoticeSchema.safeParse(JSON.parse(feedItem.json));
+
+  if (!valid.success) {
+    throw new Error('Invalid system notice data');
+  }
+
+  return {
+    id: feedItem.id,
+    title: valid.data.title,
+    text: valid.data.body,
+    createdAt: feedItem.createdAt,
+    postType: feedItem.postType,
+  };
+};
+
+const resolveAppApprove = (feedItem: FItemFragment): SystemNotice => {
+  if (!feedItem.json) {
+    throw new Error('Invalid system notice data');
+  }
+  const valid = systemNoticeSchema.safeParse(JSON.parse(feedItem.json));
+
+  if (!valid.success) {
+    throw new Error('Invalid system notice data');
+  }
+
+  return {
+    id: feedItem.id,
+    title: valid.data.title,
+    text: valid.data.body,
+    createdAt: feedItem.createdAt,
+    postType: feedItem.postType,
+  };
+};
+
 const resolveAppComment = (feedItem: FItemFragment): UserComment => {
   if (!feedItem.json) {
     throw new Error('Invalid comment data');
@@ -68,8 +106,16 @@ const resolveFeedData = async (item: FItemFragment) => {
   if (item.postType === TAG.APPLICATION_POST) {
     return resolveAppPost(item);
   }
+
+  if (item.postType === TAG.APPLICATION_EDIT) {
+    return resolveEditPost(item);
+  }
+
   if (item.postType === TAG.APPLICATION_COMMENT) {
     return resolveAppComment(item);
+  }
+  if (item.postType === TAG.APPLICATION_APPROVE) {
+    return resolveAppApprove(item);
   }
   return null;
 };

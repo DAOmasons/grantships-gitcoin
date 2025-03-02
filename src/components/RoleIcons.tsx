@@ -17,7 +17,7 @@ export const JudgeIcon = (props: IconProps) => {
   const { colors } = useMantineTheme();
   return (
     <Tooltip label={roleCopy.judge}>
-      <IconGavel color={colors.kelp[6]} stroke={1.2} size={24} {...props} />;
+      <IconGavel color={colors.kelp[6]} stroke={1.2} size={24} {...props} />
     </Tooltip>
   );
 };

@@ -1,6 +1,5 @@
 import { PageLayout } from '../layout/Page';
 import {
-  ActionIcon,
   Avatar,
   Box,
   Button,
@@ -24,10 +23,10 @@ import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useEffect, useState } from 'react';
 import { useApplicationForm } from '../hooks/formHooks/useApplicationForm';
-import { IconPencil } from '@tabler/icons-react';
+import { IconCheck, IconPencilMinus } from '@tabler/icons-react';
 import { useAccount } from 'wagmi';
 import { pinJSONToIPFS } from '../utils/ipfs';
-import { TAG } from '../constants/tags';
+import { CURRENT_ROUND, TAG } from '../constants/tags';
 import { encodeAbiParameters, parseAbiParameters } from 'viem';
 import { useTx } from '../contexts/useTx';
 import SayethAbi from '../abi/Sayeth.json';
@@ -36,7 +35,7 @@ import {
   ResponseBlock,
   ResponseLink,
 } from '../components/application/ResponseBlock';
-import { ApplicationTopicFeed } from '../components/feed/TopicFeed';
+import { ApplicationFooter } from '../components/application/ApplicationFooter';
 
 export const AppDraft = () => {
   const { id } = useParams();
@@ -63,6 +62,8 @@ export const AppDraft = () => {
   const { form, formSchema, hasErrors } = useApplicationForm();
 
   const userIsApplicant = address === draft?.userAddress;
+
+  const isApproved = !!draft?.approvedRounds?.includes(CURRENT_ROUND);
 
   useEffect(() => {
     if (draft) {
@@ -196,25 +197,41 @@ export const AppDraft = () => {
         />
       </Group>
       <Stack gap="lg" mb={100}>
-        <Group mb="sm" justify="space-between">
-          <Title fz="h3" order={3}>
-            Round Info
-          </Title>
-          {userIsApplicant ? (
-            <ActionIcon onClick={() => setIsEdit(!isEdit)}>
-              <IconPencil />
-            </ActionIcon>
-          ) : (
-            <Tooltip label="Only applicant address wallet can edit this application">
-              <IconPencil
-                color={colors.dark[5]}
-                style={{
-                  cursor: 'not-allowed',
-                }}
-              />
+        <Box>
+          <Group mb="sm" justify="end">
+            {!userIsApplicant || isApproved ? (
+              <Tooltip
+                label={
+                  isApproved
+                    ? 'Cannot edit draft after approval'
+                    : 'Only applicant address wallet can edit this application'
+                }
+              >
+                <Group gap={8} style={{ cursor: 'not-allowed' }} p={4}>
+                  <IconPencilMinus color={colors.dark[5]} />
+                  <Text c={colors.dark[5]} fw={600} fz={'sm'}>
+                    Edit
+                  </Text>
+                </Group>
+              </Tooltip>
+            ) : (
+              <Button onClick={() => setIsEdit(!isEdit)} variant="action">
+                <Group gap={8}>
+                  <IconPencilMinus />
+                  Edit
+                </Group>
+              </Button>
+            )}
+          </Group>
+          <Group gap={8}>
+            <Title order={3} fz={32} fw={600}>
+              Round Info
+            </Title>
+            <Tooltip label="Admins had approved this application for Judge Voting in GG23">
+              <IconCheck color={colors.kelp[6]} />
             </Tooltip>
-          )}
-        </Group>
+          </Group>
+        </Box>
         <Flex wrap="nowrap" gap="sm" direction={isTablet ? 'column' : 'row'}>
           <Box w={isTablet ? '100%' : '50%'}>
             {isEdit ? (
@@ -232,7 +249,6 @@ export const AppDraft = () => {
                 <Text fw={600} mb={10}>
                   Name
                 </Text>
-
                 <Card variant="inner">
                   <Text c="subtle" lineClamp={1}>
                     {draft?.parsedJSON.name}
@@ -317,7 +333,7 @@ export const AppDraft = () => {
           id={'roundHistory'}
           form={form}
         />
-        <Title fz="h4" order={3} mt="lg">
+        <Title fz={32} fw={600} order={3} mt={32}>
           Round Operator and Team
         </Title>
         <ResponseBlock
@@ -341,7 +357,7 @@ export const AppDraft = () => {
           id={'advisors'}
           form={form}
         />
-        <Title fz="h4" order={3} mt="lg">
+        <Title fz={32} fw={600} order={3} mt={32}>
           Round Strategy
         </Title>
         <ResponseBlock
@@ -365,7 +381,7 @@ export const AppDraft = () => {
           id={'marketingPlanURL'}
           form={form}
         />
-        <Title fz="h4" order={3} mt="lg">
+        <Title fz={32} fw={600} order={3} mt={32}>
           Impact & Intents
         </Title>
         <ResponseBlock
@@ -383,7 +399,7 @@ export const AppDraft = () => {
           form={form}
         />
 
-        <Title fz="h4" order={3} mt="lg">
+        <Title fz={32} fw={600} order={3} mt={32}>
           Community Engagement
         </Title>
         <ResponseBlock
@@ -407,7 +423,7 @@ export const AppDraft = () => {
           id={'Matching Pool Impact'}
           form={form}
         />
-        <Title fz="h4" order={3} mt="lg">
+        <Title fz={32} fw={600} order={3} mt={32}>
           Conclusion
         </Title>
         <ResponseBlock
@@ -443,10 +459,11 @@ export const AppDraft = () => {
         </Group>
       )}
       <Divider mb="lg" />
-      <ApplicationTopicFeed
+      <ApplicationFooter
         applicantAddress={draft.userAddress}
         topicId={topicId}
-        title="History & Comments"
+        contentHash={draft.ipfsHash}
+        isApproved={isApproved}
       />
     </PageLayout>
   );

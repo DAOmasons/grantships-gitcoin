@@ -1,0 +1,33 @@
+.root {
+  /* background-color: red; */
+}
+
+.list {
+  /* border-color: red;
+
+  &[data-variant='active'] {
+    border-color: blue;
+  } */
+  &::before {
+    border-bottom: 1px solid var(--mantine-color-dark-6);
+  }
+}
+
+.tab {
+  border-bottom: 1px solid var(--mantine-color-dark-6);
+  color: var(--mantine-color-dark-3);
+
+  &[data-active='true'] {
+    color: var(--mantine-color-dark-1);
+
+    border-bottom: 1px solid var(--mantine-color-dark-4);
+    &:hover {
+      border-bottom: 1px solid var(--mantine-color-dark-4);
+    }
+  }
+  &:hover {
+    border-bottom: 1px solid var(--mantine-color-dark-5);
+  }
+}
+.section {
+}

@@ -9,8 +9,9 @@ fragment Vote on GGApplicationVote {
 fragment Application on GGApplication {
   id
   registrar
-  application
-  validApplication
+  application {
+    ...Draft
+  }
   amountReviewed
   postedBy
   lastUpdated
@@ -24,6 +25,9 @@ query getApplicationRound($id: String!) {
   GGApplicationRound_by_pk(id: $id) {
     id
     createdAt
+    round {
+      contestStatus
+    }
     votesParams_id
     choicesParams_id
     postedBy

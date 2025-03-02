@@ -9,13 +9,10 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { RoundApplicationContent } from '../../constants/dummyApplications';
 import { Question } from '../../constants/rubric';
 import { useDisclosure } from '@mantine/hooks';
-import { useMemo } from 'react';
-import { AddressAvatar } from '../AddressAvatar';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
-import { Address } from 'viem';
+import { ApplicationMetadata } from '../../queries/getMetadata';
 
 export const RubricQuestion = ({
   question,
@@ -23,23 +20,19 @@ export const RubricQuestion = ({
   scores,
   imgUrl,
   appCopy,
-  registrar,
+  roundName,
 }: {
   scores: Record<string, number>;
   question: Question;
   imgUrl: string;
   setScores: (key: string, value: number) => void;
-  appCopy: RoundApplicationContent;
-  registrar?: string;
+  appCopy: ApplicationMetadata;
+  roundName: string;
 }) => {
   const { colors } = useMantineTheme();
   const [opened, { toggle }] = useDisclosure(false);
 
-  const applicantResponse = useMemo(() => {
-    return appCopy.responses.find(
-      (response) => response.title === question.title
-    );
-  }, [appCopy, question.title]);
+  const applicantResponse = appCopy[question.title];
 
   return (
     <Box mb="xxl">
@@ -74,9 +67,9 @@ export const RubricQuestion = ({
         <Text fz="lg" c={'subtle'}>
           Response from
         </Text>
-        <Avatar src={imgUrl} size={24} />
+        <Avatar src={imgUrl} size={24} bg="white" />
         <Text fz="lg" c={'subtle'}>
-          {appCopy.roundName}
+          {roundName}
         </Text>
         <Group gap={4} style={{ cursor: 'pointer' }} onClick={() => toggle()}>
           <Text c={'subtle'} fz="lg" td="underline" fw={500}>
@@ -87,7 +80,7 @@ export const RubricQuestion = ({
       </Group>
       <Collapse in={opened}>
         <Card variant="inner" mt={'md'} bg={colors.dark[6]}>
-          <Text c={colors.dark[2]}>{applicantResponse?.response}</Text>
+          <Text c={colors.dark[2]}>{applicantResponse}</Text>
         </Card>
       </Collapse>
     </Box>

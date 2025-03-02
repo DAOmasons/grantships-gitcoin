@@ -59,7 +59,6 @@ export const deployRubricVoting = async () => {
         MODULE_TAG.RUBRIC_VOTES,
         MODULE_TAG.EMPTY_POINTS,
         MODULE_TAG.HAL,
-
         MODULE_TAG.EMPTY_EXECUTION,
       ],
       [votesArgs, pointsArgs, choicesArgs, executeArgs],
@@ -68,7 +67,7 @@ export const deployRubricVoting = async () => {
 
   const content = JSON.stringify(RUBRIC_COPY);
   const protocol = 6969420n;
-  const TAG_PREFIX = 'TEST_GG_APPLICATION_REVIEW';
+  const TAG_PREFIX = 'GG_APPLICATION_JUDGE_VOTE';
   const nonce = 1;
 
   const filterTag = `${TAG_PREFIX}_${nonce}`;

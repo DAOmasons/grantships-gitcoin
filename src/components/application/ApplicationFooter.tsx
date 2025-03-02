@@ -1,47 +1,38 @@
-import {
-  Box,
-  Card,
-  Group,
-  Stack,
-  Text,
-  Textarea,
-  useMantineTheme,
-} from '@mantine/core';
-import { IconStar } from '@tabler/icons-react';
-import { Role } from '../../constants/enum';
-import { ReactNode, useState } from 'react';
-import { RoleIcon } from '../RoleIcons';
+import { Box, Group, Stack, Text, Textarea } from '@mantine/core';
+import { ContestStatus, Role } from '../../constants/enum';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import {
-  FeedItemData,
-  getTopicFeed,
-  SystemNotice,
-  UserComment,
-} from '../../queries/feedQuery';
+import { getTopicFeed } from '../../queries/feedQuery';
 import { TAG } from '../../constants/tags';
-import { secondsToLongDate } from '../../utils/time';
 import { useTx } from '../../contexts/useTx';
 import { useUserData } from '../../hooks/useUserData';
 import { ADDR } from '../../constants/addresses';
 import SayethAbi from '../../abi/Sayeth.json';
+import HalChoicesABI from '../../abi/HALChoices.json';
 import { useAccount } from 'wagmi';
 import { notifications } from '@mantine/notifications';
 import { commentSchema } from '../../schemas/feed';
-import { Address, encodeAbiParameters, parseAbiParameters } from 'viem';
+import { encodeAbiParameters, isAddress, parseAbiParameters } from 'viem';
 import { HATS } from '../../constants/setup';
 import { TxButton } from '../TxButton';
-import { AddressAvatar } from '../AddressAvatar';
+import { FeedFactory } from '../feed/FeedFactory';
+import { AdminSwitcher } from './AdminSwitcher';
+import { useChews } from '../../hooks/useChews';
 
-export const ApplicationTopicFeed = ({
+export const ApplicationFooter = ({
   topicId,
-  title,
   applicantAddress,
+  contentHash,
+  isApproved,
 }: {
   topicId: string;
-  title: string;
   applicantAddress: string;
+  contentHash: string;
+  isApproved: boolean;
 }) => {
   const [commentText, setCommentText] = useState('');
+  const [isAdminComment, setIsAdminComment] = useState(false);
+  const { applicationRound } = useChews();
   const { address } = useAccount();
   const { userData } = useUserData();
   const { data: feedItems, refetch } = useQuery({
@@ -120,11 +111,6 @@ export const ApplicationTopicFeed = ({
         ? ADDR.HATS_REFERRER
         : ADDR.REFERRER;
 
-    console.log('bytes', bytes);
-
-    console.log('tag', tag);
-    console.log('referrer', referrer);
-
     tx({
       writeContractParams: {
         functionName: 'sayeth',
@@ -136,24 +122,103 @@ export const ApplicationTopicFeed = ({
         onPollSuccess() {
           refetch();
           setCommentText('');
+          setIsAdminComment(false);
         },
       },
     });
   };
 
-  const canComment = userData?.isAdmin || userData?.isJudge || isShipOperator;
+  const approveApplication = async () => {
+    const choicesAddress = applicationRound?.choicesParams_id;
+
+    if (!applicationRound || !choicesAddress) {
+      notifications.show({
+        title: 'Error',
+        message: 'Rubric voting round not found',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (
+      Number(applicationRound.round?.contestStatus) !== ContestStatus.Populating
+    ) {
+      notifications.show({
+        title: 'Error',
+        message: 'Rubric voting round is not in Populating state',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!isAddress(applicantAddress)) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid applicant address',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!isAddress(choicesAddress)) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid choices address',
+        color: 'red',
+      });
+      return;
+    }
+
+    const choiceData = encodeAbiParameters(
+      parseAbiParameters('bytes, (uint256, string)'),
+      [applicantAddress, [999999n, contentHash]]
+    );
+
+    const topicIdRoot = topicId.split('-')[0];
+
+    tx({
+      writeContractParams: {
+        address: choicesAddress,
+        functionName: 'registerChoice',
+        abi: HalChoicesABI,
+        args: [topicIdRoot, choiceData],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          notifications.show({
+            title: 'Success',
+            message: 'Application approved',
+            color: 'green',
+          });
+
+          refetch();
+        },
+      },
+    });
+  };
 
   return (
     <Box>
       <Text fz="lg" fw="600" c="highlight" mb="xl">
-        {title}
+        History & Comments
       </Text>
       <Stack gap="lg" mb={72}>
         {feedItems?.map((item) => {
           return <FeedFactory key={item.id} {...item} />;
         })}
       </Stack>
-      {canComment && (
+      {userData?.isAdmin && (
+        <AdminSwitcher
+          commentText={commentText}
+          setCommentText={setCommentText}
+          handlePostComment={handlePostComment}
+          isComment={isAdminComment}
+          setIsComment={setIsAdminComment}
+          handleApprove={approveApplication}
+          isApproved={isApproved}
+        />
+      )}
+      {(isShipOperator || userData?.isJudge) && (
         <>
           <Textarea
             placeholder="Write a comment..."
@@ -173,71 +238,4 @@ export const ApplicationTopicFeed = ({
       )}
     </Box>
   );
-};
-
-const FeedItemShell = ({
-  title,
-  text,
-  role,
-  graphic,
-  createdAt,
-}: {
-  title: string;
-  text: string;
-  role?: Role;
-  graphic: ReactNode;
-  createdAt: number;
-}) => {
-  return (
-    <Box>
-      <Group mb="sm" justify="space-between">
-        <Group gap="sm">
-          <Box w={40} h={40}>
-            {graphic}
-          </Box>
-          <Text fz="lg" c="highlight" fw="600">
-            {title}
-          </Text>
-          {role && <RoleIcon iconRole={role} />}
-        </Group>
-        <Text c="subtle" fz="sm">
-          {secondsToLongDate(createdAt)}
-        </Text>
-      </Group>
-      <Card variant="comment">
-        <Text className="ws-pre-wrap">{text}</Text>
-      </Card>
-    </Box>
-  );
-};
-
-export const FeedFactory = (item: FeedItemData) => {
-  const { colors } = useMantineTheme();
-  if (item.postType === TAG.APPLICATION_POST) {
-    const notice = item as SystemNotice;
-
-    return (
-      <FeedItemShell
-        title={notice.title}
-        text={notice.text}
-        graphic={<IconStar color={colors.purple[6]} stroke={1.2} size={40} />}
-        createdAt={notice.createdAt}
-      />
-    );
-  }
-  if (item.postType === TAG.APPLICATION_COMMENT) {
-    const comment = item as UserComment;
-    return (
-      <FeedItemShell
-        title={comment.title}
-        text={comment.text}
-        role={comment.roleType}
-        graphic={
-          <AddressAvatar address={comment.userAddress as Address} size={40} />
-        }
-        createdAt={comment.createdAt}
-      />
-    );
-  }
-  return null;
 };

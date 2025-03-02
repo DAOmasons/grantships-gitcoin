@@ -11,7 +11,13 @@ import { useChews } from '../hooks/useChews';
 import { PageLayout } from '../layout/Page';
 import { Question } from '../constants/rubric';
 import { useParams } from 'react-router-dom';
-import { ResolvedApplication, ResolvedVote } from '../queries/getRounds';
+import { useQuery } from '@tanstack/react-query';
+import {
+  ApplicationMetadata,
+  getApplicationMetadata,
+  getReviewMetadata,
+  JudgeReviewMetadata,
+} from '../queries/getMetadata';
 
 export const Review = () => {
   const { applicationRound, isLoadingAppRound } = useChews();
@@ -25,12 +31,27 @@ export const Review = () => {
   const reviewerId = fragments?.[2];
 
   const selectedApplication = applicationRound?.applications.find(
-    (app) => app.id === `choice-${choiceId}`
+    (app) => app.id === choiceId
   );
 
   const review = selectedApplication?.votes.find(
     (vote) => vote.reviewer === reviewerId
   );
+
+  const { data: reviewMetadata } = useQuery({
+    queryKey: ['reviewMetadata', review?.feedback],
+    queryFn: () => getReviewMetadata(review?.feedback as string),
+    enabled: !!review?.feedback,
+  });
+
+  const { data: applicationMetadata } = useQuery({
+    queryKey: ['metadata', selectedApplication?.application.ipfsHash],
+    queryFn: () =>
+      getApplicationMetadata(
+        selectedApplication?.application.ipfsHash as string
+      ),
+    enabled: !!selectedApplication?.application.ipfsHash,
+  });
 
   if (isLoadingAppRound) {
     return null;
@@ -60,12 +81,17 @@ export const Review = () => {
     );
   }
 
+  if (!reviewMetadata || !applicationMetadata) {
+    return null;
+  }
+
   return (
     <PageLayout title="Review">
       {applicationRound.rubric.sections.map((section) => {
-        const judgeReview = review.review.feedback[section.sectionName];
+        const judgeReview = reviewMetadata.feedback[section.sectionName];
+
         return (
-          <Box key={section.sectionLabel} mb={120}>
+          <Box key={section.sectionLabel}>
             <Title fz={'h3'} order={3} c={'highlight'} mb="sm">
               {section.sectionName}
             </Title>
@@ -75,8 +101,8 @@ export const Review = () => {
                   <ReviewQuestion
                     key={question.title}
                     question={question}
-                    application={selectedApplication}
-                    review={review}
+                    applicationMetadata={applicationMetadata}
+                    reviewMetadata={reviewMetadata}
                   />
                 );
               })}
@@ -98,24 +124,34 @@ export const Review = () => {
           </Box>
         );
       })}
+      <Box mx="md" mt="lg" mb={120}>
+        <Text fz="lg" fw={600} mb="md">
+          Closing Comment
+        </Text>
+        <Card
+          variant="inner"
+          style={{
+            border: `1px solid ${colors.dark[2]}`,
+          }}
+        >
+          <Text>{reviewMetadata.feedback['Closing Comment']}</Text>
+        </Card>
+      </Box>
     </PageLayout>
   );
 };
 
 const ReviewQuestion = ({
-  application,
-  review,
+  reviewMetadata,
+  applicationMetadata,
   question,
 }: {
-  application: ResolvedApplication;
-  review: ResolvedVote;
+  applicationMetadata: ApplicationMetadata;
+  reviewMetadata: JudgeReviewMetadata;
   question: Question;
 }) => {
-  const applicantResponse = application.copy.responses.find(
-    (res) => res.title === question.title
-  );
-
-  const judgeScore = review.review.scores[question.title];
+  const applicantResponse = applicationMetadata[question.title];
+  const judgeScore = reviewMetadata.scores[question.title];
 
   return (
     <Box>
@@ -123,7 +159,7 @@ const ReviewQuestion = ({
         {question.title}
       </Text>
       <Card variant="inner" mb="md">
-        <Text c="subtle">{applicantResponse?.response}</Text>
+        <Text c="subtle">{applicantResponse}</Text>
       </Card>
       <Box mb="xxl">
         {question.options.map((option) => {

@@ -1,5 +1,6 @@
 fragment Draft on AppDraft {
   id
+  rootId
   tag
   userAddress
   lastUpdated
@@ -8,6 +9,7 @@ fragment Draft on AppDraft {
   ipfsHash
   version
   isHistory
+  approvedRounds
 }
 
 query applicationDrafts($chainId: Int!) {
