@@ -32,6 +32,7 @@ import { judgeResponseSchema } from '../schemas/submitApplicationSchema';
 import { notifications } from '@mantine/notifications';
 import { pinJSONToIPFS } from '../utils/ipfs';
 import { useBreakpoints } from '../hooks/useBreakpoints';
+import { InfoBanner } from '../components/InfoBanner';
 
 export const VoteApplication = () => {
   const { id } = useParams();
@@ -44,11 +45,20 @@ export const VoteApplication = () => {
   const navigate = useNavigate();
   const { isMobile } = useBreakpoints();
 
-  const { applicationRound, isLoadingAppRound, refetchAppRound } = useChews();
+  const {
+    applicationRound,
+    isLoadingAppRound,
+    refetchAppRound,
+    appRoundError,
+  } = useChews();
 
   const ship = applicationRound?.applications.find((app) => app.id === id);
 
-  const { data: metadata, isLoading: isLoadingMetadata } = useQuery({
+  const {
+    data: metadata,
+    isLoading: isLoadingMetadata,
+    error: metadataError,
+  } = useQuery({
     queryKey: ['metadata', ship?.application.ipfsHash],
     queryFn: () => getApplicationMetadata(ship?.application.ipfsHash as string),
     enabled: !!ship?.application.ipfsHash,
@@ -73,10 +83,24 @@ export const VoteApplication = () => {
     );
   }
 
-  if (!appCopy) {
+  if (!appCopy || !metadata) {
     return (
       <PageLayout title="Application Vote">
-        <Text>Application not found</Text>
+        <InfoBanner
+          title="404: Error"
+          description="Invalid application data or metadata not found"
+        />
+      </PageLayout>
+    );
+  }
+
+  if (appRoundError || metadataError) {
+    return (
+      <PageLayout title="Application Vote">
+        <InfoBanner
+          title="Error"
+          description="Failed to load application data"
+        />
       </PageLayout>
     );
   }
