@@ -46,10 +46,6 @@ export const JudgeDashboard = () => {
               (vote) => vote.reviewer === address
             );
 
-            console.log('app', app);
-
-            console.log('hasUserVoted', hasUserVoted);
-
             return (
               <Group key={`${app.registrar}-${index}`} px={32} py={16} mb={8}>
                 <Avatar src={app.application.imgUrl} size={56} bg="white" />
@@ -73,11 +69,11 @@ export const JudgeDashboard = () => {
                     disabled={!hasUserVoted && !canJudgesVote}
                     to={
                       hasUserVoted
-                        ? `/view-application/${app.id}`
+                        ? `/review/vote-${app.id}-${address}`
                         : `/vote-application/${app.id}`
                     }
                   >
-                    {hasUserVoted ? 'Vote Completed' : 'Vote'}
+                    {hasUserVoted ? 'See Review' : 'Vote'}
                   </Button>
                   <Text c="subtle" fz="sm">
                     Currently {app.amountReviewed} Voted
