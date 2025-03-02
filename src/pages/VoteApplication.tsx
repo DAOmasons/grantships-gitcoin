@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import { PageLayout } from '../layout/Page';
-import { Group, Stepper, Text, useMantineTheme } from '@mantine/core';
+import {
+  Box,
+  Group,
+  Skeleton,
+  Stack,
+  Stepper,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { RUBRIC_COPY } from '../constants/rubric';
 import { useChews } from '../hooks/useChews';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -34,7 +42,7 @@ export const VoteApplication = () => {
   const { tx } = useTx();
   const { address } = useAccount();
   const navigate = useNavigate();
-  const { isMobile, isTablet } = useBreakpoints();
+  const { isMobile } = useBreakpoints();
 
   const { applicationRound, isLoadingAppRound, refetchAppRound } = useChews();
 
@@ -57,10 +65,12 @@ export const VoteApplication = () => {
     }
   }, [hasUserVoted]);
 
-  const registrar = ship?.registrar;
-
-  if (isLoadingAppRound) {
-    return null;
+  if (isLoadingMetadata || isLoadingAppRound) {
+    return (
+      <PageLayout title="Application Vote">
+        <LoadingSkeleton />
+      </PageLayout>
+    );
   }
 
   if (!appCopy) {
@@ -144,10 +154,6 @@ export const VoteApplication = () => {
     setFeedback({ ...feedback, [key]: value });
   };
 
-  if (isLoadingMetadata) {
-    return null;
-  }
-
   return (
     <PageLayout title="Application Vote">
       <Group mb={'md'} justify="end">
@@ -195,5 +201,58 @@ export const VoteApplication = () => {
         })}
       </Stepper>
     </PageLayout>
+  );
+};
+
+const LoadingSkeleton = () => {
+  const { isMobile } = useBreakpoints();
+  return (
+    <Box>
+      <Group justify="end" mb="md">
+        <Skeleton h={20} w={125} />
+      </Group>
+      <Group justify="space-between">
+        <Group gap={8}>
+          <Skeleton circle w={40} h={40} />
+          {!isMobile && <Skeleton h={16} w={100} />}
+        </Group>
+        <Group gap={8}>
+          <Skeleton circle w={40} h={40} />
+          {!isMobile && <Skeleton h={16} w={100} />}
+        </Group>
+        <Group gap={8}>
+          <Skeleton circle w={40} h={40} />
+          {!isMobile && <Skeleton h={16} w={100} />}
+        </Group>
+        <Group gap={8}>
+          <Skeleton circle w={40} h={40} />
+          {!isMobile && <Skeleton h={16} w={100} />}
+        </Group>
+      </Group>
+      <Box mt={48}>
+        <Skeleton w="50%" h={50} mb={24} />
+        <Skeleton w="40%" h={20} mb={40} />
+        <Box mx="md">
+          <Stack gap={28}>
+            <Group gap={16}>
+              <Skeleton w={24} h={24} circle />
+              <Skeleton w={'40%'} h={24} />
+            </Group>
+            <Group gap={16}>
+              <Skeleton w={24} h={24} circle />
+              <Skeleton w={'30%'} h={24} />
+            </Group>
+            <Group gap={16}>
+              <Skeleton w={24} h={24} circle />
+              <Skeleton w={'70%'} h={24} />
+            </Group>
+            <Group gap={16}>
+              <Skeleton w={24} h={24} circle />
+              <Skeleton w={'20%'} h={24} />
+            </Group>
+          </Stack>
+        </Box>
+      </Box>
+    </Box>
   );
 };
