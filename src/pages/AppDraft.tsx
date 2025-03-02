@@ -8,6 +8,7 @@ import {
   Flex,
   Group,
   InputLabel,
+  Skeleton,
   Stack,
   Text,
   TextInput,
@@ -36,6 +37,7 @@ import {
   ResponseLink,
 } from '../components/application/ResponseBlock';
 import { ApplicationFooter } from '../components/application/ApplicationFooter';
+import { InfoBanner } from '../components/InfoBanner';
 
 export const AppDraft = () => {
   const { id } = useParams();
@@ -120,13 +122,17 @@ export const AppDraft = () => {
   if (error) {
     return (
       <PageLayout title="GG Round Application">
-        <>Error</>
+        <InfoBanner title="Error" description="Failed to fetch draft" />
       </PageLayout>
     );
   }
 
   if (!draft) {
-    return <PageLayout title="GG Round Application">No data</PageLayout>;
+    return (
+      <PageLayout title="GG Round Application">
+        <InfoBanner title="404: Error" description="Draft not found" />
+      </PageLayout>
+    );
   }
 
   const handleEdit = async () => {
@@ -469,4 +475,40 @@ export const AppDraft = () => {
   );
 };
 
-const LoadingSkeleton = () => {};
+const LoadingSkeleton = () => {
+  const isTablet = useTablet();
+  return (
+    <Box>
+      <Group justify="center" mb="xl">
+        <Skeleton circle h={171} w={171} />
+      </Group>
+      <Stack gap="xl" mb={100}>
+        <Box>
+          <Group justify="end" mb="sm">
+            <Skeleton w={100} h={30} />
+          </Group>
+
+          <Skeleton w={250} h={40} />
+        </Box>
+        <Flex wrap="nowrap" gap="sm" direction={isTablet ? 'column' : 'row'}>
+          <Box w={isTablet ? '100%' : '50%'}>
+            <Skeleton w="30%" h={24} mb="8" />
+            <Skeleton w="100%" h={48} />
+          </Box>
+          <Box w={isTablet ? '100%' : '50%'}>
+            <Skeleton w="30%" h={24} mb="8" />
+            <Skeleton w="100%" h={48} />
+          </Box>
+        </Flex>
+        <Box>
+          <Skeleton w="30%" h={24} mb="8" />
+          <Skeleton w="100%" h={78} />
+        </Box>
+        <Box>
+          <Skeleton w="30%" h={24} mb="8" />
+          <Skeleton w="100%" h={48} />
+        </Box>
+      </Stack>
+    </Box>
+  );
+};
