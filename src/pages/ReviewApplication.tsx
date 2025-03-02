@@ -22,10 +22,12 @@ import {
   JudgeReviewMetadata,
 } from '../queries/getMetadata';
 import { InfoBanner } from '../components/InfoBanner';
+import { useBreakpoints } from '../hooks/useBreakpoints';
 
 export const Review = () => {
   const { applicationRound, isLoadingAppRound, appRoundError } = useChews();
   const { colors } = useMantineTheme();
+  const { isMobile } = useBreakpoints();
 
   const { id } = useParams();
 
@@ -119,7 +121,7 @@ export const Review = () => {
               <Title fz={'h3'} order={3} c={'highlight'} mb="sm">
                 {section.sectionName}
               </Title>
-              <Box mx="md">
+              <Box mx={isMobile ? undefined : 'md'}>
                 {section.questions.map((question) => {
                   return (
                     <ReviewQuestion
@@ -132,7 +134,7 @@ export const Review = () => {
                 })}
               </Box>
               <Divider mb="md" />
-              <Box mx="md">
+              <Box mx={isMobile ? undefined : 'md'}>
                 <Text fz="lg" fw={600} mb="md">
                   Judge Feedback - {section.sectionName}
                 </Text>
@@ -149,7 +151,7 @@ export const Review = () => {
           );
         })}
       </Stack>
-      <Box mx="md" mt="lg" mb={120}>
+      <Box mx={isMobile ? undefined : 'md'} mt="lg" mb={120}>
         <Text fz="lg" fw={600} mb="md">
           Closing Comment
         </Text>
