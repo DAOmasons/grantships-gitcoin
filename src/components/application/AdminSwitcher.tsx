@@ -10,6 +10,7 @@ import { TxButton } from '../TxButton';
 import { IconCheck, IconMessage, IconX } from '@tabler/icons-react';
 import { useChews } from '../../hooks/useChews';
 import { ContestStatus } from '../../constants/enum';
+import { TxActionIcon } from '../TxActionIcon';
 
 export const AdminSwitcher = ({
   commentText,
@@ -75,9 +76,9 @@ export const AdminSwitcher = ({
         {isApproved || !isPopulatingStage ? (
           <IconCheck color={colors.dark[5]} />
         ) : (
-          <ActionIcon onClick={() => handleApprove()}>
+          <TxActionIcon onClick={() => handleApprove()}>
             <IconCheck />
-          </ActionIcon>
+          </TxActionIcon>
         )}
       </Tooltip>
     </Group>

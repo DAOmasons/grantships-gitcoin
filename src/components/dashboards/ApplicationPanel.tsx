@@ -24,6 +24,7 @@ import { secondsToLongDate } from '../../utils/time';
 import { IconCheck, IconChevronRight, IconRocket } from '@tabler/icons-react';
 import { InfoBanner } from '../InfoBanner';
 import HalChoicesABI from '../../abi/HALChoices.json';
+import { TxActionIcon } from '../TxActionIcon';
 
 export const ApplicationPanel = () => {
   const isTablet = useTablet();
@@ -242,13 +243,13 @@ export const ApplicationPanel = () => {
 
                 <Group gap="sm">
                   <Tooltip label="Approve Application">
-                    <ActionIcon onClick={() => approveApplication(draft.id)}>
+                    <TxActionIcon onClick={() => approveApplication(draft.id)}>
                       <IconCheck
                         size={24}
                         color={colors.kelp[6]}
                         stroke={1.5}
                       />
-                    </ActionIcon>
+                    </TxActionIcon>
                   </Tooltip>
                   <Tooltip label="View Application">
                     <ActionIcon
