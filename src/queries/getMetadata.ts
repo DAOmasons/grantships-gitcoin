@@ -4,6 +4,7 @@ import {
   submitApplicationSchema,
 } from '../schemas/submitApplicationSchema';
 import { getIpfsJson } from '../utils/ipfs';
+import { GgApplicationVote } from '../generated/graphql';
 
 export type ApplicationMetadata = z.infer<typeof submitApplicationSchema>;
 
@@ -50,6 +51,37 @@ export const getReviewMetadata = async (
     }
 
     return validated.data as JudgeReviewMetadata;
+  } catch (error) {
+    console.error(error);
+
+    throw new Error('Failed to fetch metadata');
+  }
+};
+
+export const getReviewsWithMetadata = async (reviews: GgApplicationVote[]) => {
+  try {
+    const metadata = await Promise.all(
+      reviews.map(async (review) => {
+        const offchainJson = await getIpfsJson(review.feedback);
+
+        if (!offchainJson) {
+          throw new Error('Invalid metadata');
+        }
+
+        const validated = judgeResponseSchema.safeParse(offchainJson);
+
+        if (!validated.success) {
+          throw new Error('Invalid metadata');
+        }
+
+        return {
+          ...review,
+          metadata: validated.data as JudgeReviewMetadata,
+        };
+      })
+    );
+
+    return metadata;
   } catch (error) {
     console.error(error);
 
