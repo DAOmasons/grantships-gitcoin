@@ -30,6 +30,11 @@ import { secondsToLongDate } from '../utils/time';
 import fxClasses from '../style/effects.module.css';
 import { useNavigate } from 'react-router-dom';
 import { CURRENT_ROUND } from '../constants/tags';
+import { notifications } from '@mantine/notifications';
+import { ContestStatus } from '../constants/enum';
+import { encodeAbiParameters, isAddress, parseAbiParameters } from 'viem';
+import { useTx } from '../contexts/useTx';
+import HalChoicesABI from '../abi/HALChoices.json';
 
 export const AdminDashboard = () => {
   const { applicationRound } = useChews();
@@ -85,12 +90,18 @@ export const AdminDashboard = () => {
 
 const ApplicationPanel = () => {
   const isTablet = useTablet();
-  const { data: drafts } = useQuery({
+  const {
+    data: drafts,
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ['applications'],
     queryFn: getAppDrafts,
   });
+  const { applicationRound, isLoadingAppRound } = useChews();
   const { colors } = useMantineTheme();
   const navigate = useNavigate();
+  const { tx } = useTx();
 
   const { approved, pending } = useMemo(() => {
     if (!drafts) return { approved: [], pending: [] };
@@ -104,6 +115,100 @@ const ApplicationPanel = () => {
 
     return { approved, pending };
   }, [drafts]);
+
+  if (isLoading || isLoadingAppRound) return null;
+
+  const approveApplication = async (applicationId: string) => {
+    const choicesAddress = applicationRound?.choicesParams_id;
+
+    if (!applicationRound || !choicesAddress) {
+      notifications.show({
+        title: 'Error',
+        message: 'Rubric voting round not found',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (
+      Number(applicationRound.round?.contestStatus) !== ContestStatus.Populating
+    ) {
+      notifications.show({
+        title: 'Error',
+        message: 'Rubric voting round is not in Populating state',
+        color: 'red',
+      });
+      return;
+    }
+
+    const selectedApplication = drafts?.find(
+      (draft) => draft.id === applicationId
+    );
+    const contentHash = selectedApplication?.ipfsHash;
+
+    if (!contentHash) {
+      notifications.show({
+        title: 'Error',
+        message: 'Content hash not found',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!selectedApplication) {
+      notifications.show({
+        title: 'Error',
+        message: 'Application not found',
+        color: 'red',
+      });
+      return;
+    }
+
+    const applicantAddress = selectedApplication.userAddress;
+
+    if (!isAddress(applicantAddress)) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid applicant address',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!isAddress(choicesAddress)) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid choices address',
+        color: 'red',
+      });
+      return;
+    }
+
+    const choiceData = encodeAbiParameters(
+      parseAbiParameters('bytes, (uint256, string)'),
+      [applicantAddress, [999999n, contentHash]]
+    );
+
+    tx({
+      writeContractParams: {
+        address: choicesAddress,
+        functionName: 'registerChoice',
+        abi: HalChoicesABI,
+        args: [selectedApplication.rootId, choiceData],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          notifications.show({
+            title: 'Success',
+            message: 'Application approved',
+            color: 'green',
+          });
+
+          refetch();
+        },
+      },
+    });
+  };
 
   return (
     <Box>
@@ -163,10 +268,10 @@ const ApplicationPanel = () => {
             );
           })
         ) : (
-          <Box>
+          <Box mt="md">
             <InfoBanner
-              title="No Applications"
-              description="No applications have been submitted yet."
+              title="No Ships"
+              description="No applications have been approved yet."
             />
           </Box>
         )}
@@ -200,9 +305,7 @@ const ApplicationPanel = () => {
 
                 <Group gap="sm">
                   <Tooltip label="Approve Application">
-                    <ActionIcon
-                      onClick={() => navigate(`/ship/${draft.rootId}`)}
-                    >
+                    <ActionIcon onClick={() => approveApplication(draft.id)}>
                       <IconCheck
                         size={24}
                         color={colors.kelp[6]}
@@ -222,7 +325,7 @@ const ApplicationPanel = () => {
             );
           })
         ) : (
-          <Box>
+          <Box mt="md">
             <InfoBanner
               title="No Applications"
               description="No applications have been submitted yet."
