@@ -112,7 +112,7 @@ export const AppDraft = () => {
   if (isLoading) {
     return (
       <PageLayout title="GG Round Application">
-        <></>
+        <LoadingSkeleton />
       </PageLayout>
     );
   }
@@ -468,3 +468,5 @@ export const AppDraft = () => {
     </PageLayout>
   );
 };
+
+const LoadingSkeleton = () => {};

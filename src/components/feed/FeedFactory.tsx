@@ -5,7 +5,12 @@ import {
   UserComment,
 } from '../../queries/feedQuery';
 import { FeedItemShell } from './FeedItemShell';
-import { IconCheck, IconPencilMinus, IconPlus } from '@tabler/icons-react';
+import {
+  IconCheck,
+  IconGavel,
+  IconPencilMinus,
+  IconPlus,
+} from '@tabler/icons-react';
 import { TAG } from '../../constants/tags';
 import { AddressAvatar } from '../AddressAvatar';
 import { Address } from 'viem';
@@ -69,6 +74,22 @@ export const FeedFactory = (item: FeedItemData) => {
         graphic={
           <Avatar size={48}>
             <IconCheck color={colors.kelp[6]} stroke={1.5} />
+          </Avatar>
+        }
+        createdAt={notice.createdAt}
+      />
+    );
+  }
+
+  if (item.postType === TAG.APPLICATION_VOTE) {
+    const notice = item as SystemNotice;
+    return (
+      <FeedItemShell
+        title={notice.title}
+        text={notice.text}
+        graphic={
+          <Avatar size={48}>
+            <IconGavel color={colors.kelp[6]} stroke={1.5} />
           </Avatar>
         }
         createdAt={notice.createdAt}
