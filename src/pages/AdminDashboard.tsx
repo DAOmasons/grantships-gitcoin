@@ -1,8 +1,25 @@
-import { Box, Tabs, Text, Title, useMantineTheme } from '@mantine/core';
+import {
+  Box,
+  Group,
+  Stack,
+  Tabs,
+  Text,
+  Title,
+  useMantineTheme,
+} from '@mantine/core';
 import { PageLayout } from '../layout/Page';
-import { IconFileDescription, IconManualGearbox } from '@tabler/icons-react';
+import {
+  IconArrowRight,
+  IconFileDescription,
+  IconManualGearbox,
+} from '@tabler/icons-react';
 import { useState } from 'react';
 import { ApplicationPanel } from '../components/dashboards/ApplicationPanel';
+import { useChews } from '../hooks/useChews';
+import { Bold } from '../components/typography';
+import { TxButton } from '../components/TxButton';
+import { InfoBanner } from '../components/InfoBanner';
+import { SettingsPanel } from '../components/dashboards/SettingsPanel';
 
 export const AdminDashboard = () => {
   const { colors } = useMantineTheme();
@@ -29,14 +46,7 @@ export const AdminDashboard = () => {
           <ApplicationPanel />
         </Tabs.Panel>
         <Tabs.Panel value="settings">
-          <Box>
-            <Title fz="h3" order={3} mb="sm">
-              Contract Settings
-            </Title>
-            <Text c={'subtle'}>
-              Manage vote contract states, progress rounds
-            </Text>
-          </Box>
+          <SettingsPanel />
         </Tabs.Panel>
       </Tabs>
     </PageLayout>

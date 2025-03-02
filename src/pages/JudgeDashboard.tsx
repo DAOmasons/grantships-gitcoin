@@ -5,25 +5,29 @@ import { useChews } from '../hooks/useChews';
 import { Link } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { InfoBanner } from '../components/InfoBanner';
-
-const AWAITING_REVEAL = true;
+import { useBreakpoints } from '../hooks/useBreakpoints';
 
 export const JudgeDashboard = () => {
   const { applicationRound, isLoadingAppRound } = useChews();
   const { address } = useAccount();
+  const { isMobile, isTablet } = useBreakpoints();
+
+  const step = applicationRound ? applicationRound.round?.contestStatus : 0;
 
   return (
     <PageLayout title="Judge Dashboard">
       <Box px="lg" mb="76">
-        <InfoTimeline
-          events={[
-            'Round Applications',
-            'Judge Vote',
-            'Rounds Live',
-            'Round Review',
-          ]}
-          step={1}
-        />
+        {!isMobile && (
+          <InfoTimeline
+            events={[
+              'Round Applications',
+              'Judge Vote',
+              'Rounds Live',
+              'Round Review',
+            ]}
+            step={step}
+          />
+        )}
       </Box>
       <Title order={3} fz="h3">
         Round Operator Applications
@@ -32,13 +36,7 @@ export const JudgeDashboard = () => {
         Community leaders volunteering their expertise
       </Text>
       <Box>
-        {AWAITING_REVEAL ? (
-          <InfoBanner
-            title="Coming Up Soon!"
-            description="Applications are still being reviewed and prepared for the Judge Vote"
-          />
-        ) : (
-          !isLoadingAppRound &&
+        {!isLoadingAppRound &&
           applicationRound?.applications.map((app, index) => {
             const hasUserVoted = app.votes.some(
               (vote) => vote.reviewer === address
@@ -46,14 +44,18 @@ export const JudgeDashboard = () => {
 
             return (
               <Group key={`${app.registrar}-${index}`} px={32} py={16} mb={8}>
-                <Avatar src={app.application.imgUrl} size={56} />
-                <Box component={Link} to={`/view-application/${app.id}`}>
+                <Avatar src={app.application.imgUrl} size={56} bg="white" />
+                <Box component={Link} to={`/view-draft/${app.id}`}>
                   <Text fw={600} mb={4}>
                     {app.application.name}
                   </Text>
                   <Text c={'subtle'}>Last Updated Jan 1, 2025 </Text>
                 </Box>
-                <Stack ml="auto" gap={4} align="end">
+                <Stack
+                  ml={isTablet ? 0 : 'auto'}
+                  gap={4}
+                  align={isTablet ? 'start' : 'end'}
+                >
                   <Button
                     size="xs"
                     variant={hasUserVoted ? 'secondary' : undefined}
@@ -72,8 +74,7 @@ export const JudgeDashboard = () => {
                 </Stack>
               </Group>
             );
-          })
-        )}
+          })}
       </Box>
     </PageLayout>
   );
