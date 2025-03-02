@@ -8,12 +8,7 @@ import {
 } from '../generated/graphql';
 import { sdk } from '../utils/indexer';
 
-export type ResolvedVote = GgApplicationVote & {
-  review: {
-    scores: Record<string, number>;
-    feedback: Record<string, string>;
-  };
-};
+export type ResolvedVote = GgApplicationVote;
 
 export type ResolvedApplication = Omit<ApplicationFragment, 'votes'> & {
   application: DraftFragment & { name: string; imgUrl: string };
@@ -48,10 +43,6 @@ export const getRounds = async (): Promise<AppRound | undefined> => {
             name: json.name,
             imgUrl: json.imgUrl,
           },
-          votes: app.votes.map(
-            (vote) =>
-              ({ ...vote, review: JSON.parse(vote.feedback) }) as ResolvedVote
-          ),
         };
       }),
     } as AppRound;

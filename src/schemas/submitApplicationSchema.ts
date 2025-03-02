@@ -55,11 +55,10 @@ export const judgeResponseSchema = z.object({
     'Matching Pool Impact': z.number(),
   }),
   feedback: z.object({
-    'Identified Round Operator': z.string(),
-    'Team Members': z.string(),
-    'Mission Alignment': z.string(),
-    'Impact Assessment Plan': z.string(),
-    'Community Size and Engagement': z.string(),
-    'Matching Pool Impact': z.string(),
+    "Alignment with one of GG23's Intents": z.string(),
+    'Closing Comment': z.string(),
+    'Community and Impact': z.string(),
+    Fundraising: z.string(),
+    'Round Operators and Team': z.string(),
   }),
 });

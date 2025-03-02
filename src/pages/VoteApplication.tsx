@@ -22,6 +22,7 @@ import {
 } from '../queries/getMetadata';
 import { judgeResponseSchema } from '../schemas/submitApplicationSchema';
 import { notifications } from '@mantine/notifications';
+import { pinJSONToIPFS } from '../utils/ipfs';
 
 export const VoteApplication = () => {
   const { id } = useParams();
@@ -68,7 +69,7 @@ export const VoteApplication = () => {
     );
   }
 
-  const handleVote = () => {
+  const handleVote = async () => {
     const maxScore = 40;
 
     const totalScore = Object.values(scores).reduce(
@@ -94,6 +95,16 @@ export const VoteApplication = () => {
       });
       return;
     }
+    const pinRes = await pinJSONToIPFS(metadata);
+
+    if (!pinRes.IpfsHash) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to pin metadata to IPFS',
+        color: 'red',
+      });
+      return;
+    }
 
     if (!applicationRound?.id) {
       notifications.show({
@@ -105,7 +116,7 @@ export const VoteApplication = () => {
     }
 
     const bytes = encodeAbiParameters(parseAbiParameters('(uint256, string)'), [
-      [1n, JSON.stringify(metadata)],
+      [1n, pinRes.IpfsHash],
     ]);
 
     tx({
