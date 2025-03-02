@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { PageLayout } from '../layout/Page';
-import { Stepper, Text, useMantineTheme } from '@mantine/core';
+import { Group, Stepper, Text, useMantineTheme } from '@mantine/core';
 import { RUBRIC_COPY } from '../constants/rubric';
 import { useChews } from '../hooks/useChews';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { RubricStep } from '../components/rubric/RubricStep';
 import { useTx } from '../contexts/useTx';
 import {
@@ -14,7 +14,7 @@ import {
 } from 'viem';
 import ContestAbi from '../abi/Contest.json';
 import { useAccount } from 'wagmi';
-import { IconCheck } from '@tabler/icons-react';
+import { IconCheck, IconExternalLink } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import {
   ApplicationMetadata,
@@ -148,6 +148,23 @@ export const VoteApplication = () => {
 
   return (
     <PageLayout title="Application Vote">
+      <Group mb={'md'} justify="end">
+        <Group gap={4}>
+          <Text
+            fz="sm"
+            component={Link}
+            to={`/view-draft/${ship.application.id}`}
+            rel={'noopener noreferrer'}
+            target={'_blank'}
+            td={'underline'}
+            c="subtle"
+          >
+            {' '}
+            View Application
+          </Text>
+          <IconExternalLink size={16} stroke={1.5} color={colors.dark[3]} />
+        </Group>
+      </Group>
       <Stepper active={step}>
         {RUBRIC_COPY.sections.map((section, index) => {
           return (

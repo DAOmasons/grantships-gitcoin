@@ -3,7 +3,6 @@ import { Home } from './pages/Home';
 import { Selections } from './pages/Selections';
 import { Elections } from './pages/Elections';
 import { Ships } from './pages/Ships';
-// import { Reviews } from './pages/Reviews';
 import { JudgeDashboard } from './pages/JudgeDashboard';
 import { VoteApplication } from './pages/VoteApplication';
 import { Review } from './pages/ReviewApplication';

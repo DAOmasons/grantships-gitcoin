@@ -91,7 +91,7 @@ export const Review = () => {
         const judgeReview = reviewMetadata.feedback[section.sectionName];
 
         return (
-          <Box key={section.sectionLabel} mb={120}>
+          <Box key={section.sectionLabel}>
             <Title fz={'h3'} order={3} c={'highlight'} mb="sm">
               {section.sectionName}
             </Title>
@@ -124,6 +124,19 @@ export const Review = () => {
           </Box>
         );
       })}
+      <Box mx="md" mt="lg" mb={120}>
+        <Text fz="lg" fw={600} mb="md">
+          Closing Comment
+        </Text>
+        <Card
+          variant="inner"
+          style={{
+            border: `1px solid ${colors.dark[2]}`,
+          }}
+        >
+          <Text>{reviewMetadata.feedback['Closing Comment']}</Text>
+        </Card>
+      </Box>
     </PageLayout>
   );
 };
