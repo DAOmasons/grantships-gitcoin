@@ -1,5 +1,6 @@
 fragment Draft on AppDraft {
   id
+  rootId
   tag
   userAddress
   lastUpdated

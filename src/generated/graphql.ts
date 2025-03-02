@@ -4772,21 +4772,21 @@ export type Timestamptz_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
-export type DraftFragment = { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> };
+export type DraftFragment = { __typename?: 'AppDraft', id: string, rootId: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> };
 
 export type ApplicationDraftsQueryVariables = Exact<{
   chainId: Scalars['Int']['input'];
 }>;
 
 
-export type ApplicationDraftsQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> }> };
+export type ApplicationDraftsQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, rootId: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> }> };
 
 export type ApplicationDraftQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type ApplicationDraftQuery = { __typename?: 'query_root', AppDraft_by_pk?: { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> } | null };
+export type ApplicationDraftQuery = { __typename?: 'query_root', AppDraft_by_pk?: { __typename?: 'AppDraft', id: string, rootId: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> } | null };
 
 export type ApplicationDraftsByUserQueryVariables = Exact<{
   userAddress: Scalars['String']['input'];
@@ -4794,7 +4794,7 @@ export type ApplicationDraftsByUserQueryVariables = Exact<{
 }>;
 
 
-export type ApplicationDraftsByUserQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> }> };
+export type ApplicationDraftsByUserQuery = { __typename?: 'query_root', AppDraft: Array<{ __typename?: 'AppDraft', id: string, rootId: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> }> };
 
 export type ApplicationsByUserExistsQueryVariables = Exact<{
   userAddress: Scalars['String']['input'];
@@ -4806,14 +4806,14 @@ export type ApplicationsByUserExistsQuery = { __typename?: 'query_root', AppDraf
 
 export type VoteFragment = { __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string };
 
-export type ApplicationFragment = { __typename?: 'GGApplication', id: string, registrar: string, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, application?: { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> } | null, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string }> };
+export type ApplicationFragment = { __typename?: 'GGApplication', id: string, registrar: string, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, application?: { __typename?: 'AppDraft', id: string, rootId: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> } | null, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string }> };
 
 export type GetApplicationRoundQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type GetApplicationRoundQuery = { __typename?: 'query_root', GGApplicationRound_by_pk?: { __typename?: 'GGApplicationRound', id: string, createdAt: number, votesParams_id: string, choicesParams_id: string, postedBy: string, rubric: string, validRubric: boolean, round?: { __typename?: 'Round', contestStatus: any } | null, applications: Array<{ __typename?: 'GGApplication', id: string, registrar: string, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, application?: { __typename?: 'AppDraft', id: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> } | null, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string }> }> } | null };
+export type GetApplicationRoundQuery = { __typename?: 'query_root', GGApplicationRound_by_pk?: { __typename?: 'GGApplicationRound', id: string, createdAt: number, votesParams_id: string, choicesParams_id: string, postedBy: string, rubric: string, validRubric: boolean, round?: { __typename?: 'Round', contestStatus: any } | null, applications: Array<{ __typename?: 'GGApplication', id: string, registrar: string, amountReviewed: number, postedBy: string, lastUpdated: number, totalVoted: any, application?: { __typename?: 'AppDraft', id: string, rootId: string, tag: string, userAddress: string, lastUpdated: number, contentProtocol: any, json: string, ipfsHash: string, version: number, isHistory: boolean, approvedRounds: Array<string> } | null, votes: Array<{ __typename?: 'GGApplicationVote', id: string, createdAt: number, amount: any, feedback: string, reviewer: string }> }> } | null };
 
 export type FItemFragment = { __typename?: 'FeedItem', id: string, createdAt: number, topic: string, userAddress: string, postType: string, json?: string | null };
 
@@ -4834,6 +4834,7 @@ export type GetRecentTransactionQuery = { __typename?: 'query_root', TX_by_pk?: 
 export const DraftFragmentDoc = gql`
     fragment Draft on AppDraft {
   id
+  rootId
   tag
   userAddress
   lastUpdated
