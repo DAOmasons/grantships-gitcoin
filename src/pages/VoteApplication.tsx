@@ -23,6 +23,7 @@ import {
 import { judgeResponseSchema } from '../schemas/submitApplicationSchema';
 import { notifications } from '@mantine/notifications';
 import { pinJSONToIPFS } from '../utils/ipfs';
+import { useBreakpoints } from '../hooks/useBreakpoints';
 
 export const VoteApplication = () => {
   const { id } = useParams();
@@ -33,6 +34,7 @@ export const VoteApplication = () => {
   const { tx } = useTx();
   const { address } = useAccount();
   const navigate = useNavigate();
+  const { isMobile, isTablet } = useBreakpoints();
 
   const { applicationRound, isLoadingAppRound, refetchAppRound } = useChews();
 
@@ -170,7 +172,7 @@ export const VoteApplication = () => {
           return (
             <Stepper.Step
               key={index}
-              label={section.sectionLabel}
+              label={isMobile ? undefined : section.sectionLabel}
               completedIcon={<IconCheck color={colors.dark[6]} />}
             >
               <RubricStep
