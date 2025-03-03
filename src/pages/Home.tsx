@@ -24,9 +24,6 @@ import { useNavigate } from 'react-router-dom';
 import { useChews } from '../hooks/useChews';
 import { useMobile, useTablet } from '../hooks/useBreakpoints';
 import { useMediaQuery } from '@mantine/hooks';
-import { deployRubricVoting } from '../setupScripts/chews';
-import { mintJudgeHat } from '../setupScripts/setupHats';
-import { TxButton } from '../components/TxButton';
 
 export const Home = () => {
   const theme = useMantineTheme();
