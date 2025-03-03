@@ -2,7 +2,10 @@ import {
   Box,
   Card,
   Divider,
+  Group,
   Radio,
+  Skeleton,
+  Stack,
   Text,
   Title,
   useMantineTheme,
@@ -18,10 +21,13 @@ import {
   getReviewMetadata,
   JudgeReviewMetadata,
 } from '../queries/getMetadata';
+import { InfoBanner } from '../components/InfoBanner';
+import { useBreakpoints } from '../hooks/useBreakpoints';
 
 export const Review = () => {
-  const { applicationRound, isLoadingAppRound } = useChews();
+  const { applicationRound, isLoadingAppRound, appRoundError } = useChews();
   const { colors } = useMantineTheme();
+  const { isMobile } = useBreakpoints();
 
   const { id } = useParams();
 
@@ -38,13 +44,21 @@ export const Review = () => {
     (vote) => vote.reviewer === reviewerId
   );
 
-  const { data: reviewMetadata } = useQuery({
+  const {
+    data: reviewMetadata,
+    isLoading: isLoadingReviewMd,
+    error: reviewMdError,
+  } = useQuery({
     queryKey: ['reviewMetadata', review?.feedback],
     queryFn: () => getReviewMetadata(review?.feedback as string),
     enabled: !!review?.feedback,
   });
 
-  const { data: applicationMetadata } = useQuery({
+  const {
+    data: applicationMetadata,
+    isLoading: isLoadingAppMd,
+    error: applicationMdError,
+  } = useQuery({
     queryKey: ['metadata', selectedApplication?.application.ipfsHash],
     queryFn: () =>
       getApplicationMetadata(
@@ -53,78 +67,91 @@ export const Review = () => {
     enabled: !!selectedApplication?.application.ipfsHash,
   });
 
-  if (isLoadingAppRound) {
-    return null;
+  if (isLoadingAppRound || isLoadingReviewMd || isLoadingAppMd) {
+    return (
+      <PageLayout title="Review">
+        <LoadingSkeleton />
+      </PageLayout>
+    );
+  }
+
+  if (reviewMdError || applicationMdError || appRoundError) {
+    return (
+      <PageLayout title="Review">
+        <InfoBanner
+          title="Error"
+          description="An error occurred while fetching the review data."
+        />
+      </PageLayout>
+    );
   }
 
   if (!applicationRound) {
     return (
-      <Card>
-        <Text>No Application Found</Text>
-      </Card>
+      <PageLayout title="Review">
+        <InfoBanner title="Error" description="No application round found." />
+      </PageLayout>
     );
   }
 
-  if (!review) {
+  if (
+    !review ||
+    !selectedApplication ||
+    !applicationMetadata ||
+    !reviewMetadata
+  ) {
     return (
-      <Card>
-        <Text>No Review Found</Text>
-      </Card>
+      <PageLayout title="Review">
+        <InfoBanner
+          title="404: Error"
+          description="No review found for the selected application."
+        />
+      </PageLayout>
     );
-  }
-
-  if (!selectedApplication) {
-    return (
-      <Card>
-        <Text>No Application Found</Text>
-      </Card>
-    );
-  }
-
-  if (!reviewMetadata || !applicationMetadata) {
-    return null;
   }
 
   return (
     <PageLayout title="Review">
-      {applicationRound.rubric.sections.map((section) => {
-        const judgeReview = reviewMetadata.feedback[section.sectionName];
+      <Stack gap={80}>
+        {applicationRound.rubric.sections.map((section) => {
+          const judgeReview = reviewMetadata.feedback[section.sectionName];
 
-        return (
-          <Box key={section.sectionLabel}>
-            <Title fz={'h3'} order={3} c={'highlight'} mb="sm">
-              {section.sectionName}
-            </Title>
-            <Box mx="md">
-              {section.questions.map((question) => {
-                return (
-                  <ReviewQuestion
-                    key={question.title}
-                    question={question}
-                    applicationMetadata={applicationMetadata}
-                    reviewMetadata={reviewMetadata}
-                  />
-                );
-              })}
+          return (
+            <Box key={section.sectionLabel}>
+              <Title fz={'h3'} order={3} c={'highlight'} mb="sm">
+                {section.sectionName}
+              </Title>
+              <Box mx={isMobile ? undefined : 'md'}>
+                {section.questions.map((question) => {
+                  return (
+                    <ReviewQuestion
+                      key={question.title}
+                      question={question}
+                      applicationMetadata={applicationMetadata}
+                      reviewMetadata={reviewMetadata}
+                    />
+                  );
+                })}
+              </Box>
+              <Divider mb="md" />
+              <Box mx={isMobile ? undefined : 'md'}>
+                <Text fz="lg" fw={600} mb="md">
+                  Judge Feedback - {section.sectionName}
+                </Text>
+                <Card
+                  variant="inner"
+                  style={{
+                    border: `1px solid ${colors.dark[2]}`,
+                  }}
+                >
+                  <Text>{judgeReview}</Text>
+                </Card>
+              </Box>
             </Box>
-            <Divider mb="md" />
-            <Box mx="md">
-              <Text fz="lg" fw={600} mb="md">
-                Judge Feedback - {section.sectionName}
-              </Text>
-              <Card
-                variant="inner"
-                style={{
-                  border: `1px solid ${colors.dark[2]}`,
-                }}
-              >
-                <Text>{judgeReview}</Text>
-              </Card>
-            </Box>
-          </Box>
-        );
-      })}
-      <Box mx="md" mt="lg" mb={120}>
+          );
+        })}
+      </Stack>
+      <Box mx={isMobile ? undefined : 'md'} mt="lg" mb={120}>
         <Text fz="lg" fw={600} mb="md">
           Closing Comment
         </Text>
@@ -176,6 +203,45 @@ const ReviewQuestion = ({
             />
           );
         })}
+      </Box>
+    </Box>
+  );
+};
+
+const LoadingSkeleton = () => {
+  return (
+    <Stack gap={80}>
+      <SkeletonSection />
+      <SkeletonSection />
+      <SkeletonSection />
+    </Stack>
+  );
+};
+
+const SkeletonSection = () => {
+  return (
+    <Box>
+      <Skeleton w="50%" h={50} mb={16} />
+      <Box mx="md">
+        <Skeleton w="100%" h={60} mb={24} />
+        <Stack gap={22}>
+          <Group gap={16}>
+            <Skeleton w={24} h={24} circle />
+            <Skeleton w={'40%'} h={34} />
+          </Group>
+          <Group gap={16}>
+            <Skeleton w={24} h={24} circle />
+            <Skeleton w={'30%'} h={34} />
+          </Group>
+          <Group gap={16}>
+            <Skeleton w={24} h={24} circle />
+            <Skeleton w={'70%'} h={34} />
+          </Group>
+          <Group gap={16}>
+            <Skeleton w={24} h={24} circle />
+            <Skeleton w={'20%'} h={34} />
+          </Group>
+        </Stack>
       </Box>
     </Box>
   );

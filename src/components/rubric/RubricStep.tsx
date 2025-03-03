@@ -11,6 +11,7 @@ import {
 import { RubricSection } from '../../constants/rubric';
 import { RubricQuestion } from './RubricQuestion';
 import { ApplicationMetadata } from '../../queries/getMetadata';
+import { useBreakpoints } from '../../hooks/useBreakpoints';
 
 export const RubricStep = ({
   section,
@@ -45,6 +46,8 @@ export const RubricStep = ({
     (question) => scores[question.title] != null
   );
 
+  const { isMobile } = useBreakpoints();
+
   const finalStep = totalSteps && index === totalSteps - 1;
 
   return (
@@ -58,7 +61,7 @@ export const RubricStep = ({
           : 'Select once choice'}{' '}
         (0-10 points)
       </Text>
-      <Box mx="lg">
+      <Box mx={isMobile ? 'sm' : 'lg'}>
         {section.questions.map((question) => (
           <RubricQuestion
             question={question}
@@ -72,7 +75,7 @@ export const RubricStep = ({
         ))}
       </Box>
       <Divider mb="xl" />
-      <Box mx="xl" mb={finalStep === true ? 'xl' : 70}>
+      <Box mx={isMobile ? 'sm' : 'xl'} mb={finalStep === true ? 'xl' : 70}>
         <InputLabel fz="lg" fw={600} required mb={24}>
           Feedback - {section.sectionName}
         </InputLabel>
@@ -84,7 +87,7 @@ export const RubricStep = ({
         />
       </Box>
       {finalStep === true && (
-        <Box mx="xl" mb={70}>
+        <Box mx={isMobile ? 'sm' : 'xl'} mb={70}>
           <InputLabel fz="lg" fw={600} required mb={24}>
             Closing Comment
           </InputLabel>

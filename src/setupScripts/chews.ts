@@ -7,7 +7,7 @@ import {
 } from 'viem';
 import { HATS } from '../constants/setup';
 import { ADDR } from '../constants/addresses';
-import { arbitrumSepolia } from 'viem/chains';
+import { arbitrum, arbitrumSepolia } from 'viem/chains';
 import { publicClient } from '../utils/config';
 import { ContestStatus } from '../constants/enum';
 import ChewsFactoryABI from '../abi/ChewsFactory.json';
@@ -73,7 +73,7 @@ export const deployRubricVoting = async () => {
   const filterTag = `${TAG_PREFIX}_${nonce}`;
 
   const client = createWalletClient({
-    chain: arbitrumSepolia,
+    chain: arbitrum,
     transport: custom(window.ethereum),
   });
 

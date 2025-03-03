@@ -27,6 +27,7 @@ import { formatEther } from 'viem';
 import { useBreakpoints } from '../hooks/useBreakpoints';
 import { GgApplicationVote } from '../generated/graphql';
 import { truncateAddr } from '../utils/common';
+import { InfoBanner } from '../components/InfoBanner';
 
 export const Ship = () => {
   const { id } = useParams();
