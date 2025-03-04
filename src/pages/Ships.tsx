@@ -17,6 +17,7 @@ import {
   IconSquareNumber3,
   IconSquareNumber4,
   IconSquareNumber5,
+  IconSquareNumber6,
 } from '@tabler/icons-react';
 
 import { PageLayout } from '../layout/Page';
@@ -30,6 +31,7 @@ const icons = [
   IconSquareNumber3,
   IconSquareNumber4,
   IconSquareNumber5,
+  IconSquareNumber6,
 ];
 
 export const Ships = () => {
