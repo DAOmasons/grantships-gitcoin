@@ -18,6 +18,7 @@ import { IconChevronRight } from '@tabler/icons-react';
 import { useTablet } from '../hooks/useBreakpoints';
 import { InfoBanner } from '../components/InfoBanner';
 import { secondsToLongDate } from '../utils/time';
+import { CURRENT_ROUND } from '../constants/tags';
 
 export const Applications = () => {
   const { data: drafts } = useQuery({
@@ -41,6 +42,7 @@ export const Applications = () => {
       <Box>
         {drafts?.length ? (
           drafts?.map((draft) => {
+            const approved = draft.approvedRounds.includes(CURRENT_ROUND);
             return (
               <Group
                 px={isTablet ? 'sm' : 'lg'}
@@ -66,7 +68,9 @@ export const Applications = () => {
                   <Group>
                     <Box>
                       <Text mb={10}>Status</Text>
-                      <Text c="subtle">In Review</Text>
+                      <Text c="subtle">
+                        {approved ? 'Approved' : 'In Review'}
+                      </Text>
                     </Box>
                     <IconChevronRight size={24} />
                   </Group>
