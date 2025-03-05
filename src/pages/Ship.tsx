@@ -91,7 +91,7 @@ export const Ship = () => {
             </Title>
             <ShipIcon size={26} />
           </Group>
-          <Text c="subtle">
+          <Text c="subtle" className="ws-pre-wrap">
             {metadata?.description
               ? metadata?.description
               : isLoadingMetadata

@@ -23,7 +23,6 @@ import {
 import { PageLayout } from '../layout/Page';
 import { useChews } from '../hooks/useChews';
 import fxClasses from '../style/effects.module.css';
-import { InfoBanner } from '../components/InfoBanner';
 
 const icons = [
   IconSquareNumber1,
