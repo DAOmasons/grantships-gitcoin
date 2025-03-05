@@ -144,7 +144,7 @@ export const Review = () => {
                     border: `1px solid ${colors.dark[2]}`,
                   }}
                 >
-                  <Text>{judgeReview}</Text>
+                  <Text className="ws-pre-wrap">{judgeReview}</Text>
                 </Card>
               </Box>
             </Box>
@@ -161,7 +161,9 @@ export const Review = () => {
             border: `1px solid ${colors.dark[2]}`,
           }}
         >
-          <Text>{reviewMetadata.feedback['Closing Comment']}</Text>
+          <Text className="ws-pre-wrap">
+            {reviewMetadata.feedback['Closing Comment']}
+          </Text>
         </Card>
       </Box>
     </PageLayout>
@@ -186,7 +188,9 @@ const ReviewQuestion = ({
         {question.title}
       </Text>
       <Card variant="inner" mb="md">
-        <Text c="subtle">{applicantResponse}</Text>
+        <Text c="subtle" className="ws-pre-wrap">
+          {applicantResponse}
+        </Text>
       </Card>
       <Box mb="xxl">
         {question.options.map((option) => {
