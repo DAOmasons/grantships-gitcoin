@@ -80,7 +80,9 @@ export const RubricQuestion = ({
       </Group>
       <Collapse in={opened}>
         <Card variant="inner" mt={'md'} bg={colors.dark[6]}>
-          <Text c={colors.dark[2]}>{applicantResponse}</Text>
+          <Text c={colors.dark[2]} className="ws-pre-wrap">
+            {applicantResponse}
+          </Text>
         </Card>
       </Collapse>
     </Box>
