@@ -26,7 +26,7 @@ import { IconArrowRight, IconInfoCircle } from '@tabler/icons-react';
 import { formatEther } from 'viem';
 import { useBreakpoints } from '../hooks/useBreakpoints';
 import { GgApplicationVote } from '../generated/graphql';
-import { truncateAddr } from '../utils/common';
+import { roundNumberString, truncateAddr } from '../utils/common';
 import { InfoBanner } from '../components/InfoBanner';
 
 export const Ship = () => {
@@ -46,13 +46,15 @@ export const Ship = () => {
     const avgScore =
       locatedShip?.votes.length === 0
         ? '--'
-        : formatEther(
-            (locatedShip?.votes.reduce(
-              (acc, vote) => acc + BigInt(vote.amount),
-              0n
-            ) /
-              BigInt(locatedShip?.votes.length)) *
-              100n
+        : roundNumberString(
+            formatEther(
+              (locatedShip?.votes.reduce(
+                (acc, vote) => acc + BigInt(vote.amount),
+                0n
+              ) /
+                BigInt(locatedShip?.votes.length)) *
+                100n
+            )
           );
 
     return { ...locatedShip, avgScore };
