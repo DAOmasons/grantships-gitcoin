@@ -6,11 +6,12 @@ import {
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { appNetwork } from '../utils/config';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import { useAccount, useConnect, useSwitchChain } from 'wagmi';
 
 import { injected } from 'wagmi/connectors';
 import { useTx } from '../contexts/useTx';
+import { set } from 'zod';
 
 interface Base extends ElementProps<'button'> {}
 
@@ -24,6 +25,8 @@ export const TxButton = createPolymorphicComponent<'button', CustomButtonProps>(
       const { connectAsync } = useConnect();
       const { isLoading } = useTx();
 
+      const clicked = useRef<boolean>(false);
+
       if (props.type === 'submit') {
         throw new Error(
           'TxButton should not be used with type="submit", include the switch network and connect wallet logic in the onSubmit function instead.'
@@ -34,6 +37,10 @@ export const TxButton = createPolymorphicComponent<'button', CustomButtonProps>(
       const handleClick = async (
         event: React.MouseEvent<HTMLButtonElement>
       ) => {
+        // if (clicked) return;
+
+        // clicked.current = true;
+
         if (!isConnected) {
           if (window?.ethereum?.isMetaMask === true) {
             await connectAsync({ connector: injected() });
@@ -52,6 +59,8 @@ export const TxButton = createPolymorphicComponent<'button', CustomButtonProps>(
         }
 
         onClick?.(event);
+
+        // setIsClicked(false);
       };
 
       return (
@@ -60,6 +69,7 @@ export const TxButton = createPolymorphicComponent<'button', CustomButtonProps>(
           ref={ref}
           onClick={handleClick}
           loading={isLoading || props.loading}
+          disabled={isLoading || props.disabled}
         >
           {!isConnected
             ? 'Connect Wallet'

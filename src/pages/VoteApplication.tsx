@@ -40,6 +40,7 @@ export const VoteApplication = () => {
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [feedback, setFeedback] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { tx } = useTx();
   const { address } = useAccount();
   const navigate = useNavigate();
@@ -106,6 +107,16 @@ export const VoteApplication = () => {
   }
 
   const handleVote = async () => {
+    if (isSubmitting) {
+      notifications.show({
+        title: 'Error',
+        message: 'Vote already in progress',
+        color: 'red',
+      });
+      console.log('isSubmitting', isSubmitting);
+      return;
+    }
+    setIsSubmitting(true);
     const maxScore = 40;
 
     const totalScore = Object.values(scores).reduce(
@@ -164,7 +175,17 @@ export const VoteApplication = () => {
       },
       writeContractOptions: {
         onPollSuccess() {
+          setIsSubmitting(false);
           refetchAppRound?.();
+        },
+        onPollError() {
+          setIsSubmitting(false);
+        },
+        onPollTimeout() {
+          setIsSubmitting(false);
+        },
+        onError() {
+          setIsSubmitting(false);
         },
       },
     });
