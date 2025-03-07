@@ -6,7 +6,7 @@ import {
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { appNetwork } from '../utils/config';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import { useAccount, useConnect, useSwitchChain } from 'wagmi';
 
 import { injected } from 'wagmi/connectors';
@@ -60,6 +60,7 @@ export const TxButton = createPolymorphicComponent<'button', CustomButtonProps>(
           ref={ref}
           onClick={handleClick}
           loading={isLoading || props.loading}
+          disabled={isLoading || props.disabled}
         >
           {!isConnected
             ? 'Connect Wallet'
