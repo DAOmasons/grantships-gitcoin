@@ -19,13 +19,21 @@ export const charLimit = (str: string, limit = 18): string => {
 export const urlRegex = /(https?:\/\/[^\s]+)/g;
 
 export const roundNumberString = (numStr: string, decimalPlaces = 2) => {
+  // Convert to number
   const num = Number(numStr);
 
   if (isNaN(num)) {
     return '--';
   }
 
+  // Round to specified decimal places
   const rounded = num.toFixed(decimalPlaces);
 
-  return rounded.replace(/\.?0+$/, '');
+  // If decimal places is 0, just return the rounded number as is
+  if (decimalPlaces === 0) {
+    return rounded;
+  }
+
+  // Only for decimal places > 0, remove trailing zeros
+  return rounded.replace(/\.(\d*[1-9])0+$/, '.$1').replace(/\.0+$/, '');
 };
