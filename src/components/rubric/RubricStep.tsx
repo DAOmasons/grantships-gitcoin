@@ -12,6 +12,7 @@ import { RubricSection } from '../../constants/rubric';
 import { RubricQuestion } from './RubricQuestion';
 import { ApplicationMetadata } from '../../queries/getMetadata';
 import { useBreakpoints } from '../../hooks/useBreakpoints';
+import { TxButton } from '../TxButton';
 
 export const RubricStep = ({
   section,
@@ -108,12 +109,12 @@ export const RubricStep = ({
           Back
         </Button>
         {finalStep === true ? (
-          <Button
+          <TxButton
             disabled={!feedback || !allQuestionsAnswered || !finalComment}
             onClick={handleVote}
           >
             Submit
-          </Button>
+          </TxButton>
         ) : (
           <Button
             disabled={!feedback || !allQuestionsAnswered}
