@@ -38,6 +38,7 @@ import {
 } from '../components/application/ResponseBlock';
 import { ApplicationFooter } from '../components/application/ApplicationFooter';
 import { InfoBanner } from '../components/InfoBanner';
+import { TxButton } from '../components/TxButton';
 
 export const AppDraft = () => {
   const { id } = useParams();
@@ -459,9 +460,9 @@ export const AppDraft = () => {
           <Button variant="secondary" onClick={() => setIsEdit(false)}>
             Cancel
           </Button>
-          <Button onClick={() => handleEdit()} disabled={hasErrors}>
+          <TxButton onClick={() => handleEdit()} disabled={hasErrors}>
             Edit Application
-          </Button>
+          </TxButton>
         </Group>
       )}
       <Divider mb="lg" />
