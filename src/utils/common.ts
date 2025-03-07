@@ -17,3 +17,15 @@ export const charLimit = (str: string, limit = 18): string => {
 };
 
 export const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+export const roundNumberString = (numStr: string, decimalPlaces = 2) => {
+  const num = Number(numStr);
+
+  if (isNaN(num)) {
+    return '--';
+  }
+
+  const rounded = num.toFixed(decimalPlaces);
+
+  return rounded.replace(/\.?0+$/, '');
+};

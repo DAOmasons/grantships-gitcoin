@@ -23,6 +23,7 @@ import {
 import { PageLayout } from '../layout/Page';
 import { useChews } from '../hooks/useChews';
 import fxClasses from '../style/effects.module.css';
+import { roundNumberString } from '../utils/common';
 
 const icons = [
   IconSquareNumber1,
@@ -46,13 +47,16 @@ export const Ships = () => {
           const avgScore =
             app?.votes.length === 0
               ? '0'
-              : formatEther(
-                  (app.votes.reduce(
-                    (acc, vote) => acc + BigInt(vote.amount),
-                    0n
-                  ) /
-                    BigInt(app.votes.length)) *
-                    100n
+              : roundNumberString(
+                  formatEther(
+                    (app.votes.reduce(
+                      (acc, vote) => acc + BigInt(vote.amount),
+                      0n
+                    ) /
+                      BigInt(app.votes.length)) *
+                      100n
+                  ),
+                  0
                 );
 
           return {
@@ -115,9 +119,7 @@ export const Ships = () => {
               </Group>
               <Stack gap={0} align="flex-end">
                 <Group mb={4} gap={8}>
-                  <Text c="subtle">
-                    Avg. {Number(app.avgScore).toFixed()} %
-                  </Text>
+                  <Text c="subtle">Avg. {app.avgScore} %</Text>
                   <Progress
                     w={160}
                     h={8}
