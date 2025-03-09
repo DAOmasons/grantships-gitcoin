@@ -14,5 +14,6 @@ export const useChews = () => {
     appRoundError: context.appRoundError,
     refetchAppRound: context.refetchAppRound,
     currentStage: context.currentStage,
+    judgeAmount: context.judgeAmount,
   };
 };
