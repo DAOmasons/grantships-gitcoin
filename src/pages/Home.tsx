@@ -20,10 +20,53 @@ import { BGImage } from '../assets/BGImage';
 import { SplainerAccordion } from '../components/SplainerAccordion';
 import { CycleCircle } from '../components/CycleCircle';
 import { GSMotif } from '../assets/GSMotif';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useChews } from '../hooks/useChews';
-import { useMobile, useTablet } from '../hooks/useBreakpoints';
+import { useBreakpoints, useMobile, useTablet } from '../hooks/useBreakpoints';
 import { useMediaQuery } from '@mantine/hooks';
+
+const displayTextCopy = [
+  {
+    title: 'Awaiting Launch',
+    subtitle: 'Stage 0 - Pre-Flight Checks',
+    description:
+      'In this stage, the GrantShips process is being prepared for launch. The process will begin once the judge vote is initialized.',
+    buttonLabel: 'Read More',
+    href: 'https://grantships.fun',
+  },
+  {
+    title: 'Judge Election',
+    subtitle: 'Stage 1 - Elect Judges for Round Selection',
+    description:
+      'In this stage, Gitcoin DAO votes to elect judges who will be responsible for the selection of grant rounds. For this round of GrantShips, this vote will be held off-app. Click the button below to see the progress of the election.',
+    buttonLabel: 'View Election Progress',
+    href: 'https://gov.gitcoin.co/t/2025-delegate-nominations/19903',
+  },
+  {
+    title: 'Round Selection',
+    subtitle: 'Stage 2 - Select GG23 Community Rounds',
+    description:
+      "In this stage, elected Gitcoin Council members review round applications. Using a rubric, they score each application based on the round's alignment with Gitcoin's mission, the round's community, and other vital criteria. The top 6 applications are selected to move on to the Community Round.",
+    buttonLabel: 'View Selection Progress',
+    to: '/ships',
+  },
+  {
+    title: 'Community Round',
+    subtitle: 'Stage 3 - Community Voting',
+    description:
+      'In this stage, the Gitcoin Community Rounds are open on Gitcoin. Each ship implements their round on the Gitcoin platform.',
+    buttonLabel: 'View Community Round',
+    to: '/ships',
+  },
+  {
+    title: 'Round Reviews',
+    subtitle: 'Stage 4 - Final Round Reviews',
+    description:
+      'In this stage, GTC holders review the results of the Community Round and vote on the best round. The winning rounds can opt to automatically advance to the next round!',
+    buttonLabel: 'View Reviews',
+    to: '/ships',
+  },
+];
 
 export const Home = () => {
   const theme = useMantineTheme();
@@ -33,6 +76,8 @@ export const Home = () => {
   const isMobile = useMobile();
   const isTablet = useTablet();
   const collapseTopSection = useMediaQuery('(max-width: 1100px)');
+
+  const displayText = currentStage ? displayTextCopy[currentStage] : undefined;
 
   return (
     <Box>
@@ -114,37 +159,7 @@ export const Home = () => {
             </Button>
           </Flex>
         </Card>
-        <Box
-          mb={120}
-          maw={isTablet ? 450 : undefined}
-          mx={isTablet ? 'auto' : undefined}
-        >
-          <Title mb="xs" fz="h3" order={2}>
-            Judge Election
-          </Title>
-          <Text c="subtle" mb="lg">
-            Stage 1 - Elect Judges for Round Selection
-          </Text>
-          <Card variant="solid">
-            <Text mb="md" lh={1.4}>
-              In this stage, Gitcoin DAO votes to elect judges who will be
-              responsible for the selection of grant rounds. For this round of
-              GrantShips, this vote will be held off-app. Click the button below
-              to see the progress of the election.
-            </Text>
-            <Group justify="center">
-              <Button
-                variant="secondary"
-                component="a"
-                href="https://gov.gitcoin.co/t/2025-delegate-nominations/19903"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View Election Progress
-              </Button>
-            </Group>
-          </Card>
-        </Box>
+        {displayText && <LeaderDisplay displayText={displayText} />}
         <Box
           mb={120}
           maw={isTablet ? 450 : undefined}
@@ -165,6 +180,56 @@ export const Home = () => {
           </Box>
         </Box>
       </InnerContainer>
+    </Box>
+  );
+};
+
+type DisplayText = {
+  title: string;
+  subtitle: string;
+  description: string;
+  buttonLabel: string;
+  href?: string;
+  to?: string;
+};
+
+const LeaderDisplay = ({ displayText }: { displayText: DisplayText }) => {
+  const { isTablet } = useBreakpoints();
+  return (
+    <Box
+      mb={120}
+      maw={isTablet ? 450 : undefined}
+      mx={isTablet ? 'auto' : undefined}
+    >
+      <Title mb="xs" fz="h3" order={2}>
+        {displayText.title}
+      </Title>
+      <Text c="subtle" mb="lg">
+        {displayText.subtitle}
+      </Text>
+      <Card variant="solid">
+        <Text mb="md" lh={1.4}>
+          {displayText.description}
+        </Text>
+        <Group justify="center">
+          {displayText.href && (
+            <Button
+              variant="secondary"
+              component="a"
+              href={displayText.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {displayText.buttonLabel}
+            </Button>
+          )}
+          {displayText.to && (
+            <Button variant="secondary" component={Link} to="/ships">
+              View Progress
+            </Button>
+          )}
+        </Group>
+      </Card>
     </Box>
   );
 };

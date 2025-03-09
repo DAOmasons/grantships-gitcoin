@@ -24,6 +24,7 @@ import { PageLayout } from '../layout/Page';
 import { useChews } from '../hooks/useChews';
 import fxClasses from '../style/effects.module.css';
 import { roundNumberString } from '../utils/common';
+import { secondsToLongDate } from '../utils/time';
 
 const icons = [
   IconSquareNumber1,
@@ -114,7 +115,7 @@ export const Ships = () => {
                   <Text fw={600} fz="lg" mb={4} maw={240} lineClamp={1}>
                     {app.application.name}
                   </Text>
-                  <Text c="subtle">Last Updated Jan 1, 2025</Text>
+                  <Text c="subtle">{secondsToLongDate(app.lastUpdated)}</Text>
                 </Box>
               </Group>
               <Stack gap={0} align="flex-end">
