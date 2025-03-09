@@ -233,34 +233,3 @@ const LeaderDisplay = ({ displayText }: { displayText: DisplayText }) => {
     </Box>
   );
 };
-// <Box
-//   mb={120}
-//   maw={isTablet ? 450 : undefined}
-//   mx={isTablet ? 'auto' : undefined}
-// >
-//   <Title mb="xs" fz="h3" order={2}>
-//     Judge Election
-//   </Title>
-//   <Text c="subtle" mb="lg">
-//     Stage 1 - Elect Judges for Round Selection
-//   </Text>
-//   <Card variant="solid">
-//     <Text mb="md" lh={1.4}>
-//       In this stage, Gitcoin DAO votes to elect judges who will be
-//       responsible for the selection of grant rounds. For this round of
-//       GrantShips, this vote will be held off-app. Click the button below
-//       to see the progress of the election.
-//     </Text>
-//     <Group justify="center">
-//       <Button
-//         variant="secondary"
-//         component="a"
-//         href="https://gov.gitcoin.co/t/2025-delegate-nominations/19903"
-//         target="_blank"
-//         rel="noopener noreferrer"
-//       >
-//         View Election Progress
-//       </Button>
-//     </Group>
-//   </Card>
-// </Box>;
