@@ -73,7 +73,7 @@ export const SplainerAccordion = ({
     }
   }, [value, activeRound]);
   return (
-    <Accordion defaultValue={activeRound} value={value} onChange={setValue}>
+    <Accordion value={value} onChange={setValue}>
       {splainerData.map((item) => {
         const isSelected = value === item.value;
         const isActiveRound = activeRound === item.value;
