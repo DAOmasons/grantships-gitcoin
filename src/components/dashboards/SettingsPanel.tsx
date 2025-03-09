@@ -9,6 +9,8 @@ import { notifications } from '@mantine/notifications';
 import { isAddress } from 'viem';
 import HalChoicesABI from '../../abi/HALChoices.json';
 import { ContestStatus } from '../../constants/enum';
+import RubricVotesABI from '../../abi/RubricVotes.json';
+import { useMemo } from 'react';
 
 const CONTEST_STATUS_LABEL = {
   [ContestStatus.Populating]: 'Populating',
@@ -33,11 +35,21 @@ const CONTEST_STATUS_NEXT_ACTION = {
 };
 
 export const SettingsPanel = () => {
-  const { applicationRound, refetchAppRound } = useChews();
+  const { applicationRound, refetchAppRound, judgeAmount } = useChews();
 
   const { userData } = useUserData();
 
   const { tx } = useTx();
+
+  const haveAllJudgesVoted = useMemo(() => {
+    if (!applicationRound) return false;
+
+    if (applicationRound.applications.length === 0) return false;
+
+    return applicationRound.applications.every(
+      (app) => app.votes.length === judgeAmount
+    );
+  }, [applicationRound, judgeAmount]);
 
   const finalizeChoices = async () => {
     if (!applicationRound) {
@@ -86,10 +98,72 @@ export const SettingsPanel = () => {
     });
   };
 
+  const finalizeVoting = async () => {
+    if (!applicationRound) {
+      notifications.show({
+        title: 'Error',
+        message: 'Rubric Voting round not found',
+      });
+      return;
+    }
+
+    if (!userData?.isAdmin) {
+      notifications.show({
+        title: 'Error',
+        message: 'You do not have permission to finalize choices',
+      });
+      return;
+    }
+
+    if (!haveAllJudgesVoted) {
+      notifications.show({
+        title: 'Error',
+        message: 'Not all judges have voted',
+      });
+      return;
+    }
+
+    const votesAddress = applicationRound?.votesParams_id;
+
+    if (!isAddress(votesAddress)) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid votes address',
+      });
+      return;
+    }
+
+    tx({
+      writeContractParams: {
+        address: votesAddress,
+        abi: RubricVotesABI,
+        functionName: 'finalizeVotes',
+        args: [],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          refetchAppRound();
+          notifications.show({
+            title: 'Success',
+            message: 'Votes finalized',
+            color: 'green',
+          });
+        },
+      },
+    });
+  };
+
   const isPopulating =
     Number(applicationRound?.round?.contestStatus) === ContestStatus.Populating;
 
-  const nextAction = isPopulating ? finalizeChoices : () => {};
+  const isVoting =
+    Number(applicationRound?.round?.contestStatus) === ContestStatus.Voting;
+
+  const nextAction = isPopulating
+    ? finalizeChoices
+    : isVoting
+      ? finalizeVoting
+      : () => {};
 
   return (
     <Box>
@@ -131,7 +205,7 @@ export const SettingsPanel = () => {
               applicationRound?.round?.contestStatus
             ] || 'Error'}
           </Text>
-          <TxButton onClick={nextAction} disabled={!isPopulating}>
+          <TxButton onClick={nextAction} disabled={!isPopulating && !isVoting}>
             Accelerate!
           </TxButton>
         </Box>
