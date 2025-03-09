@@ -13,7 +13,7 @@ import {
   IconGavel,
   IconMilitaryAward,
 } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTablet } from '../hooks/useBreakpoints';
 
 const splainerData = [
@@ -63,9 +63,15 @@ export const SplainerAccordion = ({
 }: {
   activeRound?: string;
 }) => {
-  const [value, setValue] = useState<string | null>(activeRound || null);
+  const [value, setValue] = useState<string | null>(null);
   const { colors } = useMantineTheme();
   const isTablet = useTablet();
+
+  useEffect(() => {
+    if (value === null && activeRound && activeRound !== '0') {
+      setValue(activeRound);
+    }
+  }, [value, activeRound]);
   return (
     <Accordion defaultValue={activeRound} value={value} onChange={setValue}>
       {splainerData.map((item) => {
