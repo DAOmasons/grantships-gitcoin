@@ -4,6 +4,7 @@ import { useAccount } from 'wagmi';
 import { userQuery } from '../queries/userQuery';
 import { Address } from 'viem';
 import { AppRound, getRounds } from '../queries/getRounds';
+import { ContestStatus } from '../constants/enum';
 
 type UserData = {
   isJudge: boolean;
@@ -63,8 +64,24 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
     queryFn: () => getRounds(),
   });
 
+  console.log('applicationRound', applicationRound);
+
   const currentStage = applicationRound?.round?.contestStatus
-    ? Number(applicationRound.round.contestStatus)
+    ? Number(applicationRound?.round?.contestStatus) ===
+      ContestStatus.Populating
+      ? 1
+      : Number(applicationRound?.round?.contestStatus) === ContestStatus.Voting
+        ? 2
+        : Number(applicationRound?.round?.contestStatus) ===
+            ContestStatus.Continuous
+          ? 0
+          : Number(applicationRound?.round?.contestStatus) ===
+              ContestStatus.Finalized
+            ? 3
+            : Number(applicationRound?.round?.contestStatus) ===
+                ContestStatus.Executed
+              ? 4
+              : 0
     : 0;
 
   const NUM_JUDGES = 5;
