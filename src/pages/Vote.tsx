@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Card,
@@ -12,7 +13,12 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { PageLayout } from '../layout/Page';
-import { IconStar, IconStarFilled } from '@tabler/icons-react';
+import {
+  IconAlien,
+  IconStar,
+  IconStarFilled,
+  IconUfo,
+} from '@tabler/icons-react';
 import { useRef, useState } from 'react';
 import { PromptSchema, testAIServer } from '../utils/ai';
 
@@ -55,8 +61,8 @@ export const Vote = () => {
   );
   const [isLoading, setIsLoading] = useState(false);
 
-  const loadingShipRef = useRef(null);
-  const readoutRef = useRef(null);
+  const loadingShipRef = useRef<HTMLDivElement>(null);
+  const readoutRef = useRef<HTMLDivElement>(null);
 
   const handleRatingChange = (key: string, value: number) => {
     const updatedRatings = ratings.map((vector) =>
@@ -66,7 +72,6 @@ export const Vote = () => {
   };
 
   const handleSubmit = async () => {
-    console.log('ratings', ratings);
     if (!ratings.every((rating) => rating.rating)) {
       return;
     }
@@ -80,6 +85,16 @@ export const Vote = () => {
       ...seedRatings,
       context: context,
     };
+    setIsLoading(true);
+
+    if (loadingShipRef.current) {
+      setTimeout(() => {
+        loadingShipRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }, 400);
+    }
 
     const result = await testAIServer(promptSeed as PromptSchema);
 
@@ -87,6 +102,7 @@ export const Vote = () => {
 
     if (!reasoning) {
       console.error('No reasoning provided');
+      console.log('result', result);
       return;
     }
 
@@ -100,6 +116,17 @@ export const Vote = () => {
         }))
         .sort((a, b) => a.label.localeCompare(b.label))
     );
+
+    setIsLoading(false);
+
+    if (readoutRef.current) {
+      setTimeout(() => {
+        readoutRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }, 400);
+    }
   };
 
   return (
@@ -150,26 +177,78 @@ export const Vote = () => {
           />
         </Card>
       </Stack>
-      <Group justify="center" mb="lg">
-        <Button onClick={handleSubmit} disabled={isLoading} loading={isLoading}>
-          {isLoading ? 'Generating...' : 'Submit'}
-        </Button>
-      </Group>
-      <Box>
-        <Stack mb="lg" gap={'md'}>
-          {sliders.map((slider) => (
-            <Box>
-              <Text>{slider.label}</Text>
-              <Slider key={slider.label} value={slider.value} />
-            </Box>
-          ))}
-        </Stack>
-        {reasoning && (
-          <Text className="ws-pre-wrap" ref={readoutRef}>
-            {reasoning}
+      {!reasoning && (
+        <Group justify="center">
+          <Button
+            onClick={handleSubmit}
+            disabled={isLoading}
+            loading={isLoading}
+          >
+            {isLoading ? 'Generating...' : 'Submit'}
+          </Button>
+        </Group>
+      )}
+
+      <Stack
+        my={70}
+        justify="center"
+        align="center"
+        gap="sm"
+        style={{
+          display: isLoading || reasoning ? 'flex' : 'none',
+        }}
+      >
+        <Avatar size={56} bg="rgba(252,114,255,0.1)" ref={loadingShipRef}>
+          <IconUfo size={30} stroke={1.2} color={'#FC72FF'} />
+        </Avatar>
+        <Text>
+          {isLoading
+            ? 'Generating voting weights based on program metrics and preferences...'
+            : 'AI-powered voting insights based on your rating'}
+        </Text>
+      </Stack>
+
+      <Stack gap="lg">
+        <Box
+          style={{
+            display: reasoning ? 'block' : 'none',
+          }}
+        >
+          <Text mb="sm">
+            The AI's suggestion is just a recommendation. You can review,
+            adjust, or override it before casting your final vote.
           </Text>
+          <Card>
+            <Text className="ws-pre-wrap" ref={readoutRef}>
+              {reasoning}
+            </Text>
+          </Card>
+        </Box>
+
+        {sliders?.length > 0 && (
+          <Box>
+            <Text mb="sm">
+              Based on your responses, AI has generated a recommended voting
+              weight for each round. You can review these suggestions and adjust
+              them using the sliders to reflect your final decision.
+            </Text>
+            <Text mb="sm">
+              The AI’s recommendation is based on your priorities, but you have
+              full control to fine-tune your vote before submitting.
+            </Text>
+            <Card>
+              <Stack mb="lg" gap={'md'}>
+                {sliders.map((slider) => (
+                  <Box>
+                    <Text>{slider.label}</Text>
+                    <Slider key={slider.label} value={slider.value} />
+                  </Box>
+                ))}
+              </Stack>
+            </Card>
+          </Box>
         )}
-      </Box>
+      </Stack>
     </PageLayout>
   );
 };
