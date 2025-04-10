@@ -24,6 +24,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useChews } from '../hooks/useChews';
 import { useBreakpoints, useMobile, useTablet } from '../hooks/useBreakpoints';
 import { useMediaQuery } from '@mantine/hooks';
+import { testAIServer } from '../utils/ai';
 
 const displayTextCopy = [
   {
@@ -131,6 +132,7 @@ export const Home = () => {
           </Box>
         </Flex>
       </Container>
+      {/* <Button onClick={testAIServer}>Test API</Button> */}
       {/* <TxButton onClick={deployRubricVoting}>Fire!</TxButton> */}
       <InnerContainer>
         <Card
