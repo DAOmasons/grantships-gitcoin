@@ -25,9 +25,9 @@ const DUMMY_PROMPT: PromptSchema = {
   context: 'I prefer projects that fund local communities in the global south',
 };
 
-export const testAIServer = async () => {
+export const testAIServer = async (promptSeed: PromptSchema) => {
   try {
-    const validated = promptSchema.parse(DUMMY_PROMPT);
+    const validated = promptSchema.parse(promptSeed);
 
     if (!validated) {
       console.error('Validation failed');
@@ -47,8 +47,7 @@ export const testAIServer = async () => {
 
     const data = await response.json();
 
-    console.log('response', response);
-    console.log('data', data);
+    return data;
   } catch (error) {
     console.log('error', error);
   }

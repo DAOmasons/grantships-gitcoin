@@ -81,7 +81,6 @@ export const theme = createTheme({
     h5: '20px',
     h6: '16px',
   },
-
   defaultRadius: 'sm',
   colors: {
     kelp: KELP,
@@ -90,7 +89,6 @@ export const theme = createTheme({
     subtle: SUBTLE_TEXT,
     highlight: HIGHLIGHT_TEXT,
   },
-
   components: {
     Text: {
       classNames: {

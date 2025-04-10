@@ -1,7 +1,10 @@
 import {
   Box,
+  Button,
   Card,
+  Group,
   Rating,
+  Slider,
   Stack,
   Text,
   Textarea,
@@ -9,20 +12,89 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { PageLayout } from '../layout/Page';
-import { useForm } from '@mantine/form';
+import { IconStar, IconStarFilled } from '@tabler/icons-react';
+import { useState } from 'react';
+import { PromptSchema, testAIServer } from '../utils/ai';
+
+const vectors = [
+  {
+    key: 'new_funding_mechanism',
+    label: 'Innovating new allocation mechanisms is very important',
+    rating: 0,
+  },
+  {
+    key: 'matching_donations',
+    label: 'Total matching donations are a very important metric',
+    rating: 0,
+  },
+  {
+    key: 'participation_count',
+    label: 'The amount of participating addresses is an important metric',
+    rating: 0,
+  },
+  {
+    key: 'community_events',
+    label: 'The quantity of community events and engagement is important',
+    rating: 0,
+  },
+  {
+    key: 'project_completion_rate',
+    label:
+      'The amount of completed or mature projects funded is an important metric',
+    rating: 0,
+  },
+];
 
 export const Vote = () => {
   const { colors } = useMantineTheme();
-  const form = useForm({
-    initialValues: {
-      new_funding_values: 1,
-      matching_donations: 1,
-      participation_count: 1,
-      community_events: 1,
-      project_completion_rate: 1,
-      context: '',
-    },
-  });
+  const [ratings, setRatings] = useState(vectors);
+  const [context, setContext] = useState('');
+  const [reasoning, setReasoning] = useState('');
+  const [sliders, setSliders] = useState<{ label: string; value: number }[]>(
+    []
+  );
+
+  const handleRatingChange = (key: string, value: number) => {
+    const updatedRatings = ratings.map((vector) =>
+      vector.key === key ? { ...vector, rating: value } : vector
+    );
+    setRatings(updatedRatings);
+  };
+
+  const handleSubmit = async () => {
+    console.log('ratings', ratings);
+    if (!ratings.every((rating) => rating.rating)) {
+      return;
+    }
+
+    const seedRatings = ratings.reduce((acc, rating) => {
+      acc[rating.key] = rating.rating;
+      return acc;
+    }, {});
+
+    const promptSeed = {
+      ...seedRatings,
+      context: context,
+    };
+
+    const result = await testAIServer(promptSeed as PromptSchema);
+
+    const reasoning = result?.data?.reasoning;
+
+    if (!reasoning) {
+      console.error('No reasoning provided');
+      return;
+    }
+
+    setReasoning(reasoning);
+    console.log('result', result);
+    setSliders(
+      result.data.allocations.map((allocation) => ({
+        label: allocation.program,
+        value: allocation.percentage,
+      }))
+    );
+  };
 
   return (
     <PageLayout title="Vote">
@@ -42,44 +114,50 @@ export const Vote = () => {
           aligns with what you value most.
         </Text>
       </Box>
-      <Stack>
-        <Card bg={colors.dark[6]} p={24}>
-          <Text fz="lg" mb={10}>
-            How important is innovation on multi mechanism to you?
-          </Text>
-          <Rating defaultValue={1} color={colors.purple[6]} size={24} />
-        </Card>
-        <Card bg={colors.dark[6]} p={24}>
-          <Text fz="lg" mb={10}>
-            How important is the quantity of matching donations?
-          </Text>
-          <Rating defaultValue={1} color={colors.purple[6]} size={24} />
-        </Card>
-        <Card bg={colors.dark[6]} p={24}>
-          <Text fz="lg" mb={10}>
-            How important multi mechanism is to you?
-          </Text>
-          <Rating defaultValue={1} color={colors.purple[6]} size={24} />
-        </Card>
-        <Card bg={colors.dark[6]} p={24}>
-          <Text fz="lg" mb={10}>
-            How important multi mechanism is to you?
-          </Text>
-          <Rating defaultValue={1} color={colors.purple[6]} size={24} />
-        </Card>
-        <Card bg={colors.dark[6]} p={24}>
-          <Text fz="lg" mb={10}>
-            How important multi mechanism is to you?
-          </Text>
-          <Rating defaultValue={1} color={colors.purple[6]} size={24} />
-        </Card>
+      <Stack mb="xl">
+        {ratings.map((vector) => (
+          <Card bg={colors.dark[6]} p={24} h={120} key={vector.key}>
+            <Text fz="lg" mb={10}>
+              {vector.label}
+            </Text>
+            <Rating
+              color={colors.purple[6]}
+              size={24}
+              value={vector.rating}
+              onChange={(value) => handleRatingChange(vector.key, value)}
+              emptySymbol={
+                <IconStar size={24} color={colors.purple[6]} stroke={1.5} />
+              }
+              fullSymbol={<IconStarFilled size={24} color={colors.purple[6]} />}
+            />
+          </Card>
+        ))}
+
         <Card bg={colors.dark[6]}>
-          <Text fz="lg" mb={10}>
-            Would you like to add more context?
+          <Text fz="lg" mb={'sm'}>
+            Would you like to add more context? (Optional)
           </Text>
-          <Textarea variant="inset" size="sm"></Textarea>
+          <Textarea
+            variant="inset"
+            size="sm"
+            onChange={(e) => setContext(e.currentTarget.value)}
+          />
         </Card>
       </Stack>
+      <Group justify="center" mb="lg">
+        <Button onClick={handleSubmit}>Submit</Button>
+      </Group>
+      <Box>
+        <Stack mb="lg" gap={'md'}>
+          {sliders.map((slider) => (
+            <Box>
+              <Text>{slider.label}</Text>
+              <Slider key={slider.label} value={slider.value} />
+            </Box>
+          ))}
+        </Stack>
+        <Text className="ws-pre-wrap">{reasoning}</Text>
+      </Box>
     </PageLayout>
   );
 };
