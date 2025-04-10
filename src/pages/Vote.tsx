@@ -13,7 +13,7 @@ import {
 } from '@mantine/core';
 import { PageLayout } from '../layout/Page';
 import { IconStar, IconStarFilled } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { PromptSchema, testAIServer } from '../utils/ai';
 
 const vectors = [
@@ -53,6 +53,10 @@ export const Vote = () => {
   const [sliders, setSliders] = useState<{ label: string; value: number }[]>(
     []
   );
+  const [isLoading, setIsLoading] = useState(false);
+
+  const loadingShipRef = useRef(null);
+  const readoutRef = useRef(null);
 
   const handleRatingChange = (key: string, value: number) => {
     const updatedRatings = ratings.map((vector) =>
@@ -87,12 +91,14 @@ export const Vote = () => {
     }
 
     setReasoning(reasoning);
-    console.log('result', result);
+
     setSliders(
-      result.data.allocations.map((allocation) => ({
-        label: allocation.program,
-        value: allocation.percentage,
-      }))
+      result.data.allocations
+        .map((allocation) => ({
+          label: allocation.program,
+          value: allocation.percentage,
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label))
     );
   };
 
@@ -145,7 +151,9 @@ export const Vote = () => {
         </Card>
       </Stack>
       <Group justify="center" mb="lg">
-        <Button onClick={handleSubmit}>Submit</Button>
+        <Button onClick={handleSubmit} disabled={isLoading} loading={isLoading}>
+          {isLoading ? 'Generating...' : 'Submit'}
+        </Button>
       </Group>
       <Box>
         <Stack mb="lg" gap={'md'}>
@@ -156,7 +164,11 @@ export const Vote = () => {
             </Box>
           ))}
         </Stack>
-        <Text className="ws-pre-wrap">{reasoning}</Text>
+        {reasoning && (
+          <Text className="ws-pre-wrap" ref={readoutRef}>
+            {reasoning}
+          </Text>
+        )}
       </Box>
     </PageLayout>
   );
