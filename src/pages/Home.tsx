@@ -25,8 +25,6 @@ import { useChews } from '../hooks/useChews';
 import { useBreakpoints, useMobile, useTablet } from '../hooks/useBreakpoints';
 import { useMediaQuery } from '@mantine/hooks';
 
-import { getUserProof } from '../utils/merkle';
-
 const displayTextCopy = [
   {
     title: 'Awaiting Launch',
@@ -133,13 +131,13 @@ export const Home = () => {
           </Box>
         </Flex>
       </Container>
-      <Button
+      {/* <Button
         onClick={() =>
-          getUserProof('0x756ee8B8E898D497043c2320d9909f1DD5a7077G')
+          getUserProof('0x756ee8B8E898D497043c2320d9909f1DD5a7077F')
         }
       >
         Test API
-      </Button>
+      </Button> */}
       {/* <TxButton onClick={deployPublicVoting}>Fire!</TxButton> */}
       <InnerContainer>
         <Card

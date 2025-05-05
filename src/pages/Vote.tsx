@@ -7,15 +7,27 @@ import {
   Rating,
   Slider,
   Stack,
+  Tabs,
   Text,
   Textarea,
   Title,
   useMantineTheme,
 } from '@mantine/core';
 import { PageLayout } from '../layout/Page';
-import { IconStar, IconStarFilled, IconUfo } from '@tabler/icons-react';
-import { useRef, useState } from 'react';
+import {
+  IconStar,
+  IconStarFilled,
+  IconUfo,
+  IconUsersGroup,
+} from '@tabler/icons-react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { PromptSchema, testAIServer } from '../utils/ai';
+import { useAccount } from 'wagmi';
+import { getUserProof } from '../utils/merkle';
+import { notifications } from '@mantine/notifications';
+import { publicClient } from '../utils/config';
+import { ADDR } from '../constants/addresses';
+import MerklePointsABI from '../abi/MerklePoints.json';
 
 const vectors = [
   {
@@ -47,8 +59,118 @@ const vectors = [
 ];
 
 export const Vote = () => {
+  return (
+    <PageLayout title="Vote">
+      <Tabs defaultValue="vote" mb={70}>
+        <Tabs.List mb="md">
+          <Tabs.Tab value="vote" leftSection={<IconStar size={14} />}>
+            Vote
+          </Tabs.Tab>
+          <Tabs.Tab value="results" leftSection={<IconUsersGroup size={14} />}>
+            Results
+          </Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="vote">
+          <VoteUI />
+        </Tabs.Panel>
+        <Tabs.Panel value="results">
+          <></>
+        </Tabs.Panel>
+      </Tabs>
+    </PageLayout>
+  );
+};
+
+const VoteUI = () => {
+  const { address } = useAccount();
+  const [proof, setProof] = useState('');
+  const [eligible, setEligible] = useState(false);
+
+  useLayoutEffect(() => {
+    // check local storage for proof
+
+    if (!address) {
+      return;
+    }
+
+    const proof = localStorage.getItem(`proof-${address}`);
+
+    if (proof) {
+      setEligible(true);
+    }
+  }, [address]);
+
+  const checkEligibility = async () => {
+    try {
+      if (!address) {
+        notifications.show({
+          title: 'Error',
+          message: 'Please connect your wallet to check your eligibility',
+        });
+        return;
+      }
+
+      const proofFromServer = await getUserProof(address);
+
+      if (!proofFromServer) {
+        notifications.show({
+          title: 'Error',
+          color: 'red',
+          message: 'Error fetching proof from server',
+        });
+        return;
+      }
+
+      const isEligible = await publicClient.readContract({
+        address: ADDR.MERKLE_POINTS,
+        abi: MerklePointsABI,
+        functionName: 'verifyPoints',
+        args: [address, 1e18, proofFromServer],
+      });
+
+      if (isEligible) {
+        localStorage.setItem(`proof-${address}`, proofFromServer);
+        setProof(proofFromServer);
+        setEligible(true);
+      } else {
+        setEligible(false);
+      }
+    } catch (error) {
+      console.error('Error checking eligibility:', error);
+      notifications.show({
+        title: 'Error',
+        color: 'red',
+        message: 'Error checking eligibility',
+      });
+      return;
+    }
+  };
+
+  if (!eligible) {
+    return (
+      <Box>
+        <Title order={3} mb="md">
+          Get your proof
+        </Title>
+        <Text mb="md">
+          To vote, you need to prove your eligibility. Click the button below to
+          generate your proof.
+        </Text>
+        <Button onClick={checkEligibility}>Get Proof</Button>
+      </Box>
+    );
+  }
+
+  return (
+    <Box>
+      <VoteReady />
+    </Box>
+  );
+};
+
+const VoteReady = () => {
   const { colors } = useMantineTheme();
-  const [ratings, setRatings] = useState(vectors);
+
   const [context, setContext] = useState('');
   const [reasoning, setReasoning] = useState('');
   const [sliders, setSliders] = useState<{ label: string; value: number }[]>(
@@ -59,6 +181,7 @@ export const Vote = () => {
   const loadingShipRef = useRef<HTMLDivElement>(null);
   const readoutRef = useRef<HTMLDivElement>(null);
 
+  const [ratings, setRatings] = useState(vectors);
   const handleRatingChange = (key: string, value: number) => {
     const updatedRatings = ratings.map((vector) =>
       vector.key === key ? { ...vector, rating: value } : vector
@@ -125,7 +248,7 @@ export const Vote = () => {
   };
 
   return (
-    <PageLayout title="Vote">
+    <Box>
       <Box mb={'lg'}>
         <Title order={3} fz={'h3'} mb={'xl'}>
           Welcome to the New GTC Voting system
@@ -244,6 +367,6 @@ export const Vote = () => {
           </Box>
         )}
       </Stack>
-    </PageLayout>
+    </Box>
   );
 };

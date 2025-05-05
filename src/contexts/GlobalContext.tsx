@@ -64,8 +64,6 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
     queryFn: () => getRounds(),
   });
 
-  console.log('applicationRound', applicationRound);
-
   const currentStage = applicationRound?.round?.contestStatus
     ? Number(applicationRound?.round?.contestStatus) ===
       ContestStatus.Populating
