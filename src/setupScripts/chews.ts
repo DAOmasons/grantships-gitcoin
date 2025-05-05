@@ -9,7 +9,7 @@ import { HATS } from '../constants/setup';
 import { ADDR } from '../constants/addresses';
 import { arbitrum, arbitrumSepolia } from 'viem/chains';
 import { publicClient } from '../utils/config';
-import { ContestStatus } from '../constants/enum';
+import { ContestStatus, TimerType } from '../constants/enum';
 import ChewsFactoryABI from '../abi/ChewsFactory.json';
 import HalChoicesABI from '../abi/HALChoices.json';
 import { RUBRIC_COPY } from '../constants/rubric';
@@ -21,6 +21,9 @@ const MODULE_TAG = {
   HAL: 'HatsAllowList_v0.1.1',
   EMPTY_EXECUTION: 'EmptyExecution_v0.2.0',
   EMPTY_POINTS: 'EmptyPoints_v0.1.0',
+  PRE_POP: 'PrePop_v0.2.0',
+  MERKLE_POINTS: 'MerklePoints_v0.2.0',
+  TIMED_VOTES: 'TimedVotes_v1.0.0',
 } as const;
 
 export const CONTEST_V = '0.2.1';
@@ -156,4 +159,93 @@ export const finalizeChoices = async () => {
   const hash = await client.writeContract(request);
 
   console.log('hash', hash);
+};
+
+const encodeTimedVotingArgs = (): Hex => {
+  const TEN_DAYS = 10n * 24n * 60n * 60n;
+
+  const args = encodeAbiParameters(
+    parseAbiParameters('uint256, uint256, uint8, uint256, address'),
+    [TEN_DAYS, 0n, TimerType.Auto, HATS.ADMIN, ADDR.HATS]
+  );
+
+  return args;
+};
+
+const TEST_CHOICES = [
+  [[0n, ''], '0x', true, ADDR.HATS],
+  [[0n, ''], '0x', true, ADDR.HATS],
+] as const;
+
+const encodePrepopChoicesArgs = (): Hex => {
+  const args = encodeAbiParameters(
+    parseAbiParameters('((uint256,string),bytes,bool,address)[], bytes32[]'),
+    [TEST_CHOICES, [generateRandomBytes32(), generateRandomBytes32()]]
+  );
+
+  return args;
+};
+
+const encodeMerklePointsArgs = (): Hex => {
+  const MERKLE_POINTS =
+    '0xdc56428925fb0d14495de2f5d126f91282b8e6e69811397cf5b9f7e07f759902';
+  const args = encodeAbiParameters(parseAbiParameters('bytes32'), [
+    MERKLE_POINTS,
+  ]);
+
+  return args;
+};
+
+export const deployPublicVoting = async () => {
+  const votesArgs = encodeTimedVotingArgs();
+  const choicesArgs = encodePrepopChoicesArgs();
+  const pointsArgs = encodeMerklePointsArgs();
+  const executeArgs = emptyExecuteArgs();
+
+  const initData = encodeAbiParameters(
+    parseAbiParameters('string[4],bytes[4]'),
+    [
+      [
+        MODULE_TAG.TIMED_VOTES,
+        MODULE_TAG.MERKLE_POINTS,
+        MODULE_TAG.PRE_POP,
+        MODULE_TAG.EMPTY_EXECUTION,
+      ],
+      [votesArgs, pointsArgs, choicesArgs, executeArgs],
+    ]
+  );
+
+  const content = '';
+  const protocol = 0n;
+  const TAG_PREFIX = 'GG_APPLICATION_PUBLIC_VOTE';
+  const nonce = 1;
+
+  const filterTag = `${TAG_PREFIX}_${nonce}`;
+
+  const client = createWalletClient({
+    chain: arbitrum,
+    transport: custom(window.ethereum),
+  });
+
+  const [address] = await client.getAddresses();
+
+  const { request } = await publicClient.simulateContract({
+    account: address,
+    address: ADDR.CHEWS,
+    abi: ChewsFactoryABI,
+    functionName: 'buildContest',
+    args: [
+      [protocol, content],
+      initData,
+      CONTEST_V,
+      ContestStatus.Voting,
+      false,
+      filterTag,
+    ],
+  });
+
+  const hash = await client.writeContract(request);
+
+  console.log('hash', hash);
+  console.log('filterTag', filterTag);
 };

@@ -13,12 +13,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { PageLayout } from '../layout/Page';
-import {
-  IconAlien,
-  IconStar,
-  IconStarFilled,
-  IconUfo,
-} from '@tabler/icons-react';
+import { IconStar, IconStarFilled, IconUfo } from '@tabler/icons-react';
 import { useRef, useState } from 'react';
 import { PromptSchema, testAIServer } from '../utils/ai';
 
@@ -87,14 +82,14 @@ export const Vote = () => {
     };
     setIsLoading(true);
 
-    if (loadingShipRef.current) {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (loadingShipRef.current) {
         loadingShipRef.current.scrollIntoView({
           behavior: 'smooth',
           block: 'center',
         });
-      }, 400);
-    }
+      }
+    }, 400);
 
     const result = await testAIServer(promptSeed as PromptSchema);
 
@@ -119,14 +114,14 @@ export const Vote = () => {
 
     setIsLoading(false);
 
-    if (readoutRef.current) {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (readoutRef.current) {
         readoutRef.current.scrollIntoView({
           behavior: 'smooth',
           block: 'start',
         });
-      }, 400);
-    }
+      }
+    }, 400);
   };
 
   return (
