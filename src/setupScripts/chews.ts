@@ -202,17 +202,21 @@ export const deployPublicVoting = async () => {
   const pointsArgs = encodeMerklePointsArgs();
   const executeArgs = emptyExecuteArgs();
 
+  const MODULE_TAGS = [
+    MODULE_TAG.TIMED_VOTES,
+    MODULE_TAG.MERKLE_POINTS,
+    MODULE_TAG.PRE_POP,
+    MODULE_TAG.EMPTY_EXECUTION,
+  ] as const;
+
+  console.log('');
+
+  console.log('MODULE_TAGS', MODULE_TAGS);
+  console.log('CONTEST_V', CONTEST_V);
+
   const initData = encodeAbiParameters(
     parseAbiParameters('string[4],bytes[4]'),
-    [
-      [
-        MODULE_TAG.TIMED_VOTES,
-        MODULE_TAG.MERKLE_POINTS,
-        MODULE_TAG.PRE_POP,
-        MODULE_TAG.EMPTY_EXECUTION,
-      ],
-      [votesArgs, pointsArgs, choicesArgs, executeArgs],
-    ]
+    [MODULE_TAGS, [votesArgs, pointsArgs, choicesArgs, executeArgs]]
   );
 
   const content = '';
@@ -223,25 +227,31 @@ export const deployPublicVoting = async () => {
   const filterTag = `${TAG_PREFIX}_${nonce}`;
 
   const client = createWalletClient({
-    chain: arbitrum,
+    chain: arbitrumSepolia,
     transport: custom(window.ethereum),
   });
 
   const [address] = await client.getAddresses();
+
+  const args = [
+    [protocol, content],
+    initData,
+    CONTEST_V,
+    ContestStatus.Voting,
+    false,
+    filterTag,
+  ];
+
+  console.log('args', args);
+
+  console.log('ADDR.CHEWS', ADDR.CHEWS);
 
   const { request } = await publicClient.simulateContract({
     account: address,
     address: ADDR.CHEWS,
     abi: ChewsFactoryABI,
     functionName: 'buildContest',
-    args: [
-      [protocol, content],
-      initData,
-      CONTEST_V,
-      ContestStatus.Voting,
-      false,
-      filterTag,
-    ],
+    args,
   });
 
   const hash = await client.writeContract(request);

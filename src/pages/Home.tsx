@@ -24,9 +24,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useChews } from '../hooks/useChews';
 import { useBreakpoints, useMobile, useTablet } from '../hooks/useBreakpoints';
 import { useMediaQuery } from '@mantine/hooks';
-import { testAIServer } from '../utils/ai';
-import { TxButton } from '../components/TxButton';
-import { deployPublicVoting } from '../setupScripts/chews';
+
+import { getUserProof } from '../utils/merkle';
 
 const displayTextCopy = [
   {
@@ -134,8 +133,14 @@ export const Home = () => {
           </Box>
         </Flex>
       </Container>
-      {/* <Button onClick={testAIServer}>Test API</Button> */}
-      <TxButton onClick={deployPublicVoting}>Fire!</TxButton>
+      <Button
+        onClick={() =>
+          getUserProof('0x756ee8B8E898D497043c2320d9909f1DD5a7077G')
+        }
+      >
+        Test API
+      </Button>
+      {/* <TxButton onClick={deployPublicVoting}>Fire!</TxButton> */}
       <InnerContainer>
         <Card
           variant="kelp-outline"
