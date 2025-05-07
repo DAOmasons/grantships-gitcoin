@@ -173,8 +173,8 @@ const encodeTimedVotingArgs = (): Hex => {
 };
 
 const TEST_CHOICES = [
-  [[0n, ''], '0x', true, ADDR.HATS],
-  [[0n, ''], '0x', true, ADDR.HATS],
+  [[6665n, ''], '0x', true, ADDR.HATS],
+  [[6665n, ''], '0x', true, ADDR.HATS],
 ] as const;
 
 const encodePrepopChoicesArgs = (): Hex => {
@@ -227,7 +227,7 @@ export const deployPublicVoting = async () => {
   const filterTag = `${TAG_PREFIX}_${nonce}`;
 
   const client = createWalletClient({
-    chain: arbitrumSepolia,
+    chain: arbitrum,
     transport: custom(window.ethereum),
   });
 

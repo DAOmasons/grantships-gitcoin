@@ -24,6 +24,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useChews } from '../hooks/useChews';
 import { useBreakpoints, useMobile, useTablet } from '../hooks/useBreakpoints';
 import { useMediaQuery } from '@mantine/hooks';
+import { TxButton } from '../components/TxButton';
+import { deployPublicVoting } from '../setupScripts/chews';
 
 const displayTextCopy = [
   {
@@ -138,7 +140,7 @@ export const Home = () => {
       >
         Test API
       </Button> */}
-      {/* <TxButton onClick={deployPublicVoting}>Fire!</TxButton> */}
+      <TxButton onClick={deployPublicVoting}>Fire!</TxButton>
       <InnerContainer>
         <Card
           variant="kelp-outline"
