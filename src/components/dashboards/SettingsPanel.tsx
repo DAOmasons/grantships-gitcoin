@@ -6,11 +6,13 @@ import { InfoBanner } from '../InfoBanner';
 import { useUserData } from '../../hooks/useUserData';
 import { useTx } from '../../contexts/useTx';
 import { notifications } from '@mantine/notifications';
-import { isAddress } from 'viem';
+import { formatEther, isAddress } from 'viem';
 import HalChoicesABI from '../../abi/HALChoices.json';
 import { ContestStatus } from '../../constants/enum';
 import RubricVotesABI from '../../abi/RubricVotes.json';
 import { useMemo } from 'react';
+import { roundNumberString } from '../../utils/common';
+import { deployPublicVoting } from '../../setupScripts/chews';
 
 const CONTEST_STATUS_LABEL = {
   [ContestStatus.Populating]: 'Populating',
@@ -153,15 +155,53 @@ export const SettingsPanel = () => {
     });
   };
 
-  const isPopulating =
+  const launchVoting = async () => {
+    const sortedShips = applicationRound?.applications
+      .map((app) => {
+        const avgScore =
+          app?.votes.length === 0
+            ? '0'
+            : roundNumberString(
+                formatEther(
+                  (app.votes.reduce(
+                    (acc, vote) => acc + BigInt(vote.amount),
+                    0n
+                  ) /
+                    BigInt(app.votes.length)) *
+                    100n
+                ),
+                0
+              );
+
+        return {
+          ...app,
+          avgScore,
+        };
+      })
+      .sort((a, b) => Number(b.avgScore) - Number(a.avgScore));
+
+    const topSixShipIds = sortedShips?.slice(0, 6).map((ship) => ship.id);
+
+    if (!topSixShipIds || topSixShipIds.length === 0) {
+      notifications.show({
+        title: 'Error',
+        message: 'No ships found or incorrect amount of ships',
+      });
+      return;
+    }
+
+    deployPublicVoting(topSixShipIds);
+  };
+
+  const isRubricPopulating =
     Number(applicationRound?.round?.contestStatus) === ContestStatus.Populating;
 
-  const isVoting =
+  const isRubricVoting =
     Number(applicationRound?.round?.contestStatus) === ContestStatus.Voting;
 
-  const nextAction = isPopulating
+  const rubricVoteNextAction = isRubricPopulating
     ? finalizeChoices
-    : isVoting
+    : isRubricVoting
       ? finalizeVoting
       : () => {};
 
@@ -205,7 +245,10 @@ export const SettingsPanel = () => {
               applicationRound?.round?.contestStatus
             ] || 'Error'}
           </Text>
-          <TxButton onClick={nextAction} disabled={!isPopulating && !isVoting}>
+          <TxButton
+            onClick={rubricVoteNextAction}
+            disabled={!isRubricPopulating && !isRubricVoting}
+          >
             Accelerate!
           </TxButton>
         </Box>
@@ -214,10 +257,42 @@ export const SettingsPanel = () => {
         <Text fz="xl" fw={600} c="highlight">
           Public Vote
         </Text>
-        <InfoBanner
-          title="Contracts Inactive"
-          description="The public vote contracts have not yet been initialized, or are not active."
-        />
+        <Group gap={8}>
+          <Text component={'a'} href={``} fw={600} td="underline">
+            Contract Address
+          </Text>
+          <IconArrowRight size={18} stroke={1} />
+        </Group>
+        <Box>
+          <Text mb="xxs" fw={600}>
+            Do
+            {/* Current Status:{' '}
+            {CONTEST_STATUS_LABEL[applicationRound?.round?.contestStatus] ||
+              'Error'} */}
+          </Text>
+          <Text fz="sm" fs={'italic'} c="subtle">
+            Do
+            {/* {CONTEST_STATUS_DESCRIPTION[
+              applicationRound?.round?.contestStatus
+            ] || 'Error'} */}
+          </Text>
+        </Box>
+        <Box>
+          <Text mb="xxs" fw={600}>
+            Next Action:{' '}
+          </Text>
+          <Text fz="sm" fs={'italic'} c="subtle" mb="lg">
+            {CONTEST_STATUS_NEXT_ACTION[
+              applicationRound?.round?.contestStatus
+            ] || 'Error'}
+          </Text>
+          <TxButton
+            // onClick={nextAction} disabled={!isPopulating && !isVoting}
+            onClick={launchVoting}
+          >
+            Accelerate!
+          </TxButton>
+        </Box>
       </Stack>
     </Box>
   );

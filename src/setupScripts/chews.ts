@@ -5,7 +5,7 @@ import {
   Hex,
   parseAbiParameters,
 } from 'viem';
-import { HATS } from '../constants/setup';
+import { HATS, ZER0_ADDRESS } from '../constants/setup';
 import { ADDR } from '../constants/addresses';
 import { arbitrum, arbitrumSepolia } from 'viem/chains';
 import { publicClient } from '../utils/config';
@@ -172,21 +172,16 @@ const encodeTimedVotingArgs = (): Hex => {
   return args;
 };
 
-const TEST_CHOICES = [
-  [[6665n, ''], '0x', true, ADDR.HATS],
-  [[6665n, ''], '0x', true, ADDR.HATS],
-] as const;
-
-const encodePrepopChoicesArgs = (): Hex => {
+const encodePrepopChoicesArgs = (choices: any, choiceIds: any): Hex => {
   const args = encodeAbiParameters(
     parseAbiParameters('((uint256,string),bytes,bool,address)[], bytes32[]'),
-    [TEST_CHOICES, [generateRandomBytes32(), generateRandomBytes32()]]
+    [choices, choiceIds]
   );
 
   return args;
 };
 
-const encodeMerklePointsArgs = (): Hex => {
+export const encodeMerklePointsArgs = (): Hex => {
   const MERKLE_POINTS =
     '0xdc56428925fb0d14495de2f5d126f91282b8e6e69811397cf5b9f7e07f759902';
   const args = encodeAbiParameters(parseAbiParameters('bytes32'), [
@@ -196,9 +191,16 @@ const encodeMerklePointsArgs = (): Hex => {
   return args;
 };
 
-export const deployPublicVoting = async () => {
+export const deployPublicVoting = async (topSixShipIds: string[]) => {
+  const choices = topSixShipIds.map((shipId) => [
+    [6665n, shipId],
+    shipId,
+    true,
+    ZER0_ADDRESS,
+  ]);
+
   const votesArgs = encodeTimedVotingArgs();
-  const choicesArgs = encodePrepopChoicesArgs();
+  const choicesArgs = encodePrepopChoicesArgs(choices, topSixShipIds);
   const pointsArgs = encodeMerklePointsArgs();
   const executeArgs = emptyExecuteArgs();
 
@@ -222,7 +224,7 @@ export const deployPublicVoting = async () => {
   const content = '';
   const protocol = 0n;
   const TAG_PREFIX = 'GG_APPLICATION_PUBLIC_VOTE';
-  const nonce = 1;
+  const nonce = 2;
 
   const filterTag = `${TAG_PREFIX}_${nonce}`;
 

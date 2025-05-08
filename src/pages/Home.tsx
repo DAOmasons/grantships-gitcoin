@@ -66,7 +66,7 @@ const displayTextCopy = [
     description:
       'In this stage, GTC holders review the results of the Community Round and vote on the best round. The winning rounds can opt to automatically advance to the next round!',
     buttonLabel: 'View Reviews',
-    to: '/ships',
+    to: '/vote',
   },
 ];
 
@@ -140,7 +140,7 @@ export const Home = () => {
       >
         Test API
       </Button> */}
-      <TxButton onClick={deployPublicVoting}>Fire!</TxButton>
+      {/* <TxButton onClick={deployPublicVoting}>Fire!</TxButton> */}
       <InnerContainer>
         <Card
           variant="kelp-outline"
