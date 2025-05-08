@@ -1,6 +1,6 @@
 import { Address } from 'viem';
 
-const API = 'https://claude-service-api.vercel.app';
+// const API = 'https://claude-service-api.vercel.app';
 const API_LOCAL = 'http://localhost:8008';
 
 export const getUserProof = async (address: Address) => {
@@ -12,6 +12,11 @@ export const getUserProof = async (address: Address) => {
   });
 
   const json = await res.json();
+  console.log('json', json);
+
+  if (!res.ok && res.status === 404) {
+    return [];
+  }
 
   if (!json.success) {
     console.error('Error fetching proof:', json.error);
