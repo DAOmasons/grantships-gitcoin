@@ -20,7 +20,7 @@ export type AppRound = Omit<GgApplicationRound, 'applications' | 'rubric'> & {
   applications: ResolvedApplication[];
 };
 
-export const getRounds = async (): Promise<AppRound | undefined> => {
+export const getRubricRound = async (): Promise<AppRound | undefined> => {
   try {
     const res = await sdk.getApplicationRound({ id: ADDR.RUBRIC_ROUND });
 
@@ -51,5 +51,45 @@ export const getRounds = async (): Promise<AppRound | undefined> => {
   } catch (error) {
     console.error(error);
     throw new Error('Failed to fetch application round');
+  }
+};
+
+export type RawPublicRoundData = {
+  id: string;
+  contestStatus: number;
+  ships: {
+    choiceId: string;
+    amountVoted: bigint;
+    batchVotes: undefined;
+  }[];
+};
+
+export const getPublicRound = async (): Promise<RawPublicRoundData | void> => {
+  try {
+    const res = await sdk.getPublicRound({ id: ADDR.PUBLIC_ROUND });
+
+    if (!res.GGPublicRound_by_pk) {
+      throw new Error('Round not found in the database');
+    }
+
+    const raw = res.GGPublicRound_by_pk.choicesParams?.basicChoices?.choices;
+
+    if (!raw) {
+      throw new Error('No ships found in the round');
+    }
+
+    const ships = raw.map((choice) => ({
+      choiceId: choice.choiceId,
+      amountVoted: BigInt(choice.amountVoted),
+      batchVotes: undefined,
+    }));
+
+    return {
+      id: ADDR.PUBLIC_ROUND,
+      ships,
+      contestStatus: Number(res.GGPublicRound_by_pk.round?.contestStatus),
+    };
+  } catch (error) {
+    console.error(error);
   }
 };

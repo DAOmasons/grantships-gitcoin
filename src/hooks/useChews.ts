@@ -13,6 +13,11 @@ export const useChews = () => {
     isLoadingAppRound: context.isLoadingAppRound,
     appRoundError: context.appRoundError,
     refetchAppRound: context.refetchAppRound,
+    publicRound: context.publicRound,
+    isLoadingPublicRound: context.isLoadingPublicRound,
+    publicRoundError: context.publicRoundError,
+    refetchPublicRound: context.refetchPublicRound,
+    currentStage_p: context.publicRound?.contestStatus,
     currentStage: context.currentStage,
     judgeAmount: context.judgeAmount,
   };

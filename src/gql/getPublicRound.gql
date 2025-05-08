@@ -1,0 +1,16 @@
+query getPublicRound($id: String!) {
+  GGPublicRound_by_pk(id: $id) {
+    choicesParams {
+      basicChoices {
+        choices {
+          id
+          choiceId
+          amountVoted
+        }
+      }
+    }
+    round {
+      contestStatus
+    }
+  }
+}
