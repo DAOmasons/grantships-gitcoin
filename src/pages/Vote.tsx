@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Avatar,
   Box,
   Button,
@@ -15,6 +16,7 @@ import {
 } from '@mantine/core';
 import { PageLayout } from '../layout/Page';
 import {
+  IconList,
   IconStar,
   IconStarFilled,
   IconUfo,
@@ -34,6 +36,7 @@ import { encodeAbiParameters, Hex, parseAbiParameters } from 'viem';
 import { useTx } from '../contexts/useTx';
 import ContestABI from '../abi/Contest.json';
 import { useChews } from '../hooks/useChews';
+import { Link } from 'react-router-dom';
 
 const vectors = [
   {
@@ -398,6 +401,28 @@ const VoteReady = ({ proof }: { proof: string[] | null }) => {
     });
   };
 
+  const handleSliderChange = (id: string, newValue: number) => {
+    const otherValuesTotal = sliders.reduce(
+      (sum, slider) => (slider.id !== id ? sum + slider.value : sum),
+      0
+    );
+
+    // const otherValuesTotal = Object.entries(sliders).reduce(
+    //   (sum, [entryId, value]) => (id !== entryId ? sum + value : sum),
+    //   0
+    // );
+    const maxAllowed = 100 - otherValuesTotal;
+    const clampedValue = Math.min(newValue, maxAllowed);
+
+    // Update the slider value
+
+    const updatedSliders = sliders.map((slider) =>
+      slider.id === id ? { ...slider, value: clampedValue } : slider
+    );
+
+    setSliders(updatedSliders);
+  };
+
   return (
     <Box>
       <Box mb={'lg'}>
@@ -508,15 +533,38 @@ const VoteReady = ({ proof }: { proof: string[] | null }) => {
             <Card>
               <Stack mb="lg" gap={'md'}>
                 {sliders.map((slider) => (
-                  <Box key={slider.id}>
-                    <Text>{slider.name}</Text>
-                    <Slider
-                      value={slider.value}
-                      // size={2}
-                      // thumbSize={16}
-                      // color="grey"
-                      // thumbProps={{ bg: 'white' }}
-                    />
+                  <Box key={slider.id} mb="lg">
+                    <Group mb="sm" justify="space-between" w="90%">
+                      <Box w="fit-content">
+                        <Link
+                          to={`/ship/${slider.id}`}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          <Group gap="xs">
+                            <Avatar src={slider.imgUrl} size={40} />
+                            <Text lineClamp={1} maw={200}>
+                              {slider.name}
+                            </Text>
+                          </Group>
+                        </Link>
+                      </Box>
+                      <ActionIcon size={16}>
+                        <IconList />
+                      </ActionIcon>
+                    </Group>
+                    <Group>
+                      <Slider
+                        w={'90%'}
+                        value={slider.value}
+                        size={2}
+                        color={colors.dark[5]}
+                        onChange={(value) =>
+                          handleSliderChange(slider.id, value)
+                        }
+                      />
+                      <Text fz="xs">{slider.value} %</Text>
+                    </Group>
                   </Box>
                 ))}
               </Stack>
