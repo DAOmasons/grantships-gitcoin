@@ -365,13 +365,17 @@ const VoteReady = ({ proof }: { proof: string[] | null }) => {
     );
 
     const data = encodeAbiParameters(parseAbiParameters('bytes, bytes'), [
-      pointsData,
       votesData,
+      pointsData,
     ]);
 
     const choiceIds = sliders.map((slider) => slider.id);
     const amounts = sliders.map((slider) => slider.value);
-    const dataForEach = sliders.map((slider) => data);
+    const dataForEach = sliders.map((_slider) => data);
+
+    console.log('amounts', amounts);
+    console.log('choiceIds', choiceIds);
+    console.log('dataForEach', dataForEach);
 
     const voteCopy = JSON.stringify({
       ratings,
@@ -396,7 +400,7 @@ const VoteReady = ({ proof }: { proof: string[] | null }) => {
         address: ADDR.PUBLIC_ROUND,
         abi: ContestABI,
         functionName: 'batchVote',
-        args: [choiceIds, amounts, dataForEach, batchMetadata],
+        args: [choiceIds, amounts, dataForEach, 100, batchMetadata],
       },
     });
   };
@@ -407,10 +411,6 @@ const VoteReady = ({ proof }: { proof: string[] | null }) => {
       0
     );
 
-    // const otherValuesTotal = Object.entries(sliders).reduce(
-    //   (sum, [entryId, value]) => (id !== entryId ? sum + value : sum),
-    //   0
-    // );
     const maxAllowed = 100 - otherValuesTotal;
     const clampedValue = Math.min(newValue, maxAllowed);
 
