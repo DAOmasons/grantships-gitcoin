@@ -3,7 +3,7 @@ import { z } from 'zod';
 const API = 'https://claude-service-api.vercel.app';
 const API_LOCAL = 'http://localhost:8008';
 
-const ROUTE = '/api/claude/complete';
+const ROUTE = '/api/complete';
 
 const promptSchema = z.object({
   new_funding_mechanism: z.number().min(1).max(5),
