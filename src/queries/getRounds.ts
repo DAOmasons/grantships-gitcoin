@@ -6,6 +6,7 @@ import {
   GgApplicationRound,
   GgApplicationVote,
 } from '../generated/graphql';
+import { batchVoteSchema } from '../schemas/batchVote';
 import { sdk } from '../utils/indexer';
 
 export type ResolvedVote = GgApplicationVote;
@@ -60,7 +61,18 @@ export type RawPublicRoundData = {
   ships: {
     choiceId: string;
     amountVoted: bigint;
-    batchVotes: undefined;
+  }[];
+  batchVotes: {
+    voter: string;
+    timestamp: number;
+    metadata: {
+      ratings: {
+        key: string;
+        label: string;
+        value: bigint;
+      }[];
+      context: string;
+    };
   }[];
 };
 
@@ -81,13 +93,26 @@ export const getPublicRound = async (): Promise<RawPublicRoundData | void> => {
     const ships = raw.map((choice) => ({
       choiceId: choice.choiceId,
       amountVoted: BigInt(choice.amountVoted),
-      batchVotes: undefined,
     }));
 
     return {
       id: ADDR.PUBLIC_ROUND,
       ships,
       contestStatus: Number(res.GGPublicRound_by_pk.round?.contestStatus),
+      batchVotes: res.BatchVote.map((vote) => {
+        const metadata = JSON.parse(vote.comment as string);
+
+        const validated = batchVoteSchema.safeParse(metadata);
+
+        if (!validated.success) {
+          throw new Error('Invalid metadata format');
+        }
+        return {
+          voter: vote.voter,
+          timestamp: vote.timestamp,
+          metadata: validated.data,
+        };
+      }),
     };
   } catch (error) {
     console.error(error);

@@ -13,4 +13,14 @@ query getPublicRound($id: String!) {
       contestStatus
     }
   }
+  BatchVote(where: { round_id: { _eq: $id } }) {
+    id
+    voter
+    timestamp
+    comment
+    votes {
+      choice_id
+      amount
+    }
+  }
 }

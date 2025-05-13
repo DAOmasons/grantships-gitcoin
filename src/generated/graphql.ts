@@ -1712,6 +1712,9 @@ export type GgPublicRound = {
   createdAt: Scalars['Int']['output'];
   db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
   id: Scalars['String']['output'];
+  /** An object relationship */
+  pointsParams?: Maybe<Params_MerklePoints_V0_2_0>;
+  pointsParams_id: Scalars['String']['output'];
   postedBy: Scalars['String']['output'];
   /** An object relationship */
   round?: Maybe<Round>;
@@ -1733,6 +1736,8 @@ export type GgPublicRound_Bool_Exp = {
   createdAt?: InputMaybe<Int_Comparison_Exp>;
   db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
+  pointsParams?: InputMaybe<Params_MerklePoints_V0_2_0_Bool_Exp>;
+  pointsParams_id?: InputMaybe<String_Comparison_Exp>;
   postedBy?: InputMaybe<String_Comparison_Exp>;
   round?: InputMaybe<Round_Bool_Exp>;
   round_id?: InputMaybe<String_Comparison_Exp>;
@@ -1749,6 +1754,8 @@ export type GgPublicRound_Order_By = {
   createdAt?: InputMaybe<Order_By>;
   db_write_timestamp?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  pointsParams?: InputMaybe<Params_MerklePoints_V0_2_0_Order_By>;
+  pointsParams_id?: InputMaybe<Order_By>;
   postedBy?: InputMaybe<Order_By>;
   round?: InputMaybe<Round_Order_By>;
   round_id?: InputMaybe<Order_By>;
@@ -1768,6 +1775,8 @@ export enum GgPublicRound_Select_Column {
   DbWriteTimestamp = 'db_write_timestamp',
   /** column name */
   Id = 'id',
+  /** column name */
+  PointsParamsId = 'pointsParams_id',
   /** column name */
   PostedBy = 'postedBy',
   /** column name */
@@ -1791,6 +1800,7 @@ export type GgPublicRound_Stream_Cursor_Value_Input = {
   createdAt?: InputMaybe<Scalars['Int']['input']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
+  pointsParams_id?: InputMaybe<Scalars['String']['input']>;
   postedBy?: InputMaybe<Scalars['String']['input']>;
   round_id?: InputMaybe<Scalars['String']['input']>;
   votesParams_id?: InputMaybe<Scalars['String']['input']>;
@@ -5325,7 +5335,7 @@ export type GetPublicRoundQueryVariables = Exact<{
 }>;
 
 
-export type GetPublicRoundQuery = { __typename?: 'query_root', GGPublicRound_by_pk?: { __typename?: 'GGPublicRound', choicesParams?: { __typename?: 'Params_PrePop_v0_2_0', basicChoices?: { __typename?: 'BasicChoices', choices: Array<{ __typename?: 'BasicChoice', id: string, choiceId: string, amountVoted: any }> } | null } | null, round?: { __typename?: 'Round', contestStatus: any } | null } | null };
+export type GetPublicRoundQuery = { __typename?: 'query_root', GGPublicRound_by_pk?: { __typename?: 'GGPublicRound', choicesParams?: { __typename?: 'Params_PrePop_v0_2_0', basicChoices?: { __typename?: 'BasicChoices', choices: Array<{ __typename?: 'BasicChoice', id: string, choiceId: string, amountVoted: any }> } | null } | null, round?: { __typename?: 'Round', contestStatus: any } | null } | null, BatchVote: Array<{ __typename?: 'BatchVote', id: string, voter: string, timestamp: number, comment?: string | null, votes: Array<{ __typename?: 'BasicVote', choice_id: string, amount: any }> }> };
 
 export type GetRecentTransactionQueryVariables = Exact<{
   txHash: Scalars['String']['input'];
@@ -5457,6 +5467,16 @@ export const GetPublicRoundDocument = gql`
     }
     round {
       contestStatus
+    }
+  }
+  BatchVote(where: {round_id: {_eq: $id}}) {
+    id
+    voter
+    timestamp
+    comment
+    votes {
+      choice_id
+      amount
     }
   }
 }

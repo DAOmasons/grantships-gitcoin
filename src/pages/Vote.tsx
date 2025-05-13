@@ -37,6 +37,8 @@ import { useTx } from '../contexts/useTx';
 import ContestABI from '../abi/Contest.json';
 import { useChews } from '../hooks/useChews';
 import { Link } from 'react-router-dom';
+import { batchVoteSchema } from '../schemas/batchVote';
+import { GG_MD_POINTER } from '../constants/tags';
 
 const vectors = [
   {
@@ -68,9 +70,10 @@ const vectors = [
 ];
 
 export const Vote = () => {
+  const [currentTab, setCurrentTab] = useState('vote');
   return (
     <PageLayout title="Vote">
-      <Tabs defaultValue="vote" mb={70}>
+      <Tabs defaultValue={currentTab} value={currentTab} mb={70}>
         <Tabs.List mb="md">
           <Tabs.Tab value="vote" leftSection={<IconStar size={14} />}>
             Vote
@@ -80,7 +83,7 @@ export const Vote = () => {
           </Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="vote">
-          <VoteUI />
+          <VoteUI setCurrentTab={setCurrentTab} />
         </Tabs.Panel>
         <Tabs.Panel value="results">
           <></>
@@ -90,7 +93,11 @@ export const Vote = () => {
   );
 };
 
-const VoteUI = () => {
+const VoteUI = ({
+  setCurrentTab,
+}: {
+  setCurrentTab: (tab: string) => void;
+}) => {
   const { address } = useAccount();
   const [proof, setProof] = useState<string[] | null>(null);
   const [checkingEligible, setCheckingEligible] = useState(false);
@@ -207,7 +214,7 @@ const VoteUI = () => {
 
   return (
     <Box>
-      <VoteReady proof={proof} />
+      <VoteReady proof={proof} setCurrentTab={setCurrentTab} />
     </Box>
   );
 };
@@ -262,7 +269,13 @@ const fakeSliderData = [
   },
 ];
 
-const VoteReady = ({ proof }: { proof: string[] | null }) => {
+const VoteReady = ({
+  proof,
+  setCurrentTab,
+}: {
+  proof: string[] | null;
+  setCurrentTab: (tab: string) => void;
+}) => {
   const { colors } = useMantineTheme();
 
   const [context, setContext] = useState('');
@@ -270,7 +283,7 @@ const VoteReady = ({ proof }: { proof: string[] | null }) => {
   const [sliders, setSliders] = useState<SliderData[]>(fakeSliderData);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { publicRound } = useChews();
+  const { publicRound, refetchPublicRound } = useChews();
 
   const loadingShipRef = useRef<HTMLDivElement>(null);
   const readoutRef = useRef<HTMLDivElement>(null);
@@ -370,19 +383,30 @@ const VoteReady = ({ proof }: { proof: string[] | null }) => {
     ]);
 
     const choiceIds = sliders.map((slider) => slider.id);
-    const amounts = sliders.map((slider) => slider.value);
+    const amounts = sliders.map(
+      (slider) => BigInt(slider.value) * BigInt(1e16)
+    );
     const dataForEach = sliders.map((_slider) => data);
 
-    console.log('amounts', amounts);
-    console.log('choiceIds', choiceIds);
-    console.log('dataForEach', dataForEach);
-
-    const voteCopy = JSON.stringify({
+    const voteCopy = {
       ratings,
       context,
-    });
+    };
 
-    const batchMetadata = [6665n, voteCopy] as [bigint, string];
+    const validated = batchVoteSchema.safeParse(voteCopy);
+
+    if (!validated.success) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid vote metadata',
+      });
+      return;
+    }
+
+    const batchMetadata = [GG_MD_POINTER, JSON.stringify(validated.data)] as [
+      bigint,
+      string,
+    ];
 
     if (
       choiceIds.length !== amounts.length ||
@@ -400,7 +424,13 @@ const VoteReady = ({ proof }: { proof: string[] | null }) => {
         address: ADDR.PUBLIC_ROUND,
         abi: ContestABI,
         functionName: 'batchVote',
-        args: [choiceIds, amounts, dataForEach, 100, batchMetadata],
+        args: [choiceIds, amounts, dataForEach, BigInt(1e18), batchMetadata],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          refetchPublicRound?.();
+          setCurrentTab('results');
+        },
       },
     });
   };
