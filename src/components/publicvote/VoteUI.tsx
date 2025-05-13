@@ -5,7 +5,7 @@ import { notifications } from '@mantine/notifications';
 import { publicClient } from '../../utils/config';
 import { ADDR } from '../../constants/addresses';
 import MerklePointsABI from '../../abi/MerklePoints.json';
-import gtcLogo from '../../assets/gtc-logo.png';
+import gtcLogo from '../../assets/gitcoin-gtc-logo.png';
 
 import { Avatar, Box, Group, Text, Title } from '@mantine/core';
 import { TxButton } from '../TxButton';
