@@ -9,6 +9,7 @@ import {
 import { useState } from 'react';
 import { VoteUI } from '../components/publicvote/VoteUI';
 import { Results } from '../components/publicvote/Results';
+import { Reviews } from '../components/publicvote/Reviews';
 
 export const Vote = () => {
   const [currentTab, setCurrentTab] = useState('vote');
@@ -38,7 +39,7 @@ export const Vote = () => {
           <Results />
         </Tabs.Panel>
         <Tabs.Panel value="reviews">
-          <div>Reviews</div>
+          <Reviews />
         </Tabs.Panel>
       </Tabs>
     </PageLayout>
