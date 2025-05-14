@@ -18,7 +18,10 @@ type UserData = {
 };
 
 type PublicRound = Omit<RawPublicRoundData, 'ships'> & {
-  ships: RawPublicRoundData['ships'] & { name?: string; imgUrl: string }[];
+  ships: (RawPublicRoundData['ships'][number] & {
+    name?: string;
+    imgUrl: string;
+  })[];
 };
 
 type GlobalContextType = {

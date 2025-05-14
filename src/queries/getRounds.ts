@@ -63,6 +63,7 @@ export type RawPublicRoundData = {
     amountVoted: bigint;
   }[];
   batchVotes: {
+    id: string;
     voter: string;
     timestamp: number;
     metadata: {
@@ -73,6 +74,10 @@ export type RawPublicRoundData = {
       }[];
       context: string;
     };
+    votes: {
+      choice_id: string;
+      amount: bigint;
+    }[];
   }[];
 };
 
@@ -99,8 +104,8 @@ export const getPublicRound = async (): Promise<RawPublicRoundData | void> => {
       id: ADDR.PUBLIC_ROUND,
       ships,
       contestStatus: Number(res.GGPublicRound_by_pk.round?.contestStatus),
-      batchVotes: res.BatchVote.map((vote) => {
-        const metadata = JSON.parse(vote.comment as string);
+      batchVotes: res.BatchVote.map((bv) => {
+        const metadata = JSON.parse(bv.comment as string);
 
         const validated = batchVoteSchema.safeParse(metadata);
 
@@ -108,9 +113,11 @@ export const getPublicRound = async (): Promise<RawPublicRoundData | void> => {
           throw new Error('Invalid metadata format');
         }
         return {
-          voter: vote.voter,
-          timestamp: vote.timestamp,
+          id: bv.id,
+          voter: bv.voter,
+          timestamp: bv.timestamp,
           metadata: validated.data,
+          votes: bv.votes,
         };
       }),
     };
