@@ -41,7 +41,7 @@ export const VoteReady = ({
   setCurrentTab: (tab: string) => void;
 }) => {
   const { colors } = useMantineTheme();
-  const { publicRound, refetchPublicRound } = useChews();
+  const { refetchPublicRound } = useChews();
   const { tx } = useTx();
 
   const [context, setContext] = useState('');

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useChews } from '../../hooks/useChews';
 import {
   ActionIcon,
@@ -8,6 +8,8 @@ import {
   Group,
   GroupProps,
   Progress,
+  Rating,
+  ScrollArea,
   SegmentedControl,
   Stack,
   Text,
@@ -18,8 +20,7 @@ import {
 import { AddressAvatar } from '../AddressAvatar';
 import { Address, formatEther } from 'viem';
 import { useEns } from '../../hooks/useEns';
-import { useBreakpoint, useBreakpoints } from '../../hooks/useBreakpoints';
-import { Icon123, IconMessage, IconStar } from '@tabler/icons-react';
+import { IconMessage, IconStar, IconStarFilled } from '@tabler/icons-react';
 import { InfoBanner } from '../InfoBanner';
 
 const dummyData = [
@@ -62,6 +63,34 @@ const dummyData = [
         amount: BigInt(5e16),
       },
     ],
+    prefs: [
+      {
+        key: 'new_funding_mechanism',
+        label: 'Innovating new allocation mechanisms is very important',
+        rating: 1,
+      },
+      {
+        key: 'matching_donations',
+        label: 'Total matching donations are a very important metric',
+        rating: 4,
+      },
+      {
+        key: 'participation_count',
+        label: 'The amount of participating addresses is an important metric',
+        rating: 4,
+      },
+      {
+        key: 'community_events',
+        label: 'The quantity of community events and engagement is important',
+        rating: 2,
+      },
+      {
+        key: 'project_completion_rate',
+        label:
+          'The amount of completed or mature projects funded is an important metric',
+        rating: 3,
+      },
+    ],
   },
   {
     id: '2',
@@ -69,7 +98,7 @@ const dummyData = [
     timestamp: 1747112117,
     // write a paragraph of dummy data for the metadata
     comment:
-      "This ship is amazing! I love the design and the speed. It's perfect for my playstyle.",
+      "This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle.",
     votes: [
       {
         choice_id:
@@ -95,6 +124,34 @@ const dummyData = [
         choice_id:
           '0x781ce54b73730667e7390caa0e52d4d585b574f274f780c4e0bb96a18a996c30',
         amount: BigInt(32e16),
+      },
+    ],
+    prefs: [
+      {
+        key: 'new_funding_mechanism',
+        label: 'Innovating new allocation mechanisms is very important',
+        rating: 3,
+      },
+      {
+        key: 'matching_donations',
+        label: 'Total matching donations are a very important metric',
+        rating: 4,
+      },
+      {
+        key: 'participation_count',
+        label: 'The amount of participating addresses is an important metric',
+        rating: 1,
+      },
+      {
+        key: 'community_events',
+        label: 'The quantity of community events and engagement is important',
+        rating: 3,
+      },
+      {
+        key: 'project_completion_rate',
+        label:
+          'The amount of completed or mature projects funded is an important metric',
+        rating: 2,
       },
     ],
   },
@@ -148,6 +205,7 @@ export const Reviews = () => {
           voter={bv.voter}
           votes={bv.votes}
           comment={bv.comment}
+          prefs={bv.prefs}
         />
       ))}
     </Group>
@@ -159,10 +217,12 @@ const VoteCard = ({
   voter,
   votes,
   comment,
+  prefs,
 }: {
   id: string;
   voter: string;
   votes: { choice_id: string; amount: bigint }[];
+  prefs: { key: string; label: string; rating: number }[];
   comment?: string;
 }) => {
   const [cardDisplay, setCardDisplay] = useState<'votes' | 'comment' | 'prefs'>(
@@ -206,12 +266,38 @@ const VoteCard = ({
       </Group>
       {cardDisplay === 'comment' && (
         <Box mx="sm">
-          <Text>{comment}</Text>
+          <ScrollArea h={410}>
+            <Text>{comment}</Text>
+          </ScrollArea>
         </Box>
       )}
       {cardDisplay === 'prefs' && (
         <Box mx="sm">
-          <Text>Preferences</Text>
+          <ScrollArea h={410}>
+            <Stack>
+              {prefs.map((pref) => (
+                <Box key={pref.key}>
+                  <Text fz="xs" mb={4}>
+                    {pref.label}
+                  </Text>
+                  <Rating
+                    value={pref.rating}
+                    readOnly
+                    emptySymbol={
+                      <IconStar
+                        size={16}
+                        color={colors.purple[6]}
+                        stroke={1.5}
+                      />
+                    }
+                    fullSymbol={
+                      <IconStarFilled size={16} color={colors.purple[6]} />
+                    }
+                  />
+                </Box>
+              ))}
+            </Stack>
+          </ScrollArea>
         </Box>
       )}
       {cardDisplay === 'votes' && (

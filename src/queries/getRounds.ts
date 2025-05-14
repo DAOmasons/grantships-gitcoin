@@ -66,14 +66,12 @@ export type RawPublicRoundData = {
     id: string;
     voter: string;
     timestamp: number;
-    metadata: {
-      ratings: {
-        key: string;
-        label: string;
-        value: bigint;
-      }[];
-      context: string;
-    };
+    prefs: {
+      key: string;
+      label: string;
+      value: bigint;
+    }[];
+    comment: string;
     votes: {
       choice_id: string;
       amount: bigint;
@@ -116,8 +114,9 @@ export const getPublicRound = async (): Promise<RawPublicRoundData | void> => {
           id: bv.id,
           voter: bv.voter,
           timestamp: bv.timestamp,
-          metadata: validated.data,
           votes: bv.votes,
+          prefs: validated.data.ratings,
+          comment: metadata.comment,
         };
       }),
     };
