@@ -41,14 +41,14 @@ export const Reviews = () => {
     );
   }
 
-  // if (!publicRound.batchVotes.length) {
-  //   return (
-  //     <InfoBanner
-  //       title={'No Votes Yet'}
-  //       description={'No votes have been cast yet for this round.'}
-  //     />
-  //   );
-  // }
+  if (!publicRound.batchVotes.length) {
+    return (
+      <InfoBanner
+        title={'No Votes Yet'}
+        description={'No votes have been cast yet for this round.'}
+      />
+    );
+  }
 
   return (
     <Box>
@@ -56,7 +56,7 @@ export const Reviews = () => {
         All Votes
       </Title>
       <Group mt="xl" mx="md" w="100%" gap={'lg'} justify="center">
-        {dummyData.map((bv) => (
+        {publicRound.batchVotes.map((bv) => (
           <VoteCard
             key={bv.id}
             id={bv.id}
@@ -81,7 +81,7 @@ const VoteCard = ({
   id: string;
   voter: string;
   votes: { choice_id: string; amount: bigint }[];
-  prefs: { key: string; label: string; rating: number }[];
+  prefs: { key: string; label: string; value: bigint }[];
   comment?: string;
 }) => {
   const [cardDisplay, setCardDisplay] = useState<'votes' | 'comment' | 'prefs'>(
@@ -140,7 +140,7 @@ const VoteCard = ({
                     {pref.label}
                   </Text>
                   <Rating
-                    value={pref.rating}
+                    value={Number(pref.value)}
                     readOnly
                     emptySymbol={
                       <IconStar
@@ -163,7 +163,7 @@ const VoteCard = ({
         <Box mx="sm">
           {publicRound.ships?.map((ship) => {
             const shipVote = votes.find(
-              (vote) => vote.choice_id === ship.choiceId
+              (vote) => vote.choice_id === `choice-${ship.choiceId}`
             );
 
             const numberValue =

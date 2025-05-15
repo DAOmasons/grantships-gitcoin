@@ -5,7 +5,7 @@ export const batchVoteSchema = z.object({
     z.object({
       key: z.string(),
       label: z.string(),
-      value: z.bigint(),
+      value: z.number(),
     })
   ),
   context: z.string(),

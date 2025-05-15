@@ -94,6 +94,8 @@ export const getPublicRound = async (): Promise<RawPublicRoundData | void> => {
       throw new Error('No ships found in the round');
     }
 
+    console.log('res', res);
+
     const ships = raw.map((choice) => ({
       choiceId: choice.choiceId,
       amountVoted: BigInt(choice.amountVoted),
@@ -117,7 +119,10 @@ export const getPublicRound = async (): Promise<RawPublicRoundData | void> => {
           voter: bv.voter,
           timestamp: bv.timestamp,
           votes: bv.votes,
-          prefs: validated.data.ratings,
+          prefs: validated.data.ratings.map((rating) => ({
+            ...rating,
+            value: BigInt(rating.value),
+          })),
           comment: metadata.comment,
         };
       }),

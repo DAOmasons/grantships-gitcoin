@@ -31,7 +31,7 @@ import {
 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { TxButton } from '../TxButton';
-import { fakeSliderData, SliderData, vectors } from './voteData';
+import { SliderData, vectors } from './voteData';
 
 export const VoteReady = ({
   proof,
@@ -41,7 +41,7 @@ export const VoteReady = ({
   setCurrentTab: (tab: string) => void;
 }) => {
   const { colors } = useMantineTheme();
-  const { refetchPublicRound } = useChews();
+  const { publicRound, refetchPublicRound } = useChews();
   const { tx } = useTx();
 
   const [context, setContext] = useState('');
@@ -62,9 +62,19 @@ export const VoteReady = ({
 
   const handleSubmit = async () => {
     try {
+      if (!publicRound) {
+        notifications.show({
+          title: 'Error',
+          color: 'red',
+          message: 'Public Round not found',
+        });
+        return;
+      }
+
       if (!ratings.every((rating) => rating.rating)) {
         return;
       }
+      console.log('FIRED');
 
       const seedRatings = ratings.reduce((acc, rating) => {
         acc[rating.key] = rating.rating;
@@ -87,7 +97,6 @@ export const VoteReady = ({
       }, 400);
 
       const result = await searchPrefs(promptSeed as PromptSchema);
-      console.log('result', result);
 
       if (!result) {
         notifications.show({
@@ -99,6 +108,8 @@ export const VoteReady = ({
         return;
       }
 
+      console.log('result', result);
+
       const reasoning = result?.data?.reasoning;
 
       if (!reasoning) {
@@ -107,16 +118,28 @@ export const VoteReady = ({
         return;
       }
 
+      const allocations = result?.data?.allocations
+        .map((program) => {
+          const programData = publicRound?.ships.find(
+            (ship) => ship.choiceId === program.id
+          );
+
+          if (!programData) {
+            throw new Error(`Program data not found for ID: ${program.name}`);
+          }
+
+          return {
+            name: programData.name,
+            id: program.id,
+            imgUrl: programData.imgUrl,
+            value: program.percentage,
+          } as SliderData;
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
+
       setReasoning(reasoning);
 
-      setSliders(
-        result.data.allocations
-          .map((allocation) => ({
-            label: allocation.program,
-            value: allocation.percentage,
-          }))
-          .sort((a, b) => a.label.localeCompare(b.label))
-      );
+      setSliders(allocations);
 
       setIsLoading(false);
 
@@ -165,14 +188,16 @@ export const VoteReady = ({
       pointsData,
     ]);
 
-    const choiceIds = sliders.map((slider) => slider.id);
-    const amounts = sliders.map(
+    const nonZeroSliders = sliders.filter((slider) => slider.value > 0);
+
+    const choiceIds = nonZeroSliders.map((slider) => slider.id);
+    const amounts = nonZeroSliders.map(
       (slider) => BigInt(slider.value) * BigInt(1e16)
     );
-    const dataForEach = sliders.map((_slider) => data);
+    const dataForEach = nonZeroSliders.map((_slider) => data);
 
     const voteCopy = {
-      ratings,
+      ratings: ratings.map((rating) => ({ ...rating, value: rating.rating })),
       context,
     };
 
@@ -181,6 +206,7 @@ export const VoteReady = ({
     if (!validated.success) {
       notifications.show({
         title: 'Error',
+        color: 'red',
         message: 'Invalid vote metadata',
       });
       return;
@@ -202,12 +228,14 @@ export const VoteReady = ({
       return;
     }
 
+    const args = [choiceIds, amounts, dataForEach, BigInt(1e18), batchMetadata];
+
     tx({
       writeContractParams: {
         address: ADDR.PUBLIC_ROUND,
         abi: ContestABI,
         functionName: 'batchVote',
-        args: [choiceIds, amounts, dataForEach, BigInt(1e18), batchMetadata],
+        args,
       },
       writeContractOptions: {
         onPollSuccess() {
