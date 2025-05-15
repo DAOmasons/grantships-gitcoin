@@ -76,3 +76,137 @@ export const fakeSliderData = [
     value: 0,
   },
 ];
+
+export const dummyData = [
+  {
+    id: '1',
+    voter: '0x756ee8B8E898D497043c2320d9909f1DD5a7077F',
+    timestamp: 1747112117,
+    // write a paragraph of dummy data for the metadata
+    comment:
+      "This ship is amazing! I love the design and the speed. It's perfect for my playstyle.",
+    votes: [
+      {
+        choice_id:
+          '0x2377bfa0777c385f4d3fdee97d1a65228f836da67ea6f0db96235870ac5cdc82',
+        amount: BigInt(23e16),
+      },
+      {
+        choice_id:
+          '0xd18608a33ecfd6b9c08a6c8fd99fd934199dff54ae53515e159b195b2cce770c',
+        amount: BigInt(17e16),
+      },
+      {
+        choice_id:
+          '0xae3add0277ad57036fb34714bdd96872dc971915636e3cafab9aa08e2632b8cf',
+        amount: BigInt(20e16),
+      },
+      {
+        choice_id:
+          '0x22ed83fde1924b615d904ccb2259c3ab42e72ec0870242399cda94743503682e',
+        amount: BigInt(20e16),
+      },
+      {
+        choice_id:
+          '0x781ce54b73730667e7390caa0e52d4d585b574f274f780c4e0bb96a18a996c30',
+        amount: BigInt(15e16),
+      },
+      {
+        choice_id:
+          '0x559f71a3559444c0e12205b095cbecd784199ab4caa271fcddf67b293318eb0f',
+        amount: BigInt(5e16),
+      },
+    ],
+    prefs: [
+      {
+        key: 'new_funding_mechanism',
+        label: 'Innovating new allocation mechanisms is very important',
+        rating: 1,
+      },
+      {
+        key: 'matching_donations',
+        label: 'Total matching donations are a very important metric',
+        rating: 4,
+      },
+      {
+        key: 'participation_count',
+        label: 'The amount of participating addresses is an important metric',
+        rating: 4,
+      },
+      {
+        key: 'community_events',
+        label: 'The quantity of community events and engagement is important',
+        rating: 2,
+      },
+      {
+        key: 'project_completion_rate',
+        label:
+          'The amount of completed or mature projects funded is an important metric',
+        rating: 3,
+      },
+    ],
+  },
+  {
+    id: '2',
+    voter: '0x1234567890abcdef1234567890abcdef12345678',
+    timestamp: 1747112117,
+    // write a paragraph of dummy data for the metadata
+    comment:
+      "This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle. This ship is amazing! I love the design and the speed. It's perfect for my playstyle.",
+    votes: [
+      {
+        choice_id:
+          '0x2377bfa0777c385f4d3fdee97d1a65228f836da67ea6f0db96235870ac5cdc82',
+        amount: BigInt(20e16),
+      },
+      {
+        choice_id:
+          '0xd18608a33ecfd6b9c08a6c8fd99fd934199dff54ae53515e159b195b2cce770c',
+        amount: BigInt(12e16),
+      },
+      {
+        choice_id:
+          '0xae3add0277ad57036fb34714bdd96872dc971915636e3cafab9aa08e2632b8cf',
+        amount: BigInt(18e16),
+      },
+      {
+        choice_id:
+          '0x22ed83fde1924b615d904ccb2259c3ab42e72ec0870242399cda94743503682e',
+        amount: BigInt(18e16),
+      },
+      {
+        choice_id:
+          '0x781ce54b73730667e7390caa0e52d4d585b574f274f780c4e0bb96a18a996c30',
+        amount: BigInt(32e16),
+      },
+    ],
+    prefs: [
+      {
+        key: 'new_funding_mechanism',
+        label: 'Innovating new allocation mechanisms is very important',
+        rating: 3,
+      },
+      {
+        key: 'matching_donations',
+        label: 'Total matching donations are a very important metric',
+        rating: 4,
+      },
+      {
+        key: 'participation_count',
+        label: 'The amount of participating addresses is an important metric',
+        rating: 1,
+      },
+      {
+        key: 'community_events',
+        label: 'The quantity of community events and engagement is important',
+        rating: 3,
+      },
+      {
+        key: 'project_completion_rate',
+        label:
+          'The amount of completed or mature projects funded is an important metric',
+        rating: 2,
+      },
+    ],
+  },
+];
