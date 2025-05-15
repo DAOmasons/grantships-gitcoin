@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useChews } from '../../hooks/useChews';
 import {
   ActionIcon,
@@ -18,7 +18,6 @@ import { Address, formatEther } from 'viem';
 import { IconMessage, IconStar, IconStarFilled } from '@tabler/icons-react';
 import { InfoBanner } from '../InfoBanner';
 import { UserDisplay } from '../UserDisplay';
-import { dummyData } from './voteData';
 
 export const Reviews = () => {
   const { publicRound, isLoadingPublicRound } = useChews();

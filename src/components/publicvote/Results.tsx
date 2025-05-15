@@ -11,7 +11,6 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { InfoBanner } from '../InfoBanner';
-import { dummyData } from './voteData';
 import { IconStar, IconStarFilled } from '@tabler/icons-react';
 import { formatEther } from 'viem';
 
@@ -20,7 +19,7 @@ export const Results = () => {
   const { colors } = useMantineTheme();
 
   const totalPreferences = useMemo(() => {
-    if (!dummyData) return null;
+    if (!publicRound) return null;
 
     let preferenceTotals = {} as {
       [key: string]: {
@@ -28,11 +27,11 @@ export const Results = () => {
         label: string;
       };
     };
-    for (const bv of dummyData) {
+    for (const bv of publicRound.batchVotes) {
       const { prefs } = bv;
 
       for (const pref of prefs) {
-        const { label, key, rating } = pref;
+        const { label, key, value } = pref;
 
         if (!preferenceTotals[key] || !preferenceTotals[key].value) {
           const newPref = {
@@ -42,7 +41,7 @@ export const Results = () => {
           preferenceTotals[key] = newPref;
         }
 
-        preferenceTotals[key].value += rating;
+        preferenceTotals[key].value += Number(value);
       }
     }
 
@@ -63,19 +62,19 @@ export const Results = () => {
     );
   }
 
-  // if (!publicRound.batchVotes.length) {
-  //   return (
-  //     <Box>
-  //       <Title order={3} mb="md" fz="h3">
-  //         Vote Results
-  //       </Title>
-  //       <InfoBanner
-  //         title={'No Votes Yet'}
-  //         description={'No votes have been cast yet for this round.'}
-  //       />
-  //     </Box>
-  //   );
-  // }
+  if (!publicRound.batchVotes.length) {
+    return (
+      <Box>
+        <Title order={3} mb="md" fz="h3">
+          Vote Results
+        </Title>
+        <InfoBanner
+          title={'No Votes Yet'}
+          description={'No votes have been cast yet for this round.'}
+        />
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -91,10 +90,7 @@ export const Results = () => {
           const percentage =
             amountVoted === 0n
               ? 0
-              : Number(
-                  Number(formatEther((amountVoted * 100n) / total)).toFixed(0)
-                );
-
+              : Number(Number((amountVoted * 100n) / total).toFixed(0));
           return (
             <Box key={choiceId} mb="md">
               <Group gap="sm" mb={'xs'}>
@@ -125,7 +121,7 @@ export const Results = () => {
           Object.entries(totalPreferences).map(([key, pref]) => {
             const { label, value } = pref;
 
-            const total = dummyData.length;
+            const total = publicRound.batchVotes.length;
 
             const average = total === 0 ? 0 : value / total;
 

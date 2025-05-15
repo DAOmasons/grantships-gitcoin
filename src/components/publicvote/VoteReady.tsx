@@ -108,8 +108,6 @@ export const VoteReady = ({
         return;
       }
 
-      console.log('result', result);
-
       const reasoning = result?.data?.reasoning;
 
       if (!reasoning) {
