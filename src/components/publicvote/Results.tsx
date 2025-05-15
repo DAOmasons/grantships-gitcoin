@@ -49,8 +49,6 @@ export const Results = () => {
     return preferenceTotals;
   }, [publicRound]);
 
-  console.log('totalPreferences', totalPreferences);
-
   if (!publicRound) {
     return (
       <Box>

@@ -16,7 +16,7 @@ import {
 import { useRef, useState } from 'react';
 import { useChews } from '../../hooks/useChews';
 import { useTx } from '../../contexts/useTx';
-import { PromptSchema, testAIServer } from '../../utils/ai';
+import { PromptSchema, searchPrefs } from '../../utils/ai';
 import { encodeAbiParameters, Hex, parseAbiParameters } from 'viem';
 import ContestABI from '../../abi/Contest.json';
 import { notifications } from '@mantine/notifications';
@@ -46,7 +46,7 @@ export const VoteReady = ({
 
   const [context, setContext] = useState('');
   const [reasoning, setReasoning] = useState('');
-  const [sliders, setSliders] = useState<SliderData[]>(fakeSliderData);
+  const [sliders, setSliders] = useState<SliderData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [ratings, setRatings] = useState(vectors);
 
@@ -61,61 +61,82 @@ export const VoteReady = ({
   };
 
   const handleSubmit = async () => {
-    if (!ratings.every((rating) => rating.rating)) {
-      return;
-    }
-
-    const seedRatings = ratings.reduce((acc, rating) => {
-      acc[rating.key] = rating.rating;
-      return acc;
-    }, {});
-
-    const promptSeed = {
-      ...seedRatings,
-      context: context,
-    };
-    setIsLoading(true);
-
-    setTimeout(() => {
-      if (loadingShipRef.current) {
-        loadingShipRef.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-        });
+    try {
+      if (!ratings.every((rating) => rating.rating)) {
+        return;
       }
-    }, 400);
 
-    const result = await testAIServer(promptSeed as PromptSchema);
+      const seedRatings = ratings.reduce((acc, rating) => {
+        acc[rating.key] = rating.rating;
+        return acc;
+      }, {});
 
-    const reasoning = result?.data?.reasoning;
+      const promptSeed = {
+        ...seedRatings,
+        context: context,
+      };
+      setIsLoading(true);
 
-    if (!reasoning) {
-      console.error('No reasoning provided');
+      setTimeout(() => {
+        if (loadingShipRef.current) {
+          loadingShipRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      }, 400);
+
+      const result = await searchPrefs(promptSeed as PromptSchema);
       console.log('result', result);
-      return;
-    }
 
-    setReasoning(reasoning);
-
-    setSliders(
-      result.data.allocations
-        .map((allocation) => ({
-          label: allocation.program,
-          value: allocation.percentage,
-        }))
-        .sort((a, b) => a.label.localeCompare(b.label))
-    );
-
-    setIsLoading(false);
-
-    setTimeout(() => {
-      if (readoutRef.current) {
-        readoutRef.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
+      if (!result) {
+        notifications.show({
+          title: 'Error',
+          color: 'red',
+          message: 'Error fetching AI suggestions',
         });
+        setIsLoading(false);
+        return;
       }
-    }, 400);
+
+      const reasoning = result?.data?.reasoning;
+
+      if (!reasoning) {
+        console.error('No reasoning provided');
+        console.log('result', result);
+        return;
+      }
+
+      setReasoning(reasoning);
+
+      setSliders(
+        result.data.allocations
+          .map((allocation) => ({
+            label: allocation.program,
+            value: allocation.percentage,
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label))
+      );
+
+      setIsLoading(false);
+
+      setTimeout(() => {
+        if (readoutRef.current) {
+          readoutRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        }
+      }, 400);
+    } catch (error: any) {
+      console.error('Error generating vote:', error.message);
+      setIsLoading(false);
+      notifications.show({
+        title: 'Error',
+        color: 'red',
+        message: error.message,
+      });
+    }
   };
 
   const submitVote = async () => {

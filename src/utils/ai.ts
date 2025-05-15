@@ -5,33 +5,24 @@ const API_LOCAL = 'http://localhost:8008';
 
 const ROUTE = '/api/complete';
 
-const promptSchema = z.object({
-  new_funding_mechanism: z.number().min(1).max(5),
-  matching_donations: z.number().min(1).max(5),
-  participation_count: z.number().min(1).max(5),
-  community_events: z.number().min(1).max(5),
-  project_completion_rate: z.number().min(1).max(5),
+const votePrefSchema = z.object({
+  new_funding_mechanism: z.boolean(),
+  donations_received: z.string(),
+  additional_funds_raised: z.string(),
+  unique_donors: z.number(),
+  unique_projects: z.number(),
+  total_donations: z.number(),
   context: z.string(),
 });
 
-export type PromptSchema = z.infer<typeof promptSchema>;
+export type PromptSchema = z.infer<typeof votePrefSchema>;
 
-const DUMMY_PROMPT: PromptSchema = {
-  new_funding_mechanism: 1,
-  matching_donations: 4,
-  participation_count: 2,
-  community_events: 3,
-  project_completion_rate: 4,
-  context: 'I prefer projects that fund local communities in the global south',
-};
-
-export const testAIServer = async (promptSeed: PromptSchema) => {
+export const searchPrefs = async (promptSeed: PromptSchema) => {
   try {
-    const validated = promptSchema.parse(promptSeed);
+    const validated = votePrefSchema.safeParse(promptSeed);
 
-    if (!validated) {
-      console.error('Validation failed');
-      return;
+    if (!validated.success) {
+      throw new Error('Validation failed');
     }
 
     const response = await fetch(`${API_LOCAL}${ROUTE}`, {
@@ -48,7 +39,7 @@ export const testAIServer = async (promptSeed: PromptSchema) => {
     const data = await response.json();
 
     return data;
-  } catch (error) {
-    console.log('error', error);
+  } catch (error: any) {
+    throw new Error(`Failed to fetch data from API: ${error.message}`);
   }
 };

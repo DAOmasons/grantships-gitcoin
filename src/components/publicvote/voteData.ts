@@ -1,28 +1,32 @@
 export const vectors = [
   {
     key: 'new_funding_mechanism',
-    label: 'Innovating new allocation mechanisms is very important',
+    label: 'Innovating new allocation mechanisms is important',
     rating: 0,
   },
   {
-    key: 'matching_donations',
-    label: 'Total matching donations are a very important metric',
+    key: 'donations_received',
+    label: 'Community donations received are important',
     rating: 0,
   },
   {
-    key: 'participation_count',
-    label: 'The amount of participating addresses is an important metric',
+    key: 'additional_funds_raised',
+    label: 'Additional matching donations raised are important',
     rating: 0,
   },
   {
-    key: 'community_events',
-    label: 'The quantity of community events and engagement is important',
+    key: 'unique_donors',
+    label: 'The number of unique donors is important',
     rating: 0,
   },
   {
-    key: 'project_completion_rate',
-    label:
-      'The amount of completed or mature projects funded is an important metric',
+    key: 'unique_projects',
+    label: 'The number of unique projects funded is important',
+    rating: 0,
+  },
+  {
+    key: 'total_donations',
+    label: 'Total donations received is important',
     rating: 0,
   },
 ];
