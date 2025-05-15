@@ -12,7 +12,6 @@ import {
 } from '@mantine/core';
 import { InfoBanner } from '../InfoBanner';
 import { IconStar, IconStarFilled } from '@tabler/icons-react';
-import { formatEther } from 'viem';
 
 export const Results = () => {
   const { publicRound } = useChews();

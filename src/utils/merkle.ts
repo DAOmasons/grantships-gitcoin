@@ -12,7 +12,6 @@ export const getUserProof = async (address: Address) => {
   });
 
   const json = await res.json();
-  console.log('json', json);
 
   if (!res.ok && res.status === 404) {
     return [];
@@ -22,8 +21,6 @@ export const getUserProof = async (address: Address) => {
     console.error('Error fetching proof:', json.error);
     return;
   }
-
-  console.log('json.data', json.data.proof);
 
   return json.data.proof;
 };
