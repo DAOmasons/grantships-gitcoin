@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { API } from './config';
 
-const ROUTE = '/api/complete';
+const ROUTE = '/api/claude/complete';
 
 const votePrefSchema = z.object({
   new_funding_mechanism: z.number().min(1).max(5),
