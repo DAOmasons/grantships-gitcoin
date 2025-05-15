@@ -7,9 +7,19 @@ import { ADDR } from '../../constants/addresses';
 import MerklePointsABI from '../../abi/MerklePoints.json';
 import gtcLogo from '../../assets/gitcoin-gtc-logo.png';
 
-import { Avatar, Box, Group, Text, Title } from '@mantine/core';
+import {
+  Avatar,
+  Box,
+  Button,
+  Group,
+  Text,
+  Title,
+  useMantineTheme,
+} from '@mantine/core';
 import { TxButton } from '../TxButton';
 import { VoteReady } from './VoteReady';
+import { useChews } from '../../hooks/useChews';
+import { IconCheck } from '@tabler/icons-react';
 
 export const VoteUI = ({
   setCurrentTab,
@@ -17,7 +27,10 @@ export const VoteUI = ({
   setCurrentTab: (tab: string) => void;
 }) => {
   const { address } = useAccount();
+  const { publicRound } = useChews();
+  const { colors } = useMantineTheme();
   const [proof, setProof] = useState<string[] | null>(null);
+  const [hasVoted, setHasVoted] = useState(false);
   const [checkingEligible, setCheckingEligible] = useState(false);
   const [eligible, setEligible] = useState<boolean | undefined>(false);
 
@@ -34,6 +47,18 @@ export const VoteUI = ({
       setEligible(true);
     }
   }, [address]);
+
+  useLayoutEffect(() => {
+    const hasVoted = publicRound?.batchVotes.some(
+      (vote) => vote.voter === address
+    );
+
+    if (hasVoted) {
+      setHasVoted(true);
+    } else {
+      setHasVoted(false);
+    }
+  }, [publicRound]);
 
   const checkEligibility = async () => {
     try {
@@ -78,7 +103,7 @@ export const VoteUI = ({
       });
 
       if (isEligible) {
-        // localStorage.setItem(`proof-${address}`, proofFromServer);
+        localStorage.setItem(`proof-${address}`, proofFromServer);
         setProof(proofFromServer);
         setEligible(true);
         setCheckingEligible(false);
@@ -102,6 +127,28 @@ export const VoteUI = ({
       return;
     }
   };
+
+  if (hasVoted) {
+    return (
+      <Box mb={'lg'}>
+        <Title order={3} fz={'h3'} mb={'xl'}>
+          Thank you for voting!
+        </Title>
+        <Group justify="center">
+          <Avatar size={171} mb="xl">
+            <IconCheck size={120} color={colors.kelp[7]} />
+          </Avatar>
+        </Group>
+        <Text c="subtle" mb="sm">
+          Thank you for participating in Grant Ships for GG23! Your vote has
+          been recorded onchain and tallied in the results.
+        </Text>
+        <Group justify="center" mt="xxl">
+          <Button onClick={() => setCurrentTab('results')}>View Results</Button>
+        </Group>
+      </Box>
+    );
+  }
 
   if (!eligible) {
     return (
