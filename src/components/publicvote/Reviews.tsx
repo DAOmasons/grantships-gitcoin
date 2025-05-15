@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useChews } from '../../hooks/useChews';
 import {
   ActionIcon,
@@ -29,10 +29,15 @@ export const Reviews = () => {
 
   if (!publicRound) {
     return (
-      <InfoBanner
-        title={'No Public Round'}
-        description={'Public Round not found'}
-      />
+      <Box>
+        <Title order={3} mb="md" fz="h3">
+          All Votes
+        </Title>
+        <InfoBanner
+          title={'No Public Round'}
+          description={'Public Round not found'}
+        />
+      </Box>
     );
   }
 

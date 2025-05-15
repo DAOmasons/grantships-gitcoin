@@ -11,6 +11,7 @@ query getPublicRound($id: String!) {
     }
     round {
       contestStatus
+      totalVoted
     }
   }
   BatchVote(where: { round_id: { _eq: $id } }) {

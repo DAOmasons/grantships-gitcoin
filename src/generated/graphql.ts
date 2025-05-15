@@ -5335,7 +5335,7 @@ export type GetPublicRoundQueryVariables = Exact<{
 }>;
 
 
-export type GetPublicRoundQuery = { __typename?: 'query_root', GGPublicRound_by_pk?: { __typename?: 'GGPublicRound', choicesParams?: { __typename?: 'Params_PrePop_v0_2_0', basicChoices?: { __typename?: 'BasicChoices', choices: Array<{ __typename?: 'BasicChoice', id: string, choiceId: string, amountVoted: any }> } | null } | null, round?: { __typename?: 'Round', contestStatus: any } | null } | null, BatchVote: Array<{ __typename?: 'BatchVote', id: string, voter: string, timestamp: number, comment?: string | null, votes: Array<{ __typename?: 'BasicVote', choice_id: string, amount: any }> }> };
+export type GetPublicRoundQuery = { __typename?: 'query_root', GGPublicRound_by_pk?: { __typename?: 'GGPublicRound', choicesParams?: { __typename?: 'Params_PrePop_v0_2_0', basicChoices?: { __typename?: 'BasicChoices', choices: Array<{ __typename?: 'BasicChoice', id: string, choiceId: string, amountVoted: any }> } | null } | null, round?: { __typename?: 'Round', contestStatus: any, totalVoted: any } | null } | null, BatchVote: Array<{ __typename?: 'BatchVote', id: string, voter: string, timestamp: number, comment?: string | null, votes: Array<{ __typename?: 'BasicVote', choice_id: string, amount: any }> }> };
 
 export type GetRecentTransactionQueryVariables = Exact<{
   txHash: Scalars['String']['input'];
@@ -5467,6 +5467,7 @@ export const GetPublicRoundDocument = gql`
     }
     round {
       contestStatus
+      totalVoted
     }
   }
   BatchVote(where: {round_id: {_eq: $id}}) {

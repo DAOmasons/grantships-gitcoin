@@ -58,6 +58,7 @@ export const getRubricRound = async (): Promise<AppRound | undefined> => {
 export type RawPublicRoundData = {
   id: string;
   contestStatus: number;
+  totalVoted: bigint;
   ships: {
     choiceId: string;
     amountVoted: bigint;
@@ -101,6 +102,7 @@ export const getPublicRound = async (): Promise<RawPublicRoundData | void> => {
     return {
       id: ADDR.PUBLIC_ROUND,
       ships,
+      totalVoted: BigInt(res.GGPublicRound_by_pk.round?.totalVoted),
       contestStatus: Number(res.GGPublicRound_by_pk.round?.contestStatus),
       batchVotes: res.BatchVote.map((bv) => {
         const metadata = JSON.parse(bv.comment as string);
