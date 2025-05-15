@@ -90,7 +90,6 @@ export const getPublicRound = async (): Promise<RawPublicRoundData | void> => {
 
     const raw = res.GGPublicRound_by_pk.choicesParams?.basicChoices?.choices;
 
-    console.log('res', res);
     if (!raw) {
       throw new Error('No ships found in the round');
     }
@@ -109,8 +108,6 @@ export const getPublicRound = async (): Promise<RawPublicRoundData | void> => {
         const metadata = JSON.parse(bv.comment as string);
 
         const validated = batchVoteSchema.safeParse(metadata);
-
-        console.log('validated.data', validated.data);
 
         if (!validated.success) {
           throw new Error('Invalid metadata format');

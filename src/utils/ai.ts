@@ -1,7 +1,5 @@
 import { z } from 'zod';
-
-const API = 'https://claude-service-api.vercel.app';
-const API_LOCAL = 'http://localhost:8008';
+import { API } from './config';
 
 const ROUTE = '/api/complete';
 
@@ -26,7 +24,7 @@ export const searchPrefs = async (promptSeed: PromptSchema) => {
       throw new Error('Validation failed');
     }
 
-    const response = await fetch(`${API_LOCAL}${ROUTE}`, {
+    const response = await fetch(`${API}${ROUTE}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
