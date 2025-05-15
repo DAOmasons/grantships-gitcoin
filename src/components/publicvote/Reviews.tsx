@@ -18,9 +18,11 @@ import { Address, formatEther } from 'viem';
 import { IconMessage, IconStar, IconStarFilled } from '@tabler/icons-react';
 import { InfoBanner } from '../InfoBanner';
 import { UserDisplay } from '../UserDisplay';
+import { useTablet } from '../../hooks/useBreakpoints';
 
 export const Reviews = () => {
   const { publicRound, isLoadingPublicRound } = useChews();
+  const isTablet = useTablet();
 
   if (isLoadingPublicRound) {
     return null;
@@ -54,7 +56,13 @@ export const Reviews = () => {
       <Title order={3} mb="md" fz="h3">
         All Votes
       </Title>
-      <Group mt="xl" mx="md" w="100%" gap={'lg'} justify="center">
+      <Group
+        mt="xl"
+        mx="md"
+        w="100%"
+        gap={'lg'}
+        justify={isTablet ? 'center' : 'start'}
+      >
         {publicRound.batchVotes.map((bv) => (
           <VoteCard
             key={bv.id}
