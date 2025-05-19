@@ -86,10 +86,13 @@ export const Results = () => {
 
           const total = publicRound.totalVoted;
 
+          const scaleFactor = 100n;
+
           const percentage =
             amountVoted === 0n
               ? 0
-              : Number(Number((amountVoted * 100n) / total).toFixed(0));
+              : Number((amountVoted * 100n * scaleFactor) / total) /
+                Number(scaleFactor);
           return (
             <Box key={choiceId} mb="md">
               <Group gap="sm" mb={'xs'}>
