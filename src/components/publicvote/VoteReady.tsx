@@ -128,7 +128,7 @@ export const VoteReady = ({
       const allocations = result?.data?.allocations
         .map((program) => {
           const programData = publicRound?.ships.find(
-            (ship) => ship.choiceId === program.id
+            (ship) => ship.choiceId.slice(4) === program.id.slice(4)
           );
 
           if (!programData) {
