@@ -45,7 +45,7 @@ export const VoteUI = ({
 
     if (proof) {
       setEligible(true);
-      setProof(proof);
+      setProof(JSON.parse(proof));
     }
   }, [address]);
 
@@ -104,7 +104,10 @@ export const VoteUI = ({
       });
 
       if (isEligible) {
-        localStorage.setItem(`proof-${address}`, proofFromServer);
+        localStorage.setItem(
+          `proof-${address}`,
+          JSON.stringify(proofFromServer)
+        );
         setProof(proofFromServer);
         setEligible(true);
         setCheckingEligible(false);
