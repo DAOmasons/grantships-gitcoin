@@ -45,6 +45,7 @@ export const VoteUI = ({
 
     if (proof) {
       setEligible(true);
+      setProof(proof);
     }
   }, [address]);
 

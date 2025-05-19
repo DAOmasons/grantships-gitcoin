@@ -71,10 +71,19 @@ export const VoteReady = ({
         return;
       }
 
+      if (!publicRound?.ships || publicRound.ships?.length === 0) {
+        console.log('publicRound', publicRound);
+        notifications.show({
+          title: 'Error',
+          color: 'red',
+          message: 'Public Round ships not found',
+        });
+        return;
+      }
+
       if (!ratings.every((rating) => rating.rating)) {
         return;
       }
-      console.log('FIRED');
 
       const seedRatings = ratings.reduce((acc, rating) => {
         acc[rating.key] = rating.rating;
@@ -123,6 +132,9 @@ export const VoteReady = ({
           );
 
           if (!programData) {
+            console.log('publicRound.ships', publicRound.ships);
+            console.log('programData', programData);
+            console.log('result?.data?.allocations', result?.data?.allocations);
             throw new Error(`Program data not found for ID: ${program.name}`);
           }
 
