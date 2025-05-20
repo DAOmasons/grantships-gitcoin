@@ -125,31 +125,40 @@ export const VoteReady = ({
         return;
       }
 
-      const allocations = result?.data?.allocations
-        .map((program) => {
-          const programData = publicRound?.ships.find(
-            (ship) => ship.choiceId.slice(4) === program.id.slice(4)
-          );
+      let cannotFind = false;
 
-          if (!programData) {
-            console.log('publicRound.ships', publicRound.ships);
-            console.log('programData', programData);
-            console.log('result?.data?.allocations', result?.data?.allocations);
-            throw new Error(`Program data not found for ID: ${program.name}`);
-          }
+      const allocations = publicRound?.ships?.map((ship) => {
+        const sliderData = result?.data?.allocations.find(
+          (program) => program.id.slice(4) === ship.choiceId.slice(4)
+        );
 
-          return {
-            name: programData.name,
-            id: program.id,
-            imgUrl: programData.imgUrl,
-            value: program.percentage,
-          } as SliderData;
-        })
-        .sort((a, b) => a.name.localeCompare(b.name));
+        if (!sliderData) {
+          console.log('publicRound.ships', publicRound.ships);
+          console.log('sliderData', sliderData);
+          console.log('result?.data?.allocations', result?.data?.allocations);
+
+          cannotFind = true;
+        }
+
+        return {
+          name: ship.name,
+          id: ship.choiceId,
+          imgUrl: ship.imgUrl,
+          value: sliderData ? sliderData.percentage : 0,
+        } as SliderData;
+      });
 
       setReasoning(reasoning);
 
       setSliders(allocations);
+
+      if (cannotFind) {
+        notifications.show({
+          title: 'Error',
+          color: 'yellow',
+          message: 'AI suggestions not found for all ships',
+        });
+      }
 
       setIsLoading(false);
 
@@ -211,7 +220,20 @@ export const VoteReady = ({
       context,
     };
 
+    const total =
+      BigInt(nonZeroSliders.reduce((sum, slider) => sum + slider.value, 0)) *
+      BigInt(1e16);
+
     const validated = batchVoteSchema.safeParse(voteCopy);
+
+    if (total != BigInt(1e18)) {
+      notifications.show({
+        title: 'Error',
+        color: 'red',
+        message: 'Vote total must be 100%',
+      });
+      return;
+    }
 
     if (!validated.success) {
       notifications.show({
@@ -239,6 +261,8 @@ export const VoteReady = ({
     }
 
     const args = [choiceIds, amounts, dataForEach, BigInt(1e18), batchMetadata];
+
+    console.log('args', args);
 
     tx({
       writeContractParams: {
