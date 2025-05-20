@@ -132,11 +132,11 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
             ContestStatus.Continuous
           ? 0
           : Number(applicationRound?.round?.contestStatus) ===
-              ContestStatus.Finalized
-            ? 3
+                ContestStatus.Finalized && !!publicRound
+            ? 4
             : Number(applicationRound?.round?.contestStatus) ===
-                ContestStatus.Executed
-              ? 4
+                ContestStatus.Finalized
+              ? 3
               : 0
     : 0;
 

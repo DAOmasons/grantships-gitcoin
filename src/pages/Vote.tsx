@@ -6,7 +6,7 @@ import {
   IconTrophy,
   IconUsersGroup,
 } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { VoteUI } from '../components/publicvote/VoteUI';
 import { Results } from '../components/publicvote/Results';
 import { Reviews } from '../components/publicvote/Reviews';
@@ -18,7 +18,15 @@ const VOTE_TIME = 1747936800;
 export const Vote = () => {
   // const [currentTab, setCurrentTab] = useState('vote');
 
-  const [tick, setTick] = useState(0);
+  const [_tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTick((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <PageLayout title="Vote">
