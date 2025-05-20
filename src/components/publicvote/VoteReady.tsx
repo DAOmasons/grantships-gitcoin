@@ -262,8 +262,6 @@ export const VoteReady = ({
 
     const args = [choiceIds, amounts, dataForEach, BigInt(1e18), batchMetadata];
 
-    console.log('args', args);
-
     tx({
       writeContractParams: {
         address: ADDR.PUBLIC_ROUND,
