@@ -12,6 +12,7 @@ import { Results } from '../components/publicvote/Results';
 import { Reviews } from '../components/publicvote/Reviews';
 import gtcLogo from '../assets/gitcoin-gtc-logo.png';
 import { getTimeFromNow, secondsToLongDate } from '../utils/time';
+import { Bold } from '../components/typography';
 
 const VOTE_TIME = 1747936800;
 
@@ -39,8 +40,9 @@ export const Vote = () => {
         </Group>
         <Text c="subtle" mb="sm"></Text>
         <Text mb="sm">
-          In order to be eligible, you must hold at least 100 GTC tokens on
-          mainnet before May 11th 2024.
+          In order to be eligible, you must hold at least{' '}
+          <Bold>100 GTC tokens on mainnet</Bold> before May 21st 2024. Voting
+          will take place on <Bold>Arbitrum</Bold>
         </Text>
       </Box>
     </PageLayout>
