@@ -1,0 +1,39 @@
+.track {
+  &::before {
+    background-color: light-dark(
+      var(--mantine-color-dark-1),
+      var(--mantine-color-dark-5)
+    );
+    opacity: 1;
+  }
+}
+
+.bar {
+  opacity: 1;
+}
+
+.mark {
+  width: 6px;
+  height: 6px;
+  border-radius: 6px;
+  transform: translateX(-3px) translateY(-2px);
+
+  &[data-filled] {
+    border-color: var(--mantine-color-red-6);
+  }
+}
+
+.markLabel {
+  font-size: var(--mantine-font-size-xs);
+  margin-bottom: 5px;
+  margin-top: 0;
+}
+
+.thumb {
+  height: 16px;
+  width: 16px;
+
+  background-color: var(--mantine-color-kelp-7);
+  border-width: 0px;
+  box-shadow: var(--mantine-shadow-sm);
+}

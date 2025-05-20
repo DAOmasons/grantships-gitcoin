@@ -6,6 +6,7 @@ import stepperClasses from './style/stepper.module.css';
 import formClasses from './style/form.module.css';
 import accordionClasses from './style/accordion.module.css';
 import tabClasses from './style/tabs.module.css';
+import sliderClasses from './style/slider.module.css';
 import { darkTheme } from '@rainbow-me/rainbowkit';
 import { Theme as RainbowKitTheme } from '@rainbow-me/rainbowkit';
 
@@ -81,7 +82,6 @@ export const theme = createTheme({
     h5: '20px',
     h6: '16px',
   },
-
   defaultRadius: 'sm',
   colors: {
     kelp: KELP,
@@ -90,7 +90,6 @@ export const theme = createTheme({
     subtle: SUBTLE_TEXT,
     highlight: HIGHLIGHT_TEXT,
   },
-
   components: {
     Text: {
       classNames: {
@@ -180,6 +179,9 @@ export const theme = createTheme({
         list: tabClasses.list,
         section: tabClasses.section,
       },
+    },
+    Slider: {
+      classNames: sliderClasses,
     },
   },
 });

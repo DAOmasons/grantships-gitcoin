@@ -5,6 +5,10 @@ import { arbitrumSepolia, arbitrum, mainnet } from 'wagmi/chains';
 
 export const isDev = import.meta.env.VITE_ENV === 'dev';
 
+export const API = 'https://gg-gs-backend-production.up.railway.app';
+// export const API = 'https://claude-service-api.vercel.app';
+// export const API = 'http://localhost:8008';
+
 export const appNetwork = isDev ? arbitrumSepolia : arbitrum;
 const rpcUrl = isDev
   ? import.meta.env.VITE_DEV_RPC_URL

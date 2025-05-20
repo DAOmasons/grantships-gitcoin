@@ -1700,6 +1700,182 @@ export type GgApplication_Variance_Order_By = {
   totalVoted?: InputMaybe<Order_By>;
 };
 
+/** columns and relationships of "GGPublicRound" */
+export type GgPublicRound = {
+  __typename?: 'GGPublicRound';
+  /** An object relationship */
+  basicChoices?: Maybe<BasicChoices>;
+  basicChoices_id: Scalars['String']['output'];
+  /** An object relationship */
+  choicesParams?: Maybe<Params_PrePop_V0_2_0>;
+  choicesParams_id: Scalars['String']['output'];
+  createdAt: Scalars['Int']['output'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
+  id: Scalars['String']['output'];
+  /** An object relationship */
+  pointsParams?: Maybe<Params_MerklePoints_V0_2_0>;
+  pointsParams_id: Scalars['String']['output'];
+  postedBy: Scalars['String']['output'];
+  /** An object relationship */
+  round?: Maybe<Round>;
+  round_id: Scalars['String']['output'];
+  /** An object relationship */
+  votesParams?: Maybe<Params_TimedVotes_V1_0_0>;
+  votesParams_id: Scalars['String']['output'];
+};
+
+/** Boolean expression to filter rows from the table "GGPublicRound". All fields are combined with a logical 'AND'. */
+export type GgPublicRound_Bool_Exp = {
+  _and?: InputMaybe<Array<GgPublicRound_Bool_Exp>>;
+  _not?: InputMaybe<GgPublicRound_Bool_Exp>;
+  _or?: InputMaybe<Array<GgPublicRound_Bool_Exp>>;
+  basicChoices?: InputMaybe<BasicChoices_Bool_Exp>;
+  basicChoices_id?: InputMaybe<String_Comparison_Exp>;
+  choicesParams?: InputMaybe<Params_PrePop_V0_2_0_Bool_Exp>;
+  choicesParams_id?: InputMaybe<String_Comparison_Exp>;
+  createdAt?: InputMaybe<Int_Comparison_Exp>;
+  db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
+  id?: InputMaybe<String_Comparison_Exp>;
+  pointsParams?: InputMaybe<Params_MerklePoints_V0_2_0_Bool_Exp>;
+  pointsParams_id?: InputMaybe<String_Comparison_Exp>;
+  postedBy?: InputMaybe<String_Comparison_Exp>;
+  round?: InputMaybe<Round_Bool_Exp>;
+  round_id?: InputMaybe<String_Comparison_Exp>;
+  votesParams?: InputMaybe<Params_TimedVotes_V1_0_0_Bool_Exp>;
+  votesParams_id?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** Ordering options when selecting data from "GGPublicRound". */
+export type GgPublicRound_Order_By = {
+  basicChoices?: InputMaybe<BasicChoices_Order_By>;
+  basicChoices_id?: InputMaybe<Order_By>;
+  choicesParams?: InputMaybe<Params_PrePop_V0_2_0_Order_By>;
+  choicesParams_id?: InputMaybe<Order_By>;
+  createdAt?: InputMaybe<Order_By>;
+  db_write_timestamp?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  pointsParams?: InputMaybe<Params_MerklePoints_V0_2_0_Order_By>;
+  pointsParams_id?: InputMaybe<Order_By>;
+  postedBy?: InputMaybe<Order_By>;
+  round?: InputMaybe<Round_Order_By>;
+  round_id?: InputMaybe<Order_By>;
+  votesParams?: InputMaybe<Params_TimedVotes_V1_0_0_Order_By>;
+  votesParams_id?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "GGPublicRound" */
+export enum GgPublicRound_Select_Column {
+  /** column name */
+  BasicChoicesId = 'basicChoices_id',
+  /** column name */
+  ChoicesParamsId = 'choicesParams_id',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  DbWriteTimestamp = 'db_write_timestamp',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PointsParamsId = 'pointsParams_id',
+  /** column name */
+  PostedBy = 'postedBy',
+  /** column name */
+  RoundId = 'round_id',
+  /** column name */
+  VotesParamsId = 'votesParams_id'
+}
+
+/** Streaming cursor of the table "GGPublicRound" */
+export type GgPublicRound_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: GgPublicRound_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GgPublicRound_Stream_Cursor_Value_Input = {
+  basicChoices_id?: InputMaybe<Scalars['String']['input']>;
+  choicesParams_id?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Int']['input']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  pointsParams_id?: InputMaybe<Scalars['String']['input']>;
+  postedBy?: InputMaybe<Scalars['String']['input']>;
+  round_id?: InputMaybe<Scalars['String']['input']>;
+  votesParams_id?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** columns and relationships of "GGShipChoice" */
+export type GgShipChoice = {
+  __typename?: 'GGShipChoice';
+  /** An object relationship */
+  application?: Maybe<AppDraft>;
+  application_id: Scalars['String']['output'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
+  id: Scalars['String']['output'];
+  /** An object relationship */
+  publicVote?: Maybe<GgPublicRound>;
+  publicVote_id: Scalars['String']['output'];
+  totalVoted: Scalars['numeric']['output'];
+};
+
+/** Boolean expression to filter rows from the table "GGShipChoice". All fields are combined with a logical 'AND'. */
+export type GgShipChoice_Bool_Exp = {
+  _and?: InputMaybe<Array<GgShipChoice_Bool_Exp>>;
+  _not?: InputMaybe<GgShipChoice_Bool_Exp>;
+  _or?: InputMaybe<Array<GgShipChoice_Bool_Exp>>;
+  application?: InputMaybe<AppDraft_Bool_Exp>;
+  application_id?: InputMaybe<String_Comparison_Exp>;
+  db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
+  id?: InputMaybe<String_Comparison_Exp>;
+  publicVote?: InputMaybe<GgPublicRound_Bool_Exp>;
+  publicVote_id?: InputMaybe<String_Comparison_Exp>;
+  totalVoted?: InputMaybe<Numeric_Comparison_Exp>;
+};
+
+/** Ordering options when selecting data from "GGShipChoice". */
+export type GgShipChoice_Order_By = {
+  application?: InputMaybe<AppDraft_Order_By>;
+  application_id?: InputMaybe<Order_By>;
+  db_write_timestamp?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  publicVote?: InputMaybe<GgPublicRound_Order_By>;
+  publicVote_id?: InputMaybe<Order_By>;
+  totalVoted?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "GGShipChoice" */
+export enum GgShipChoice_Select_Column {
+  /** column name */
+  ApplicationId = 'application_id',
+  /** column name */
+  DbWriteTimestamp = 'db_write_timestamp',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PublicVoteId = 'publicVote_id',
+  /** column name */
+  TotalVoted = 'totalVoted'
+}
+
+/** Streaming cursor of the table "GGShipChoice" */
+export type GgShipChoice_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: GgShipChoice_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GgShipChoice_Stream_Cursor_Value_Input = {
+  application_id?: InputMaybe<Scalars['String']['input']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  publicVote_id?: InputMaybe<Scalars['String']['input']>;
+  totalVoted?: InputMaybe<Scalars['numeric']['input']>;
+};
+
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['Int']['input']>;
@@ -2127,6 +2303,66 @@ export type Params_Hal_V0_1_1_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** columns and relationships of "Params_MerklePoints_v0_2_0" */
+export type Params_MerklePoints_V0_2_0 = {
+  __typename?: 'Params_MerklePoints_v0_2_0';
+  /** An object relationship */
+  clone?: Maybe<ModuleClone>;
+  clone_id: Scalars['String']['output'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
+  id: Scalars['String']['output'];
+  merkleRoot: Scalars['String']['output'];
+};
+
+/** Boolean expression to filter rows from the table "Params_MerklePoints_v0_2_0". All fields are combined with a logical 'AND'. */
+export type Params_MerklePoints_V0_2_0_Bool_Exp = {
+  _and?: InputMaybe<Array<Params_MerklePoints_V0_2_0_Bool_Exp>>;
+  _not?: InputMaybe<Params_MerklePoints_V0_2_0_Bool_Exp>;
+  _or?: InputMaybe<Array<Params_MerklePoints_V0_2_0_Bool_Exp>>;
+  clone?: InputMaybe<ModuleClone_Bool_Exp>;
+  clone_id?: InputMaybe<String_Comparison_Exp>;
+  db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
+  id?: InputMaybe<String_Comparison_Exp>;
+  merkleRoot?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** Ordering options when selecting data from "Params_MerklePoints_v0_2_0". */
+export type Params_MerklePoints_V0_2_0_Order_By = {
+  clone?: InputMaybe<ModuleClone_Order_By>;
+  clone_id?: InputMaybe<Order_By>;
+  db_write_timestamp?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  merkleRoot?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "Params_MerklePoints_v0_2_0" */
+export enum Params_MerklePoints_V0_2_0_Select_Column {
+  /** column name */
+  CloneId = 'clone_id',
+  /** column name */
+  DbWriteTimestamp = 'db_write_timestamp',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  MerkleRoot = 'merkleRoot'
+}
+
+/** Streaming cursor of the table "Params_MerklePoints_v0_2_0" */
+export type Params_MerklePoints_V0_2_0_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Params_MerklePoints_V0_2_0_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Params_MerklePoints_V0_2_0_Stream_Cursor_Value_Input = {
+  clone_id?: InputMaybe<Scalars['String']['input']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  merkleRoot?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** columns and relationships of "Params_PrePop_v0_2_0" */
 export type Params_PrePop_V0_2_0 = {
   __typename?: 'Params_PrePop_v0_2_0';
@@ -2333,6 +2569,96 @@ export type Params_TimedVotes_V0_2_0_Stream_Cursor_Value_Input = {
   endTime?: InputMaybe<Scalars['numeric']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   startTime?: InputMaybe<Scalars['numeric']['input']>;
+};
+
+/** columns and relationships of "Params_TimedVotes_v1_0_0" */
+export type Params_TimedVotes_V1_0_0 = {
+  __typename?: 'Params_TimedVotes_v1_0_0';
+  adminHatId: Scalars['numeric']['output'];
+  /** An object relationship */
+  clone?: Maybe<ModuleClone>;
+  clone_id: Scalars['String']['output'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']['output']>;
+  duration?: Maybe<Scalars['numeric']['output']>;
+  endTime?: Maybe<Scalars['numeric']['output']>;
+  id: Scalars['String']['output'];
+  round: Scalars['String']['output'];
+  startTime?: Maybe<Scalars['numeric']['output']>;
+  timerType: Scalars['numeric']['output'];
+};
+
+/** Boolean expression to filter rows from the table "Params_TimedVotes_v1_0_0". All fields are combined with a logical 'AND'. */
+export type Params_TimedVotes_V1_0_0_Bool_Exp = {
+  _and?: InputMaybe<Array<Params_TimedVotes_V1_0_0_Bool_Exp>>;
+  _not?: InputMaybe<Params_TimedVotes_V1_0_0_Bool_Exp>;
+  _or?: InputMaybe<Array<Params_TimedVotes_V1_0_0_Bool_Exp>>;
+  adminHatId?: InputMaybe<Numeric_Comparison_Exp>;
+  clone?: InputMaybe<ModuleClone_Bool_Exp>;
+  clone_id?: InputMaybe<String_Comparison_Exp>;
+  db_write_timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
+  duration?: InputMaybe<Numeric_Comparison_Exp>;
+  endTime?: InputMaybe<Numeric_Comparison_Exp>;
+  id?: InputMaybe<String_Comparison_Exp>;
+  round?: InputMaybe<String_Comparison_Exp>;
+  startTime?: InputMaybe<Numeric_Comparison_Exp>;
+  timerType?: InputMaybe<Numeric_Comparison_Exp>;
+};
+
+/** Ordering options when selecting data from "Params_TimedVotes_v1_0_0". */
+export type Params_TimedVotes_V1_0_0_Order_By = {
+  adminHatId?: InputMaybe<Order_By>;
+  clone?: InputMaybe<ModuleClone_Order_By>;
+  clone_id?: InputMaybe<Order_By>;
+  db_write_timestamp?: InputMaybe<Order_By>;
+  duration?: InputMaybe<Order_By>;
+  endTime?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  round?: InputMaybe<Order_By>;
+  startTime?: InputMaybe<Order_By>;
+  timerType?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "Params_TimedVotes_v1_0_0" */
+export enum Params_TimedVotes_V1_0_0_Select_Column {
+  /** column name */
+  AdminHatId = 'adminHatId',
+  /** column name */
+  CloneId = 'clone_id',
+  /** column name */
+  DbWriteTimestamp = 'db_write_timestamp',
+  /** column name */
+  Duration = 'duration',
+  /** column name */
+  EndTime = 'endTime',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Round = 'round',
+  /** column name */
+  StartTime = 'startTime',
+  /** column name */
+  TimerType = 'timerType'
+}
+
+/** Streaming cursor of the table "Params_TimedVotes_v1_0_0" */
+export type Params_TimedVotes_V1_0_0_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Params_TimedVotes_V1_0_0_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Params_TimedVotes_V1_0_0_Stream_Cursor_Value_Input = {
+  adminHatId?: InputMaybe<Scalars['numeric']['input']>;
+  clone_id?: InputMaybe<Scalars['String']['input']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']['input']>;
+  duration?: InputMaybe<Scalars['numeric']['input']>;
+  endTime?: InputMaybe<Scalars['numeric']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  round?: InputMaybe<Scalars['String']['input']>;
+  startTime?: InputMaybe<Scalars['numeric']['input']>;
+  timerType?: InputMaybe<Scalars['numeric']['input']>;
 };
 
 /** columns and relationships of "Round" */
@@ -2879,6 +3205,7 @@ export type Dynamic_Contract_Registry = {
   contract_address: Scalars['String']['output'];
   contract_type: Scalars['contract_type']['output'];
   id: Scalars['String']['output'];
+  is_pre_registered: Scalars['Boolean']['output'];
   registering_event_block_number: Scalars['Int']['output'];
   registering_event_block_timestamp: Scalars['Int']['output'];
   registering_event_contract_name: Scalars['String']['output'];
@@ -2896,6 +3223,7 @@ export type Dynamic_Contract_Registry_Bool_Exp = {
   contract_address?: InputMaybe<String_Comparison_Exp>;
   contract_type?: InputMaybe<Contract_Type_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
+  is_pre_registered?: InputMaybe<Boolean_Comparison_Exp>;
   registering_event_block_number?: InputMaybe<Int_Comparison_Exp>;
   registering_event_block_timestamp?: InputMaybe<Int_Comparison_Exp>;
   registering_event_contract_name?: InputMaybe<String_Comparison_Exp>;
@@ -2910,6 +3238,7 @@ export type Dynamic_Contract_Registry_Order_By = {
   contract_address?: InputMaybe<Order_By>;
   contract_type?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  is_pre_registered?: InputMaybe<Order_By>;
   registering_event_block_number?: InputMaybe<Order_By>;
   registering_event_block_timestamp?: InputMaybe<Order_By>;
   registering_event_contract_name?: InputMaybe<Order_By>;
@@ -2928,6 +3257,8 @@ export enum Dynamic_Contract_Registry_Select_Column {
   ContractType = 'contract_type',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsPreRegistered = 'is_pre_registered',
   /** column name */
   RegisteringEventBlockNumber = 'registering_event_block_number',
   /** column name */
@@ -2956,6 +3287,7 @@ export type Dynamic_Contract_Registry_Stream_Cursor_Value_Input = {
   contract_address?: InputMaybe<Scalars['String']['input']>;
   contract_type?: InputMaybe<Scalars['contract_type']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
+  is_pre_registered?: InputMaybe<Scalars['Boolean']['input']>;
   registering_event_block_number?: InputMaybe<Scalars['Int']['input']>;
   registering_event_block_timestamp?: InputMaybe<Scalars['Int']['input']>;
   registering_event_contract_name?: InputMaybe<Scalars['String']['input']>;
@@ -2969,7 +3301,6 @@ export type End_Of_Block_Range_Scanned_Data = {
   __typename?: 'end_of_block_range_scanned_data';
   block_hash: Scalars['String']['output'];
   block_number: Scalars['Int']['output'];
-  block_timestamp: Scalars['Int']['output'];
   chain_id: Scalars['Int']['output'];
 };
 
@@ -2980,7 +3311,6 @@ export type End_Of_Block_Range_Scanned_Data_Bool_Exp = {
   _or?: InputMaybe<Array<End_Of_Block_Range_Scanned_Data_Bool_Exp>>;
   block_hash?: InputMaybe<String_Comparison_Exp>;
   block_number?: InputMaybe<Int_Comparison_Exp>;
-  block_timestamp?: InputMaybe<Int_Comparison_Exp>;
   chain_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
@@ -2988,7 +3318,6 @@ export type End_Of_Block_Range_Scanned_Data_Bool_Exp = {
 export type End_Of_Block_Range_Scanned_Data_Order_By = {
   block_hash?: InputMaybe<Order_By>;
   block_number?: InputMaybe<Order_By>;
-  block_timestamp?: InputMaybe<Order_By>;
   chain_id?: InputMaybe<Order_By>;
 };
 
@@ -2998,8 +3327,6 @@ export enum End_Of_Block_Range_Scanned_Data_Select_Column {
   BlockHash = 'block_hash',
   /** column name */
   BlockNumber = 'block_number',
-  /** column name */
-  BlockTimestamp = 'block_timestamp',
   /** column name */
   ChainId = 'chain_id'
 }
@@ -3016,7 +3343,6 @@ export type End_Of_Block_Range_Scanned_Data_Stream_Cursor_Input = {
 export type End_Of_Block_Range_Scanned_Data_Stream_Cursor_Value_Input = {
   block_hash?: InputMaybe<Scalars['String']['input']>;
   block_number?: InputMaybe<Scalars['Int']['input']>;
-  block_timestamp?: InputMaybe<Scalars['Int']['input']>;
   chain_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -3261,6 +3587,14 @@ export type Query_Root = {
   GGApplicationVote_by_pk?: Maybe<GgApplicationVote>;
   /** fetch data from the table: "GGApplication" using primary key columns */
   GGApplication_by_pk?: Maybe<GgApplication>;
+  /** fetch data from the table: "GGPublicRound" */
+  GGPublicRound: Array<GgPublicRound>;
+  /** fetch data from the table: "GGPublicRound" using primary key columns */
+  GGPublicRound_by_pk?: Maybe<GgPublicRound>;
+  /** fetch data from the table: "GGShipChoice" */
+  GGShipChoice: Array<GgShipChoice>;
+  /** fetch data from the table: "GGShipChoice" using primary key columns */
+  GGShipChoice_by_pk?: Maybe<GgShipChoice>;
   /** fetch data from the table: "ModuleClone" */
   ModuleClone: Array<ModuleClone>;
   /** fetch data from the table: "ModuleClone" using primary key columns */
@@ -3281,6 +3615,10 @@ export type Query_Root = {
   Params_HAL_v0_1_1: Array<Params_Hal_V0_1_1>;
   /** fetch data from the table: "Params_HAL_v0_1_1" using primary key columns */
   Params_HAL_v0_1_1_by_pk?: Maybe<Params_Hal_V0_1_1>;
+  /** fetch data from the table: "Params_MerklePoints_v0_2_0" */
+  Params_MerklePoints_v0_2_0: Array<Params_MerklePoints_V0_2_0>;
+  /** fetch data from the table: "Params_MerklePoints_v0_2_0" using primary key columns */
+  Params_MerklePoints_v0_2_0_by_pk?: Maybe<Params_MerklePoints_V0_2_0>;
   /** fetch data from the table: "Params_PrePop_v0_2_0" */
   Params_PrePop_v0_2_0: Array<Params_PrePop_V0_2_0>;
   /** fetch data from the table: "Params_PrePop_v0_2_0" using primary key columns */
@@ -3293,6 +3631,10 @@ export type Query_Root = {
   Params_TimedVotes_v0_2_0: Array<Params_TimedVotes_V0_2_0>;
   /** fetch data from the table: "Params_TimedVotes_v0_2_0" using primary key columns */
   Params_TimedVotes_v0_2_0_by_pk?: Maybe<Params_TimedVotes_V0_2_0>;
+  /** fetch data from the table: "Params_TimedVotes_v1_0_0" */
+  Params_TimedVotes_v1_0_0: Array<Params_TimedVotes_V1_0_0>;
+  /** fetch data from the table: "Params_TimedVotes_v1_0_0" using primary key columns */
+  Params_TimedVotes_v1_0_0_by_pk?: Maybe<Params_TimedVotes_V1_0_0>;
   /** fetch data from the table: "Round" */
   Round: Array<Round>;
   /** fetch data from the table: "RoundClone" */
@@ -3518,6 +3860,34 @@ export type Query_RootGgApplication_By_PkArgs = {
 };
 
 
+export type Query_RootGgPublicRoundArgs = {
+  distinct_on?: InputMaybe<Array<GgPublicRound_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<GgPublicRound_Order_By>>;
+  where?: InputMaybe<GgPublicRound_Bool_Exp>;
+};
+
+
+export type Query_RootGgPublicRound_By_PkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Query_RootGgShipChoiceArgs = {
+  distinct_on?: InputMaybe<Array<GgShipChoice_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<GgShipChoice_Order_By>>;
+  where?: InputMaybe<GgShipChoice_Bool_Exp>;
+};
+
+
+export type Query_RootGgShipChoice_By_PkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type Query_RootModuleCloneArgs = {
   distinct_on?: InputMaybe<Array<ModuleClone_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -3588,6 +3958,20 @@ export type Query_RootParams_Hal_V0_1_1_By_PkArgs = {
 };
 
 
+export type Query_RootParams_MerklePoints_V0_2_0Args = {
+  distinct_on?: InputMaybe<Array<Params_MerklePoints_V0_2_0_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Params_MerklePoints_V0_2_0_Order_By>>;
+  where?: InputMaybe<Params_MerklePoints_V0_2_0_Bool_Exp>;
+};
+
+
+export type Query_RootParams_MerklePoints_V0_2_0_By_PkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type Query_RootParams_PrePop_V0_2_0Args = {
   distinct_on?: InputMaybe<Array<Params_PrePop_V0_2_0_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -3626,6 +4010,20 @@ export type Query_RootParams_TimedVotes_V0_2_0Args = {
 
 
 export type Query_RootParams_TimedVotes_V0_2_0_By_PkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Query_RootParams_TimedVotes_V1_0_0Args = {
+  distinct_on?: InputMaybe<Array<Params_TimedVotes_V1_0_0_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Params_TimedVotes_V1_0_0_Order_By>>;
+  where?: InputMaybe<Params_TimedVotes_V1_0_0_Bool_Exp>;
+};
+
+
+export type Query_RootParams_TimedVotes_V1_0_0_By_PkArgs = {
   id: Scalars['String']['input'];
 };
 
@@ -3984,6 +4382,18 @@ export type Subscription_Root = {
   GGApplication_by_pk?: Maybe<GgApplication>;
   /** fetch data from the table in a streaming manner: "GGApplication" */
   GGApplication_stream: Array<GgApplication>;
+  /** fetch data from the table: "GGPublicRound" */
+  GGPublicRound: Array<GgPublicRound>;
+  /** fetch data from the table: "GGPublicRound" using primary key columns */
+  GGPublicRound_by_pk?: Maybe<GgPublicRound>;
+  /** fetch data from the table in a streaming manner: "GGPublicRound" */
+  GGPublicRound_stream: Array<GgPublicRound>;
+  /** fetch data from the table: "GGShipChoice" */
+  GGShipChoice: Array<GgShipChoice>;
+  /** fetch data from the table: "GGShipChoice" using primary key columns */
+  GGShipChoice_by_pk?: Maybe<GgShipChoice>;
+  /** fetch data from the table in a streaming manner: "GGShipChoice" */
+  GGShipChoice_stream: Array<GgShipChoice>;
   /** fetch data from the table: "ModuleClone" */
   ModuleClone: Array<ModuleClone>;
   /** fetch data from the table: "ModuleClone" using primary key columns */
@@ -4014,6 +4424,12 @@ export type Subscription_Root = {
   Params_HAL_v0_1_1_by_pk?: Maybe<Params_Hal_V0_1_1>;
   /** fetch data from the table in a streaming manner: "Params_HAL_v0_1_1" */
   Params_HAL_v0_1_1_stream: Array<Params_Hal_V0_1_1>;
+  /** fetch data from the table: "Params_MerklePoints_v0_2_0" */
+  Params_MerklePoints_v0_2_0: Array<Params_MerklePoints_V0_2_0>;
+  /** fetch data from the table: "Params_MerklePoints_v0_2_0" using primary key columns */
+  Params_MerklePoints_v0_2_0_by_pk?: Maybe<Params_MerklePoints_V0_2_0>;
+  /** fetch data from the table in a streaming manner: "Params_MerklePoints_v0_2_0" */
+  Params_MerklePoints_v0_2_0_stream: Array<Params_MerklePoints_V0_2_0>;
   /** fetch data from the table: "Params_PrePop_v0_2_0" */
   Params_PrePop_v0_2_0: Array<Params_PrePop_V0_2_0>;
   /** fetch data from the table: "Params_PrePop_v0_2_0" using primary key columns */
@@ -4032,6 +4448,12 @@ export type Subscription_Root = {
   Params_TimedVotes_v0_2_0_by_pk?: Maybe<Params_TimedVotes_V0_2_0>;
   /** fetch data from the table in a streaming manner: "Params_TimedVotes_v0_2_0" */
   Params_TimedVotes_v0_2_0_stream: Array<Params_TimedVotes_V0_2_0>;
+  /** fetch data from the table: "Params_TimedVotes_v1_0_0" */
+  Params_TimedVotes_v1_0_0: Array<Params_TimedVotes_V1_0_0>;
+  /** fetch data from the table: "Params_TimedVotes_v1_0_0" using primary key columns */
+  Params_TimedVotes_v1_0_0_by_pk?: Maybe<Params_TimedVotes_V1_0_0>;
+  /** fetch data from the table in a streaming manner: "Params_TimedVotes_v1_0_0" */
+  Params_TimedVotes_v1_0_0_stream: Array<Params_TimedVotes_V1_0_0>;
   /** fetch data from the table: "Round" */
   Round: Array<Round>;
   /** fetch data from the table: "RoundClone" */
@@ -4368,6 +4790,48 @@ export type Subscription_RootGgApplication_StreamArgs = {
 };
 
 
+export type Subscription_RootGgPublicRoundArgs = {
+  distinct_on?: InputMaybe<Array<GgPublicRound_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<GgPublicRound_Order_By>>;
+  where?: InputMaybe<GgPublicRound_Bool_Exp>;
+};
+
+
+export type Subscription_RootGgPublicRound_By_PkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootGgPublicRound_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<GgPublicRound_Stream_Cursor_Input>>;
+  where?: InputMaybe<GgPublicRound_Bool_Exp>;
+};
+
+
+export type Subscription_RootGgShipChoiceArgs = {
+  distinct_on?: InputMaybe<Array<GgShipChoice_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<GgShipChoice_Order_By>>;
+  where?: InputMaybe<GgShipChoice_Bool_Exp>;
+};
+
+
+export type Subscription_RootGgShipChoice_By_PkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootGgShipChoice_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<GgShipChoice_Stream_Cursor_Input>>;
+  where?: InputMaybe<GgShipChoice_Bool_Exp>;
+};
+
+
 export type Subscription_RootModuleCloneArgs = {
   distinct_on?: InputMaybe<Array<ModuleClone_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -4473,6 +4937,27 @@ export type Subscription_RootParams_Hal_V0_1_1_StreamArgs = {
 };
 
 
+export type Subscription_RootParams_MerklePoints_V0_2_0Args = {
+  distinct_on?: InputMaybe<Array<Params_MerklePoints_V0_2_0_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Params_MerklePoints_V0_2_0_Order_By>>;
+  where?: InputMaybe<Params_MerklePoints_V0_2_0_Bool_Exp>;
+};
+
+
+export type Subscription_RootParams_MerklePoints_V0_2_0_By_PkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootParams_MerklePoints_V0_2_0_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Params_MerklePoints_V0_2_0_Stream_Cursor_Input>>;
+  where?: InputMaybe<Params_MerklePoints_V0_2_0_Bool_Exp>;
+};
+
+
 export type Subscription_RootParams_PrePop_V0_2_0Args = {
   distinct_on?: InputMaybe<Array<Params_PrePop_V0_2_0_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -4533,6 +5018,27 @@ export type Subscription_RootParams_TimedVotes_V0_2_0_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Params_TimedVotes_V0_2_0_Stream_Cursor_Input>>;
   where?: InputMaybe<Params_TimedVotes_V0_2_0_Bool_Exp>;
+};
+
+
+export type Subscription_RootParams_TimedVotes_V1_0_0Args = {
+  distinct_on?: InputMaybe<Array<Params_TimedVotes_V1_0_0_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Params_TimedVotes_V1_0_0_Order_By>>;
+  where?: InputMaybe<Params_TimedVotes_V1_0_0_Bool_Exp>;
+};
+
+
+export type Subscription_RootParams_TimedVotes_V1_0_0_By_PkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootParams_TimedVotes_V1_0_0_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Params_TimedVotes_V1_0_0_Stream_Cursor_Input>>;
+  where?: InputMaybe<Params_TimedVotes_V1_0_0_Bool_Exp>;
 };
 
 
@@ -4824,6 +5330,13 @@ export type TopicFeedQueryVariables = Exact<{
 
 export type TopicFeedQuery = { __typename?: 'query_root', FeedItem: Array<{ __typename?: 'FeedItem', id: string, createdAt: number, topic: string, userAddress: string, postType: string, json?: string | null }> };
 
+export type GetPublicRoundQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type GetPublicRoundQuery = { __typename?: 'query_root', GGPublicRound_by_pk?: { __typename?: 'GGPublicRound', choicesParams?: { __typename?: 'Params_PrePop_v0_2_0', basicChoices?: { __typename?: 'BasicChoices', choices: Array<{ __typename?: 'BasicChoice', id: string, choiceId: string, amountVoted: any }> } | null } | null, round?: { __typename?: 'Round', contestStatus: any, totalVoted: any } | null } | null, BatchVote: Array<{ __typename?: 'BatchVote', id: string, voter: string, timestamp: number, comment?: string | null, votes: Array<{ __typename?: 'BasicVote', choice_id: string, amount: any }> }> };
+
 export type GetRecentTransactionQueryVariables = Exact<{
   txHash: Scalars['String']['input'];
 }>;
@@ -4940,6 +5453,35 @@ export const TopicFeedDocument = gql`
   }
 }
     ${FItemFragmentDoc}`;
+export const GetPublicRoundDocument = gql`
+    query getPublicRound($id: String!) {
+  GGPublicRound_by_pk(id: $id) {
+    choicesParams {
+      basicChoices {
+        choices {
+          id
+          choiceId
+          amountVoted
+        }
+      }
+    }
+    round {
+      contestStatus
+      totalVoted
+    }
+  }
+  BatchVote(where: {round_id: {_eq: $id}}) {
+    id
+    voter
+    timestamp
+    comment
+    votes {
+      choice_id
+      amount
+    }
+  }
+}
+    `;
 export const GetRecentTransactionDocument = gql`
     query getRecentTransaction($txHash: String!) {
   TX_by_pk(id: $txHash) {
@@ -4972,6 +5514,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     topicFeed(variables: TopicFeedQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<TopicFeedQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<TopicFeedQuery>(TopicFeedDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'topicFeed', 'query', variables);
+    },
+    getPublicRound(variables: GetPublicRoundQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetPublicRoundQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPublicRoundQuery>(GetPublicRoundDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPublicRound', 'query', variables);
     },
     getRecentTransaction(variables: GetRecentTransactionQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetRecentTransactionQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetRecentTransactionQuery>(GetRecentTransactionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getRecentTransaction', 'query', variables);

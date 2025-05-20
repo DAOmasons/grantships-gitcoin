@@ -24,6 +24,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useChews } from '../hooks/useChews';
 import { useBreakpoints, useMobile, useTablet } from '../hooks/useBreakpoints';
 import { useMediaQuery } from '@mantine/hooks';
+import { TxButton } from '../components/TxButton';
+import { deployPublicVoting } from '../setupScripts/chews';
 
 const displayTextCopy = [
   {
@@ -64,7 +66,7 @@ const displayTextCopy = [
     description:
       'In this stage, GTC holders review the results of the Community Round and vote on the best round. The winning rounds can opt to automatically advance to the next round!',
     buttonLabel: 'View Reviews',
-    to: '/ships',
+    to: '/vote',
   },
 ];
 
@@ -131,7 +133,14 @@ export const Home = () => {
           </Box>
         </Flex>
       </Container>
-      {/* <TxButton onClick={deployRubricVoting}>Fire!</TxButton> */}
+      {/* <Button
+        onClick={() =>
+          getUserProof('0x756ee8B8E898D497043c2320d9909f1DD5a7077F')
+        }
+      >
+        Test API
+      </Button> */}
+      {/* <TxButton onClick={deployPublicVoting}>Fire!</TxButton> */}
       <InnerContainer>
         <Card
           variant="kelp-outline"

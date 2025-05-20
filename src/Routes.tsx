@@ -13,6 +13,7 @@ import { MyApplications } from './pages/MyApplications';
 import { About } from './pages/About';
 import { Ship } from './pages/Ship';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { Vote } from './pages/Vote';
 
 export const ClientRoutes = () => {
   return (
@@ -30,6 +31,7 @@ export const ClientRoutes = () => {
       <Route path="/view-draft/:id" element={<AppDraft />} />
       <Route path="/my-applications/:address" element={<MyApplications />} />
       <Route path="/review/:id" element={<Review />} />
+      <Route path="/vote" element={<Vote />} />
       <Route path="/" element={<Home />} />
     </Routes>
   );

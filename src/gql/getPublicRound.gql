@@ -1,0 +1,27 @@
+query getPublicRound($id: String!) {
+  GGPublicRound_by_pk(id: $id) {
+    choicesParams {
+      basicChoices {
+        choices {
+          id
+          choiceId
+          amountVoted
+        }
+      }
+    }
+    round {
+      contestStatus
+      totalVoted
+    }
+  }
+  BatchVote(where: { round_id: { _eq: $id } }) {
+    id
+    voter
+    timestamp
+    comment
+    votes {
+      choice_id
+      amount
+    }
+  }
+}
