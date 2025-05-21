@@ -211,8 +211,6 @@ export const deployPublicVoting = async (topSixShipIds: string[]) => {
     MODULE_TAG.EMPTY_EXECUTION,
   ] as const;
 
-  console.log('');
-
   console.log('MODULE_TAGS', MODULE_TAGS);
   console.log('CONTEST_V', CONTEST_V);
 

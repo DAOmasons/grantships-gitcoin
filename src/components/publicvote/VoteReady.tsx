@@ -24,10 +24,10 @@ import { batchVoteSchema } from '../../schemas/batchVote';
 import { GG_MD_POINTER } from '../../constants/tags';
 import { ADDR } from '../../constants/addresses';
 import {
+  IconChefHat,
   IconList,
   IconStar,
   IconStarFilled,
-  IconUfo,
 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { TxButton } from '../TxButton';
@@ -363,12 +363,12 @@ export const VoteReady = ({
           display: isLoading || reasoning ? 'flex' : 'none',
         }}
       >
-        <Avatar size={56} bg="rgba(252,114,255,0.1)" ref={loadingShipRef}>
-          <IconUfo size={30} stroke={1.2} color={'#FC72FF'} />
+        <Avatar size={86} bg="rgba(252,114,255,0.1)" ref={loadingShipRef}>
+          <IconChefHat size={54} stroke={1.2} color={'#FC72FF'} />
         </Avatar>
         <Text>
           {isLoading
-            ? 'Generating voting weights based on program metrics and preferences...'
+            ? 'Cooking up some AI-powered voting weights from your preferences. This may take a few minutes.'
             : 'AI-powered voting insights based on your rating'}
         </Text>
       </Stack>

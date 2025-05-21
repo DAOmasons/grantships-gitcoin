@@ -135,7 +135,7 @@ export const VoteUI = ({
   if (hasVoted) {
     return (
       <Box mb={'lg'}>
-        <Title order={3} fz={'h3'} mb={'xl'}>
+        <Title order={3} fz={'h3'} mb={'xl'} ta="center">
           Thank you for voting!
         </Title>
         <Group justify="center">
@@ -143,7 +143,7 @@ export const VoteUI = ({
             <IconCheck size={120} color={colors.kelp[7]} />
           </Avatar>
         </Group>
-        <Text c="subtle" mb="sm">
+        <Text c="subtle" mb="sm" ta="center">
           Thank you for participating in Grant Ships for GG23! Your vote has
           been recorded onchain and tallied in the results.
         </Text>
