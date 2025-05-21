@@ -59,7 +59,7 @@ export const VoteUI = ({
     } else {
       setHasVoted(false);
     }
-  }, [publicRound]);
+  }, [publicRound, address]);
 
   const checkEligibility = async () => {
     try {
