@@ -139,7 +139,7 @@ export const VoteReady = ({
 
       const allocations = publicRound?.ships?.map((ship) => {
         const sliderData = result?.data?.allocations.find(
-          (program) => program.id.slice(4) === ship.choiceId.slice(4)
+          (program) => program.id.slice(0, 4) === ship.choiceId.slice(0, 4)
         );
 
         if (!sliderData) {
