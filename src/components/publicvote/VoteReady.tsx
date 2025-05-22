@@ -5,12 +5,14 @@ import {
   Button,
   Card,
   Group,
+  Menu,
   Rating,
   Slider,
   Stack,
   Text,
   Textarea,
   Title,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { useRef, useState } from 'react';
@@ -24,14 +26,19 @@ import { batchVoteSchema } from '../../schemas/batchVote';
 import { GG_MD_POINTER } from '../../constants/tags';
 import { ADDR } from '../../constants/addresses';
 import {
+  IconChefHat,
   IconList,
+  IconReport,
+  IconRocket,
+  IconSearch,
   IconStar,
   IconStarFilled,
-  IconUfo,
 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { TxButton } from '../TxButton';
 import { SliderData, vectors } from './voteData';
+import { Bold } from '../typography';
+import { useMobile, useTablet } from '../../hooks/useBreakpoints';
 
 export const VoteReady = ({
   proof,
@@ -43,6 +50,9 @@ export const VoteReady = ({
   const { colors } = useMantineTheme();
   const { publicRound, refetchPublicRound } = useChews();
   const { tx } = useTx();
+
+  const isMobile = useMobile();
+  const isTablet = useTablet();
 
   const [context, setContext] = useState('');
   const [reasoning, setReasoning] = useState('');
@@ -129,7 +139,7 @@ export const VoteReady = ({
 
       const allocations = publicRound?.ships?.map((ship) => {
         const sliderData = result?.data?.allocations.find(
-          (program) => program.id.slice(4) === ship.choiceId.slice(4)
+          (program) => program.id.slice(0, 4) === ship.choiceId.slice(0, 4)
         );
 
         if (!sliderData) {
@@ -145,6 +155,8 @@ export const VoteReady = ({
           id: ship.choiceId,
           imgUrl: ship.imgUrl,
           value: sliderData ? sliderData.percentage : 0,
+          reportLink: ship.reportLink,
+          roundLink: ship.roundLink,
         } as SliderData;
       });
 
@@ -180,7 +192,7 @@ export const VoteReady = ({
       });
     }
   };
-
+  //
   const submitVote = async () => {
     const EMPTY_METADATA = [0n, ''] as [bigint, string];
 
@@ -298,7 +310,7 @@ export const VoteReady = ({
     <Box>
       <Box mb={'lg'}>
         <Title order={3} fz={'h3'} mb={'xl'}>
-          Welcome to the New GTC Voting system
+          GG23 Community Round Vote
         </Title>
         <Text c="subtle" mb="sm">
           You'll go through a set of questions to express your preferences and
@@ -314,30 +326,46 @@ export const VoteReady = ({
       </Box>
       <Stack mb="xl">
         {ratings.map((vector) => (
-          <Card bg={colors.dark[6]} p={24} h={120} key={vector.key}>
+          <Card
+            bg={colors.dark[6]}
+            p={24}
+            h={isMobile ? 'fit-content' : 120}
+            key={vector.key}
+          >
             <Text fz="lg" mb={10}>
               {vector.label}
             </Text>
             <Rating
               color={colors.purple[6]}
               size={24}
+              readOnly={sliders.length > 0}
               value={vector.rating}
               onChange={(value) => handleRatingChange(vector.key, value)}
               emptySymbol={
-                <IconStar size={24} color={colors.purple[6]} stroke={1.5} />
+                <IconStar
+                  size={24}
+                  color={sliders.length > 0 ? colors.dark[4] : colors.purple[6]}
+                  stroke={1.5}
+                />
               }
-              fullSymbol={<IconStarFilled size={24} color={colors.purple[6]} />}
+              fullSymbol={
+                <IconStarFilled
+                  size={24}
+                  color={sliders.length > 0 ? colors.dark[4] : colors.purple[6]}
+                />
+              }
             />
           </Card>
         ))}
 
         <Card bg={colors.dark[6]}>
           <Text fz="lg" mb={'sm'}>
-            Would you like to add more context? (Optional)
+            What else do you consider important in a grants program? (Optional)
           </Text>
           <Textarea
             variant="inset"
             size="sm"
+            disabled={sliders.length > 0}
             onChange={(e) => setContext(e.currentTarget.value)}
           />
         </Card>
@@ -363,12 +391,12 @@ export const VoteReady = ({
           display: isLoading || reasoning ? 'flex' : 'none',
         }}
       >
-        <Avatar size={56} bg="rgba(252,114,255,0.1)" ref={loadingShipRef}>
-          <IconUfo size={30} stroke={1.2} color={'#FC72FF'} />
+        <Avatar size={86} bg="rgba(252,114,255,0.1)" ref={loadingShipRef}>
+          <IconChefHat size={54} stroke={1.2} color={'#FC72FF'} />
         </Avatar>
         <Text>
           {isLoading
-            ? 'Generating voting weights based on program metrics and preferences...'
+            ? 'Cooking up some AI-powered voting weights from your preferences. This may take a minute.'
             : 'AI-powered voting insights based on your rating'}
         </Text>
       </Stack>
@@ -380,8 +408,12 @@ export const VoteReady = ({
           }}
         >
           <Text mb="sm">
-            The AI's suggestion is just a recommendation. You can review,
-            adjust, or override it before casting your final vote.
+            The AI's suggestion is just a recommendation.{' '}
+            <Bold>
+              Feel free to read the round data and adjust the sliders
+              accordingly
+            </Bold>
+            .
           </Text>
           <Card>
             <Text className="ws-pre-wrap" ref={readoutRef}>
@@ -398,14 +430,17 @@ export const VoteReady = ({
               them using the sliders to reflect your final decision.
             </Text>
             <Text mb="sm">
-              The AI’s recommendation is based on your priorities, but you have
-              full control to fine-tune your vote before submitting.
+              The AI’s recommendation is based on your priorities. If you want
+              to dive in deeper,{' '}
+              <Bold>
+                please read the round data and adjust your vote as needed.
+              </Bold>
             </Text>
             <Card>
               <Stack mb="lg" gap={'md'}>
                 {sliders.map((slider) => (
                   <Box key={slider.id} mb="lg">
-                    <Group mb="sm" justify="space-between" w="90%">
+                    <Group mb="sm" justify="space-between" w="95%">
                       <Box w="fit-content">
                         <Link
                           to={`/ship/${slider.id}`}
@@ -414,15 +449,56 @@ export const VoteReady = ({
                         >
                           <Group gap="xs">
                             <Avatar src={slider.imgUrl} size={40} />
-                            <Text lineClamp={1} maw={200}>
+                            <Text lineClamp={1} maw={isMobile ? 150 : 200}>
                               {slider.name}
                             </Text>
                           </Group>
                         </Link>
                       </Box>
-                      <ActionIcon size={16}>
-                        <IconList />
-                      </ActionIcon>
+                      <Menu
+                        position="bottom-start"
+                        transitionProps={{
+                          transition: 'fade-up',
+                          duration: 150,
+                        }}
+                      >
+                        <Menu.Target>
+                          <Tooltip label="Read Ship Data">
+                            <ActionIcon size={20}>
+                              <IconList />
+                            </ActionIcon>
+                          </Tooltip>
+                        </Menu.Target>
+                        <Menu.Dropdown>
+                          <Menu.Item
+                            leftSection={<IconReport size={20} />}
+                            component={'a'}
+                            href={slider.reportLink}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            Read Report
+                          </Menu.Item>
+                          <Menu.Item
+                            leftSection={<IconSearch size={20} />}
+                            component="a"
+                            href={slider.roundLink}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            See Round
+                          </Menu.Item>
+                          <Menu.Item
+                            leftSection={<IconRocket size={20} />}
+                            component={Link}
+                            to={`/ship/${slider.id}`}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            See Ship Page
+                          </Menu.Item>
+                        </Menu.Dropdown>
+                      </Menu>
                     </Group>
                     <Group>
                       <Slider

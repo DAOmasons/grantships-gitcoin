@@ -22,16 +22,20 @@ import {
   getReviewsWithMetadata,
 } from '../queries/getMetadata';
 import { JudgeIcon, ShipIcon } from '../components/RoleIcons';
-import { IconArrowRight, IconInfoCircle } from '@tabler/icons-react';
+import {
+  IconArrowRight,
+  IconExternalLink,
+  IconInfoCircle,
+} from '@tabler/icons-react';
 import { formatEther } from 'viem';
 import { useBreakpoints } from '../hooks/useBreakpoints';
 import { GgApplicationVote } from '../generated/graphql';
 import { roundNumberString, truncateAddr } from '../utils/common';
-import { InfoBanner } from '../components/InfoBanner';
+import { ROUND_DATA } from '../constants/reports';
 
 export const Ship = () => {
   const { id } = useParams();
-  const { applicationRound } = useChews();
+  const { applicationRound, publicRound } = useChews();
   const { colors } = useMantineTheme();
   const { isTablet } = useBreakpoints();
   const navigate = useNavigate();
@@ -60,6 +64,26 @@ export const Ship = () => {
     return { ...locatedShip, avgScore };
   }, [id, applicationRound]);
 
+  const publicScore = useMemo(() => {
+    if (!publicRound) return '--';
+
+    const locatedShip = publicRound?.ships.find((ship) => ship.choiceId === id);
+
+    if (!locatedShip) return '--';
+
+    const total = publicRound.totalVoted;
+
+    const scaleFactor = 100n;
+
+    const percentage =
+      locatedShip.amountVoted === 0n
+        ? 0
+        : Number((locatedShip.amountVoted * 100n * scaleFactor) / total) /
+          Number(scaleFactor);
+
+    return `${percentage}%`;
+  }, [publicRound]);
+
   const { data: metadata, isLoading: isLoadingMetadata } = useQuery({
     queryKey: ['metadata', ship?.application.ipfsHash],
     queryFn: () => getApplicationMetadata(ship?.application.ipfsHash as string),
@@ -72,13 +96,15 @@ export const Ship = () => {
     enabled: !!ship?.votes,
   });
 
-  if (!ship) {
+  if (!ship || !publicRound || !applicationRound) {
     return (
       <PageLayout title="GG 23 Ship">
         <></>
       </PageLayout>
     );
   }
+
+  const shipData = ROUND_DATA[id as string];
 
   return (
     <PageLayout title={ship.application.name}>
@@ -156,23 +182,65 @@ export const Ship = () => {
               </Tooltip>
             </Group>
             <Text c="highlight" fz={80}>
-              --
+              {publicScore}
             </Text>
             <Text c="subtle" style={{ transform: 'translateY(-16px)' }} fz="sm">
               *Percentage of total community votes
             </Text>
-            <Text c="subtle" style={{ transform: 'translateY(-16px)' }} fz="sm">
-              **Voting opens after Community Round
-            </Text>
+            <Group style={{ transform: 'translateY(-12px)' }} gap={4}>
+              <Text
+                c="subtle"
+                td="underline"
+                component={Link}
+                to="/vote"
+                fz="sm"
+              >
+                See Voting
+              </Text>
+              <IconArrowRight size={18} stroke={1} />
+            </Group>
           </Box>
         </Flex>
+        <Box>
+          <Text fz="lg" fw={600} mb="md">
+            Round Data
+          </Text>
+          <Group gap={6} mb="xs">
+            <Text
+              component="a"
+              href={shipData.reportLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              c="subtle"
+              fz="sm"
+              td="underline"
+            >
+              Read Round Report
+            </Text>
+            <IconExternalLink size={16} />
+          </Group>
+          <Group gap={6}>
+            <Text
+              component="a"
+              href={shipData.reportLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              c="subtle"
+              fz="sm"
+              td="underline"
+            >
+              View Round
+            </Text>
+            <IconExternalLink size={16} />
+          </Group>
+        </Box>
         <Title order={4} fz="h4" mt="lg">
           Judge Reviews
         </Title>
         <Stack gap="lg">
           {reviewsWithMetadata &&
             reviewsWithMetadata?.length > 0 &&
-            reviewsWithMetadata.map((review, index) => (
+            reviewsWithMetadata.map((review) => (
               <Box key={review.id}>
                 <Group justify="space-between" mb="sm">
                   <Group gap="sm">

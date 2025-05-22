@@ -36,6 +36,8 @@ export type SliderData = {
   id: string;
   imgUrl: string;
   value: number;
+  roundLink: string;
+  reportLink: string;
 };
 
 export const fakeSliderData = [

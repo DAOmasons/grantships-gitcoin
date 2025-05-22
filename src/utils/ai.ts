@@ -17,7 +17,6 @@ export type PromptSchema = z.infer<typeof votePrefSchema>;
 
 export const searchPrefs = async (promptSeed: PromptSchema) => {
   try {
-    console.log('promptSeed', promptSeed);
     const validated = votePrefSchema.safeParse(promptSeed);
 
     if (!validated.success) {

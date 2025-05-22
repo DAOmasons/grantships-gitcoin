@@ -10,6 +10,7 @@ import {
   RawPublicRoundData,
 } from '../queries/getRounds';
 import { ContestStatus } from '../constants/enum';
+import { ROUND_DATA } from '../constants/reports';
 
 type UserData = {
   isJudge: boolean;
@@ -21,6 +22,8 @@ type PublicRound = Omit<RawPublicRoundData, 'ships'> & {
   ships: (RawPublicRoundData['ships'][number] & {
     name?: string;
     imgUrl: string;
+    reportLink: string;
+    roundLink: string;
   })[];
 };
 
@@ -105,22 +108,39 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
             (app) => app.application.rootId === ship.choiceId
           )?.application;
 
+          const shipData = ROUND_DATA[ship.choiceId];
+
           if (!shipApplication) {
             console.error(
               `Ship application not found for choiceId: ${ship.choiceId}`
             );
           }
 
+          if (!shipData) {
+            console.error(`Ship data not found for choiceId: ${ship.choiceId}`);
+
+            return {
+              ...ship,
+              name: shipApplication?.name,
+              imgUrl: shipApplication?.imgUrl,
+              reportLink: '',
+              roundLink: '',
+            };
+          }
+
           return {
             ...ship,
             name: shipApplication?.name,
             imgUrl: shipApplication?.imgUrl,
+            reportLink: shipData.reportLink,
+            roundLink: shipData.roundLink,
           };
         }),
       };
+
       return rawPublicRound as PublicRound;
     }
-  }, [rawPublicRoundData, applicationRound]);
+  }, [rawPublicRoundData, applicationRound, ROUND_DATA]);
 
   const currentStage = applicationRound?.round?.contestStatus
     ? Number(applicationRound?.round?.contestStatus) ===

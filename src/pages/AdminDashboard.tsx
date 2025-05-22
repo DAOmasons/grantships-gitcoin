@@ -1,24 +1,8 @@
-import {
-  Box,
-  Group,
-  Stack,
-  Tabs,
-  Text,
-  Title,
-  useMantineTheme,
-} from '@mantine/core';
+import { Tabs, useMantineTheme } from '@mantine/core';
 import { PageLayout } from '../layout/Page';
-import {
-  IconArrowRight,
-  IconFileDescription,
-  IconManualGearbox,
-} from '@tabler/icons-react';
+import { IconFileDescription, IconManualGearbox } from '@tabler/icons-react';
 import { useState } from 'react';
 import { ApplicationPanel } from '../components/dashboards/ApplicationPanel';
-import { useChews } from '../hooks/useChews';
-import { Bold } from '../components/typography';
-import { TxButton } from '../components/TxButton';
-import { InfoBanner } from '../components/InfoBanner';
 import { SettingsPanel } from '../components/dashboards/SettingsPanel';
 
 export const AdminDashboard = () => {
