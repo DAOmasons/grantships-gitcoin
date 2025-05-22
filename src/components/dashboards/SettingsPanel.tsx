@@ -206,22 +206,6 @@ export const SettingsPanel = () => {
       ? finalizeVoting
       : () => {};
 
-  const testCORS = async () => {
-    const result = await getUserProof(
-      '0x57abda4ee50Bb3079A556C878b2c345310057569'
-    );
-    const result2 = await getUserProof(
-      '0xD800B05c70A2071BC1E5Eac5B3390Da1Eb67bC9D'
-    );
-
-    const result3 = await getUserProof(
-      '0x756ee8B8E898D497043c2320d9909f1DD5a7077F'
-    );
-
-    // console.log('result', result);
-    // console.log('result2', result2);
-    console.log('result3', result3);
-  };
   return (
     <Box>
       <Title fz="h3" order={3} mb="sm">
@@ -309,7 +293,6 @@ export const SettingsPanel = () => {
           >
             Accelerate!
           </TxButton>
-          <Button onClick={testCORS}>Test cors</Button>
         </Box>
       </Stack>
     </Box>
