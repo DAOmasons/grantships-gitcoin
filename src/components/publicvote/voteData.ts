@@ -11,7 +11,7 @@ export const vectors = [
   },
   {
     key: 'additional_funds_raised',
-    label: 'Additional matching donations raised are important',
+    label: 'Additional matching funds raised are important',
     rating: 1,
   },
   {
