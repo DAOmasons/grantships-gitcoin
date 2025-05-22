@@ -310,7 +310,7 @@ export const VoteReady = ({
     <Box>
       <Box mb={'lg'}>
         <Title order={3} fz={'h3'} mb={'xl'}>
-          Welcome to the New GTC Voting system
+          GG23 Community Round Vote
         </Title>
         <Text c="subtle" mb="sm">
           You'll go through a set of questions to express your preferences and

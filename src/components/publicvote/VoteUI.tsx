@@ -158,7 +158,7 @@ export const VoteUI = ({
     return (
       <Box mb={'lg'}>
         <Title order={3} fz={'h3'} mb={'xl'}>
-          Welcome to the New GTC Voting system
+          GG23 Community Round Vote
         </Title>
         <Group justify="center">
           <Avatar src={gtcLogo} size={171} mb="xl" />
