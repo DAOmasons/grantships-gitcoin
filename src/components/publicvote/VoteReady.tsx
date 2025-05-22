@@ -399,8 +399,12 @@ export const VoteReady = ({
           }}
         >
           <Text mb="sm">
-            The AI's suggestion is just a recommendation. You can review,
-            adjust, or override it before casting your final vote.
+            The AI's suggestion is just a recommendation.{' '}
+            <Bold>
+              Feel free to read the round data and adjust the sliders
+              accordingly
+            </Bold>
+            .
           </Text>
           <Card>
             <Text className="ws-pre-wrap" ref={readoutRef}>
@@ -417,10 +421,10 @@ export const VoteReady = ({
               them using the sliders to reflect your final decision.
             </Text>
             <Text mb="sm">
-              The AI’s recommendation is based on your priorities,
+              The AI’s recommendation is based on your priorities. If you want
+              to dive in deeper,{' '}
               <Bold>
-                but you have full control to fine-tune your vote before
-                submitting.{' '}
+                please read the round data and adjust your vote as needed.
               </Bold>
             </Text>
             <Card>

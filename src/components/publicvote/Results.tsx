@@ -1,17 +1,29 @@
 import { useMemo } from 'react';
 import { useChews } from '../../hooks/useChews';
 import {
+  ActionIcon,
   Avatar,
   Box,
   Group,
+  Menu,
   Progress,
   Rating,
   Text,
   Title,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { InfoBanner } from '../InfoBanner';
-import { IconStar, IconStarFilled } from '@tabler/icons-react';
+import {
+  IconList,
+  IconReport,
+  IconRocket,
+  IconSearch,
+  IconStar,
+  IconStarFilled,
+} from '@tabler/icons-react';
+import { ROUND_DATA } from '../../constants/reports';
+import { Link } from 'react-router-dom';
 
 export const Results = () => {
   const { publicRound } = useChews();
@@ -86,6 +98,13 @@ export const Results = () => {
 
           const total = publicRound.totalVoted;
 
+          const shipData = ROUND_DATA[choiceId]
+            ? ROUND_DATA[choiceId]
+            : {
+                reportLink: '',
+                roundLink: '',
+              };
+
           const scaleFactor = 100n;
 
           const percentage =
@@ -95,11 +114,57 @@ export const Results = () => {
                 Number(scaleFactor);
           return (
             <Box key={choiceId} mb="md">
-              <Group gap="sm" mb={'xs'}>
-                <Avatar src={imgUrl} size={40} />
-                <Text fz="md" maw={350} lineClamp={1}>
-                  {name}
-                </Text>
+              <Group justify="space-between" w="95.5%">
+                <Group gap="sm" mb={'xs'}>
+                  <Avatar src={imgUrl} size={40} />
+                  <Text fz="md" maw={350} lineClamp={1}>
+                    {name}
+                  </Text>
+                </Group>
+                <Menu
+                  position="bottom-start"
+                  transitionProps={{
+                    transition: 'fade-up',
+                    duration: 150,
+                  }}
+                >
+                  <Menu.Target>
+                    <Tooltip label="Read Ship Data">
+                      <ActionIcon size={20}>
+                        <IconList />
+                      </ActionIcon>
+                    </Tooltip>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item
+                      leftSection={<IconReport size={20} />}
+                      component={'a'}
+                      href={shipData.reportLink}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Read Report
+                    </Menu.Item>
+                    <Menu.Item
+                      leftSection={<IconSearch size={20} />}
+                      component="a"
+                      href={shipData.roundLink}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      See Round
+                    </Menu.Item>
+                    <Menu.Item
+                      leftSection={<IconRocket size={20} />}
+                      component={Link}
+                      to={`/ship/${ship.choiceId}`}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      See Ship Page
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
               </Group>
               <Group ml={55}>
                 <Progress
