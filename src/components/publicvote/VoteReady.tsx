@@ -5,12 +5,14 @@ import {
   Button,
   Card,
   Group,
+  Menu,
   Rating,
   Slider,
   Stack,
   Text,
   Textarea,
   Title,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { useRef, useState } from 'react';
@@ -26,6 +28,9 @@ import { ADDR } from '../../constants/addresses';
 import {
   IconChefHat,
   IconList,
+  IconReport,
+  IconRocket,
+  IconSearch,
   IconStar,
   IconStarFilled,
 } from '@tabler/icons-react';
@@ -146,6 +151,8 @@ export const VoteReady = ({
           id: ship.choiceId,
           imgUrl: ship.imgUrl,
           value: sliderData ? sliderData.percentage : 0,
+          reportLink: ship.reportLink,
+          roundLink: ship.roundLink,
         } as SliderData;
       });
 
@@ -420,7 +427,7 @@ export const VoteReady = ({
               <Stack mb="lg" gap={'md'}>
                 {sliders.map((slider) => (
                   <Box key={slider.id} mb="lg">
-                    <Group mb="sm" justify="space-between" w="90%">
+                    <Group mb="sm" justify="space-between" w="95%">
                       <Box w="fit-content">
                         <Link
                           to={`/ship/${slider.id}`}
@@ -435,9 +442,50 @@ export const VoteReady = ({
                           </Group>
                         </Link>
                       </Box>
-                      <ActionIcon size={16}>
-                        <IconList />
-                      </ActionIcon>
+                      <Menu
+                        position="bottom-start"
+                        transitionProps={{
+                          transition: 'fade-up',
+                          duration: 150,
+                        }}
+                      >
+                        <Menu.Target>
+                          <Tooltip label="Read Ship Data">
+                            <ActionIcon size={20}>
+                              <IconList />
+                            </ActionIcon>
+                          </Tooltip>
+                        </Menu.Target>
+                        <Menu.Dropdown>
+                          <Menu.Item
+                            leftSection={<IconReport size={20} />}
+                            component={'a'}
+                            href={slider.reportLink}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            Read Report
+                          </Menu.Item>
+                          <Menu.Item
+                            leftSection={<IconSearch size={20} />}
+                            component="a"
+                            href={slider.roundLink}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            See Round
+                          </Menu.Item>
+                          <Menu.Item
+                            leftSection={<IconRocket size={20} />}
+                            component={Link}
+                            to={`/ship/${slider.id}`}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            See Ship Page
+                          </Menu.Item>
+                        </Menu.Dropdown>
+                      </Menu>
                     </Group>
                     <Group>
                       <Slider
