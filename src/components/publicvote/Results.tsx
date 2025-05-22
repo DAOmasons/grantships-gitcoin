@@ -24,10 +24,13 @@ import {
 } from '@tabler/icons-react';
 import { ROUND_DATA } from '../../constants/reports';
 import { Link } from 'react-router-dom';
+import { useMobile, useTablet } from '../../hooks/useBreakpoints';
 
 export const Results = () => {
   const { publicRound } = useChews();
   const { colors } = useMantineTheme();
+  const isTablet = useTablet();
+  const isMobile = useMobile();
 
   const totalPreferences = useMemo(() => {
     if (!publicRound) return null;
@@ -114,10 +117,21 @@ export const Results = () => {
                 Number(scaleFactor);
           return (
             <Box key={choiceId} mb="md">
-              <Group justify="space-between" w="95.5%">
-                <Group gap="sm" mb={'xs'}>
+              <Group justify="space-between" w={isTablet ? '100%' : '95.5%'}>
+                <Group
+                  gap="sm"
+                  mb={'xs'}
+                  style={{
+                    flexDirection: isMobile ? 'column' : 'row',
+                    alignItems: isMobile ? 'start' : 'center',
+                  }}
+                >
                   <Avatar src={imgUrl} size={40} />
-                  <Text fz="md" maw={350} lineClamp={1}>
+                  <Text
+                    fz="md"
+                    lineClamp={1}
+                    maw={isTablet ? '250px' : '350px'}
+                  >
                     {name}
                   </Text>
                 </Group>
@@ -166,13 +180,13 @@ export const Results = () => {
                   </Menu.Dropdown>
                 </Menu>
               </Group>
-              <Group ml={55}>
+              <Group ml={isTablet ? 0 : 55}>
                 <Progress
                   value={percentage}
                   size="sm"
                   color={colors.purple[7]}
                   bg={colors.dark[6]}
-                  w="90%"
+                  w={isTablet ? '100%' : '90%'}
                 />
                 <Text fz="xs">{percentage}%</Text>
               </Group>
