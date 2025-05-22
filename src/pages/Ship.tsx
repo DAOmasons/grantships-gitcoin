@@ -31,7 +31,7 @@ import { InfoBanner } from '../components/InfoBanner';
 
 export const Ship = () => {
   const { id } = useParams();
-  const { applicationRound } = useChews();
+  const { applicationRound, publicRound } = useChews();
   const { colors } = useMantineTheme();
   const { isTablet } = useBreakpoints();
   const navigate = useNavigate();
@@ -60,6 +60,26 @@ export const Ship = () => {
     return { ...locatedShip, avgScore };
   }, [id, applicationRound]);
 
+  const publicScore = useMemo(() => {
+    if (!publicRound) return '--';
+
+    const locatedShip = publicRound?.ships.find((ship) => ship.choiceId === id);
+
+    if (!locatedShip) return '--';
+
+    const total = publicRound.totalVoted;
+
+    const scaleFactor = 100n;
+
+    const percentage =
+      locatedShip.amountVoted === 0n
+        ? 0
+        : Number((locatedShip.amountVoted * 100n * scaleFactor) / total) /
+          Number(scaleFactor);
+
+    return `${percentage}%`;
+  }, [publicRound]);
+
   const { data: metadata, isLoading: isLoadingMetadata } = useQuery({
     queryKey: ['metadata', ship?.application.ipfsHash],
     queryFn: () => getApplicationMetadata(ship?.application.ipfsHash as string),
@@ -72,7 +92,7 @@ export const Ship = () => {
     enabled: !!ship?.votes,
   });
 
-  if (!ship) {
+  if (!ship || !publicRound || !applicationRound) {
     return (
       <PageLayout title="GG 23 Ship">
         <></>
@@ -156,13 +176,20 @@ export const Ship = () => {
               </Tooltip>
             </Group>
             <Text c="highlight" fz={80}>
-              --
+              {publicScore}
             </Text>
             <Text c="subtle" style={{ transform: 'translateY(-16px)' }} fz="sm">
               *Percentage of total community votes
             </Text>
-            <Text c="subtle" style={{ transform: 'translateY(-16px)' }} fz="sm">
-              **Voting opens after Community Round
+            <Text
+              c="subtle"
+              td="underline"
+              component={Link}
+              to="/vote"
+              style={{ transform: 'translateY(-36px)' }}
+              fz="sm"
+            >
+              See Voting
             </Text>
           </Box>
         </Flex>
@@ -172,7 +199,7 @@ export const Ship = () => {
         <Stack gap="lg">
           {reviewsWithMetadata &&
             reviewsWithMetadata?.length > 0 &&
-            reviewsWithMetadata.map((review, index) => (
+            reviewsWithMetadata.map((review) => (
               <Box key={review.id}>
                 <Group justify="space-between" mb="sm">
                   <Group gap="sm">

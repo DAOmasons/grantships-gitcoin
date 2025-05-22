@@ -89,7 +89,7 @@ export const Ships = () => {
     };
   }, [publicRound]);
 
-  if (!applicationRound || isLoadingAppRound) {
+  if (isLoadingAppRound || isLoadingPublicRound) {
     return null;
   }
 
@@ -105,9 +105,9 @@ export const Ships = () => {
         <Text c={colors.dark[4]} mb="xl">
           Final Public GTC Vote for the GG23 Rounds
         </Text>
-        {publicRound?.ships.length ? (
+        {publicRound && sortedPublicShips?.ships?.length ? (
           <Box>
-            {publicRound?.ships?.map((ship, index) => {
+            {sortedPublicShips?.ships?.map((ship, index) => {
               const Icon = index < icons.length ? icons[index] : null;
 
               const total = publicRound.totalVoted;
