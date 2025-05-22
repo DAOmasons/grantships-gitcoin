@@ -27,7 +27,6 @@ import { formatEther } from 'viem';
 import { useBreakpoints } from '../hooks/useBreakpoints';
 import { GgApplicationVote } from '../generated/graphql';
 import { roundNumberString, truncateAddr } from '../utils/common';
-import { InfoBanner } from '../components/InfoBanner';
 
 export const Ship = () => {
   const { id } = useParams();
@@ -181,16 +180,18 @@ export const Ship = () => {
             <Text c="subtle" style={{ transform: 'translateY(-16px)' }} fz="sm">
               *Percentage of total community votes
             </Text>
-            <Text
-              c="subtle"
-              td="underline"
-              component={Link}
-              to="/vote"
-              style={{ transform: 'translateY(-36px)' }}
-              fz="sm"
-            >
-              See Voting
-            </Text>
+            <Group style={{ transform: 'translateY(-12px)' }} gap={4}>
+              <Text
+                c="subtle"
+                td="underline"
+                component={Link}
+                to="/vote"
+                fz="sm"
+              >
+                See Voting
+              </Text>
+              <IconArrowRight size={18} stroke={1} />
+            </Group>
           </Box>
         </Flex>
         <Title order={4} fz="h4" mt="lg">

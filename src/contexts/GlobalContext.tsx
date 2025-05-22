@@ -118,6 +118,9 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
           };
         }),
       };
+      const choiceIds = rawPublicRound.ships.map((ship) => ship.choiceId);
+
+      console.log('choiceIds', choiceIds);
       return rawPublicRound as PublicRound;
     }
   }, [rawPublicRoundData, applicationRound]);
