@@ -192,7 +192,7 @@ export const VoteReady = ({
       });
     }
   };
-
+  //
   const submitVote = async () => {
     const EMPTY_METADATA = [0n, ''] as [bigint, string];
 
