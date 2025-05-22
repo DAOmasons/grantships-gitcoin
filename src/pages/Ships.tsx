@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Flex,
   Group,
   Progress,
   Stack,
@@ -37,6 +36,8 @@ const icons = [
   IconSquareNumber5,
   IconSquareNumber6,
 ];
+
+const publicIcons = [IconSquareNumber1, IconSquareNumber2, IconSquareNumber3];
 
 export const Ships = () => {
   const { colors } = useMantineTheme();
@@ -103,12 +104,13 @@ export const Ships = () => {
           Public Vote
         </Text>
         <Text c={colors.dark[4]} mb="xl">
-          Final Public GTC Vote for the GG23 Rounds
+          Final Public GTC Vote for the GG23 Rounds. Top 3 ships will be
+          selected for GG24
         </Text>
         {publicRound && sortedPublicShips?.ships?.length ? (
           <Box>
             {sortedPublicShips?.ships?.map((ship, index) => {
-              const Icon = index < icons.length ? icons[index] : null;
+              const Icon = index < publicIcons.length ? icons[index] : null;
 
               const total = publicRound.totalVoted;
 

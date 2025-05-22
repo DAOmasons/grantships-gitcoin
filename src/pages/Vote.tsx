@@ -51,6 +51,7 @@ export const Vote = () => {
   return (
     <PageLayout title="Vote">
       <Tabs
+        fz="lg"
         defaultValue={currentTab}
         value={currentTab}
         mb={70}
