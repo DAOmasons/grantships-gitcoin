@@ -222,7 +222,7 @@ export const deployPublicVoting = async (topSixShipIds: string[]) => {
   const content = '';
   const protocol = 0n;
   const TAG_PREFIX = 'GG_APPLICATION_PUBLIC_VOTE';
-  const nonce = 8;
+  const nonce = 9;
 
   const filterTag = `${TAG_PREFIX}_${nonce}`;
 
