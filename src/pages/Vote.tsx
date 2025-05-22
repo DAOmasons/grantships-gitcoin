@@ -1,11 +1,6 @@
-import { Avatar, Box, Group, Tabs, Text, Title } from '@mantine/core';
+import { Tabs } from '@mantine/core';
 import { PageLayout } from '../layout/Page';
-import {
-  IconAward,
-  IconStar,
-  IconTrophy,
-  IconUsersGroup,
-} from '@tabler/icons-react';
+import { IconStar, IconTrophy, IconUsersGroup } from '@tabler/icons-react';
 import { useState } from 'react';
 import { VoteUI } from '../components/publicvote/VoteUI';
 import { Results } from '../components/publicvote/Results';
