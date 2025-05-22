@@ -1,4 +1,4 @@
-import { Box, Group, Stack, Text, Title } from '@mantine/core';
+import { Box, Button, Group, Stack, Text, Title } from '@mantine/core';
 import { useChews } from '../../hooks/useChews';
 import { IconArrowRight } from '@tabler/icons-react';
 import { TxButton } from '../TxButton';
@@ -13,6 +13,7 @@ import RubricVotesABI from '../../abi/RubricVotes.json';
 import { useMemo } from 'react';
 import { roundNumberString } from '../../utils/common';
 import { deployPublicVoting } from '../../setupScripts/chews';
+import { getUserProof } from '../../utils/merkle';
 
 const CONTEST_STATUS_LABEL = {
   [ContestStatus.Populating]: 'Populating',
@@ -205,6 +206,14 @@ export const SettingsPanel = () => {
       ? finalizeVoting
       : () => {};
 
+  const testCORS = async () => {
+    const result = await getUserProof(
+      '0x57abda4ee50Bb3079A556C878b2c345310057569'
+    );
+
+    console.log('result', result);
+  };
+
   return (
     <Box>
       <Title fz="h3" order={3} mb="sm">
@@ -292,6 +301,7 @@ export const SettingsPanel = () => {
           >
             Accelerate!
           </TxButton>
+          <Button onClick={testCORS}>Test cors</Button>
         </Box>
       </Stack>
     </Box>
