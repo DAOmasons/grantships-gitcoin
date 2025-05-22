@@ -38,6 +38,7 @@ import { Link } from 'react-router-dom';
 import { TxButton } from '../TxButton';
 import { SliderData, vectors } from './voteData';
 import { Bold } from '../typography';
+import { useMobile, useTablet } from '../../hooks/useBreakpoints';
 
 export const VoteReady = ({
   proof,
@@ -49,6 +50,9 @@ export const VoteReady = ({
   const { colors } = useMantineTheme();
   const { publicRound, refetchPublicRound } = useChews();
   const { tx } = useTx();
+
+  const isMobile = useMobile();
+  const isTablet = useTablet();
 
   const [context, setContext] = useState('');
   const [reasoning, setReasoning] = useState('');
@@ -322,7 +326,12 @@ export const VoteReady = ({
       </Box>
       <Stack mb="xl">
         {ratings.map((vector) => (
-          <Card bg={colors.dark[6]} p={24} h={120} key={vector.key}>
+          <Card
+            bg={colors.dark[6]}
+            p={24}
+            h={isMobile ? 'fit-content' : 120}
+            key={vector.key}
+          >
             <Text fz="lg" mb={10}>
               {vector.label}
             </Text>
@@ -351,7 +360,7 @@ export const VoteReady = ({
 
         <Card bg={colors.dark[6]}>
           <Text fz="lg" mb={'sm'}>
-            Would you like to add more context? (Optional)
+            What else do you consider important in a grants program? (Optional)
           </Text>
           <Textarea
             variant="inset"
@@ -387,7 +396,7 @@ export const VoteReady = ({
         </Avatar>
         <Text>
           {isLoading
-            ? 'Cooking up some AI-powered voting weights from your preferences. This may take a few minutes.'
+            ? 'Cooking up some AI-powered voting weights from your preferences. This may take a minute.'
             : 'AI-powered voting insights based on your rating'}
         </Text>
       </Stack>
@@ -440,7 +449,7 @@ export const VoteReady = ({
                         >
                           <Group gap="xs">
                             <Avatar src={slider.imgUrl} size={40} />
-                            <Text lineClamp={1} maw={200}>
+                            <Text lineClamp={1} maw={isMobile ? 150 : 200}>
                               {slider.name}
                             </Text>
                           </Group>
