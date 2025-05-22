@@ -32,6 +32,7 @@ import {
 import { Link } from 'react-router-dom';
 import { TxButton } from '../TxButton';
 import { SliderData, vectors } from './voteData';
+import { Bold } from '../typography';
 
 export const VoteReady = ({
   proof,
@@ -321,12 +322,22 @@ export const VoteReady = ({
             <Rating
               color={colors.purple[6]}
               size={24}
+              readOnly={sliders.length > 0}
               value={vector.rating}
               onChange={(value) => handleRatingChange(vector.key, value)}
               emptySymbol={
-                <IconStar size={24} color={colors.purple[6]} stroke={1.5} />
+                <IconStar
+                  size={24}
+                  color={sliders.length > 0 ? colors.dark[4] : colors.purple[6]}
+                  stroke={1.5}
+                />
               }
-              fullSymbol={<IconStarFilled size={24} color={colors.purple[6]} />}
+              fullSymbol={
+                <IconStarFilled
+                  size={24}
+                  color={sliders.length > 0 ? colors.dark[4] : colors.purple[6]}
+                />
+              }
             />
           </Card>
         ))}
@@ -338,6 +349,7 @@ export const VoteReady = ({
           <Textarea
             variant="inset"
             size="sm"
+            disabled={sliders.length > 0}
             onChange={(e) => setContext(e.currentTarget.value)}
           />
         </Card>
@@ -398,8 +410,11 @@ export const VoteReady = ({
               them using the sliders to reflect your final decision.
             </Text>
             <Text mb="sm">
-              The AI’s recommendation is based on your priorities, but you have
-              full control to fine-tune your vote before submitting.
+              The AI’s recommendation is based on your priorities,
+              <Bold>
+                but you have full control to fine-tune your vote before
+                submitting.{' '}
+              </Bold>
             </Text>
             <Card>
               <Stack mb="lg" gap={'md'}>
