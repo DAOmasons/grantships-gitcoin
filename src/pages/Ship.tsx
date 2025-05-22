@@ -22,11 +22,16 @@ import {
   getReviewsWithMetadata,
 } from '../queries/getMetadata';
 import { JudgeIcon, ShipIcon } from '../components/RoleIcons';
-import { IconArrowRight, IconInfoCircle } from '@tabler/icons-react';
+import {
+  IconArrowRight,
+  IconExternalLink,
+  IconInfoCircle,
+} from '@tabler/icons-react';
 import { formatEther } from 'viem';
 import { useBreakpoints } from '../hooks/useBreakpoints';
 import { GgApplicationVote } from '../generated/graphql';
 import { roundNumberString, truncateAddr } from '../utils/common';
+import { ROUND_DATA } from '../constants/reports';
 
 export const Ship = () => {
   const { id } = useParams();
@@ -98,6 +103,8 @@ export const Ship = () => {
       </PageLayout>
     );
   }
+
+  const shipData = ROUND_DATA[id as string];
 
   return (
     <PageLayout title={ship.application.name}>
@@ -194,6 +201,39 @@ export const Ship = () => {
             </Group>
           </Box>
         </Flex>
+        <Box>
+          <Text fz="lg" fw={600} mb="md">
+            Round Data
+          </Text>
+          <Group gap={6} mb="xs">
+            <Text
+              component="a"
+              href={shipData.reportLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              c="subtle"
+              fz="sm"
+              td="underline"
+            >
+              Read Round Report
+            </Text>
+            <IconExternalLink size={16} />
+          </Group>
+          <Group gap={6}>
+            <Text
+              component="a"
+              href={shipData.reportLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              c="subtle"
+              fz="sm"
+              td="underline"
+            >
+              View Round
+            </Text>
+            <IconExternalLink size={16} />
+          </Group>
+        </Box>
         <Title order={4} fz="h4" mt="lg">
           Judge Reviews
         </Title>
