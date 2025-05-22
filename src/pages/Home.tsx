@@ -154,15 +154,15 @@ export const Home = () => {
           >
             <Box>
               <Text fz={isTablet ? 24 : 28} mb="12">
-                Want to Run a Round?
+                GTC Voting is Live
               </Text>
-              <Text>Applications can be submitted any time</Text>
+              <Text>Final Public Vote is live. Check for eligibility</Text>
             </Box>
             <Button
-              onClick={() => navigate('submit-application')}
+              onClick={() => navigate('/vote')}
               size={isTablet ? 'sm' : undefined}
             >
-              Submit Application
+              See Vote
             </Button>
           </Flex>
         </Card>
