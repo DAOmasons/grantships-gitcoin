@@ -182,10 +182,10 @@ const encodePrepopChoicesArgs = (choices: any, choiceIds: any): Hex => {
 };
 
 export const encodeMerklePointsArgs = (): Hex => {
-  const MERKLE_POINTS =
-    '0x819f7727398bfc72721f6eb88903acdaa1e167b2d312aeacef63bb5ed399edc2';
+  const MERKLE_ROOT =
+    '0x015d90b40100b4ca0c13fb5473545f3b19a16a19a1dcd042f4f8cb92bdc4ae5c';
   const args = encodeAbiParameters(parseAbiParameters('bytes32'), [
-    MERKLE_POINTS,
+    MERKLE_ROOT,
   ]);
 
   return args;
@@ -222,7 +222,7 @@ export const deployPublicVoting = async (topSixShipIds: string[]) => {
   const content = '';
   const protocol = 0n;
   const TAG_PREFIX = 'GG_APPLICATION_PUBLIC_VOTE';
-  const nonce = 9;
+  const nonce = 10;
 
   const filterTag = `${TAG_PREFIX}_${nonce}`;
 
