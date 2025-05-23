@@ -26,7 +26,7 @@ export const vectors = [
   },
   {
     key: 'total_donations',
-    label: 'Total donations received is important',
+    label: 'Total funds raised is important',
     rating: 1,
   },
 ];

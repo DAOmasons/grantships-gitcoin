@@ -25,6 +25,7 @@ import {
 import { ROUND_DATA } from '../../constants/reports';
 import { Link } from 'react-router-dom';
 import { useMobile, useTablet } from '../../hooks/useBreakpoints';
+import { replaceCommonString } from '../../utils/common';
 
 export const Results = () => {
   const { publicRound } = useChews();
@@ -209,7 +210,7 @@ export const Results = () => {
             return (
               <Box key={key} mb="md">
                 <Group gap="sm" mb={'xs'}>
-                  <Text fz="md">{label}</Text>
+                  <Text fz="md">{replaceCommonString(label)}</Text>
                 </Group>
                 <Group>
                   <Rating

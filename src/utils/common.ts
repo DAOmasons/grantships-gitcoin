@@ -42,5 +42,9 @@ export const replaceCommonString = (string: string) => {
   if (string === 'Additional matching donations raised are important') {
     return 'Additional matching funds raised are important';
   }
+
+  if (string === 'Total donations received is important') {
+    return 'Total funds raised is important';
+  }
   return string;
 };
