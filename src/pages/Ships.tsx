@@ -82,11 +82,14 @@ export const Ships = () => {
   );
 
   const sortedPublicShips = useMemo(() => {
+    if (!publicRound) return null;
+
+    const ships = [...publicRound?.ships].sort(
+      (a, b) => Number(b.amountVoted) - Number(a.amountVoted)
+    );
     return {
       ...publicRound,
-      ships: publicRound?.ships.sort(
-        (a, b) => Number(b.amountVoted) - Number(a.amountVoted)
-      ),
+      ships,
     };
   }, [publicRound]);
 
