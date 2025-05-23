@@ -37,3 +37,14 @@ export const roundNumberString = (numStr: string, decimalPlaces = 2) => {
   // Only for decimal places > 0, remove trailing zeros
   return rounded.replace(/\.(\d*[1-9])0+$/, '.$1').replace(/\.0+$/, '');
 };
+
+export const replaceCommonString = (string: string) => {
+  if (string === 'Additional matching donations raised are important') {
+    return 'Additional matching funds raised are important';
+  }
+
+  if (string === 'Total donations received is important') {
+    return 'Total funds raised is important';
+  }
+  return string;
+};

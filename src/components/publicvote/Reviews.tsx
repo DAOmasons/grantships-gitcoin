@@ -19,6 +19,7 @@ import { IconMessage, IconStar, IconStarFilled } from '@tabler/icons-react';
 import { InfoBanner } from '../InfoBanner';
 import { UserDisplay } from '../UserDisplay';
 import { useTablet } from '../../hooks/useBreakpoints';
+import { replaceCommonString } from '../../utils/common';
 
 export const Reviews = () => {
   const { publicRound, isLoadingPublicRound } = useChews();
@@ -144,7 +145,7 @@ const VoteCard = ({
               {prefs.map((pref) => (
                 <Box key={pref.key}>
                   <Text fz="xs" mb={4}>
-                    {pref.label}
+                    {replaceCommonString(pref.label)}
                   </Text>
                   <Rating
                     value={Number(pref.value)}
