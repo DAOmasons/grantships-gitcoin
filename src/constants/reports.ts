@@ -8,7 +8,7 @@ export const ROUND_DATA: Record<
   //regen coordination
   '0x2377bfa0777c385f4d3fdee97d1a65228f836da67ea6f0db96235870ac5cdc82': {
     reportLink:
-      'https://www.regencoordination.xyz/Regen-Coordination-Mission-North-Stars-1c32e7251f2f8070897fc38b8375509f',
+      'https://gov.gitcoin.co/t/ai-impactqf-regen-coordination-global-gg23-retrospective/20385/2',
     roundLink: 'https://explorer.gitcoin.co/#/round/42220/31',
   },
   // Good Dollar
