@@ -27,7 +27,7 @@ export const ROUND_DATA: Record<
   // Regen Rio de Janeiro
   '0x22ed83fde1924b615d904ccb2259c3ab42e72ec0870242399cda94743503682e': {
     reportLink:
-      'https://various-option-5d8.notion.site/Regen-Rio-1cd38e08e9f680a8a089ee953dbaed7f?pvs=4',
+      'https://gov.gitcoin.co/t/regen-rio-de-janeiro-gg23-full-program-report/20423?u=cauetomaz',
     roundLink: 'https://explorer.gitcoin.co/#/round/42220/30',
   },
   // Gitcoin Grants Garden
