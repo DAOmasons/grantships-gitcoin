@@ -8,7 +8,7 @@ import { Reviews } from '../components/publicvote/Reviews';
 import { useMobile } from '../hooks/useBreakpoints';
 
 export const Vote = () => {
-  const [currentTab, setCurrentTab] = useState('vote');
+  const [currentTab, setCurrentTab] = useState('results');
   const isMobile = useMobile();
 
   return (
@@ -21,13 +21,13 @@ export const Vote = () => {
         onChange={(e) => (e ? setCurrentTab(e) : undefined)}
       >
         <Tabs.List mb="md">
-          <Tabs.Tab
+          {/* <Tabs.Tab
             value="vote"
             leftSection={<IconStar size={14} />}
             px={isMobile ? 'sm' : 'md'}
           >
             Vote
-          </Tabs.Tab>
+          </Tabs.Tab> */}
           <Tabs.Tab
             value="results"
             leftSection={<IconTrophy size={14} />}
@@ -43,9 +43,9 @@ export const Vote = () => {
             Reviews
           </Tabs.Tab>
         </Tabs.List>
-        <Tabs.Panel value="vote">
+        {/* <Tabs.Panel value="vote">
           <VoteUI setCurrentTab={setCurrentTab} />
-        </Tabs.Panel>
+        </Tabs.Panel> */}
         <Tabs.Panel value="results">
           <Results />
         </Tabs.Panel>
